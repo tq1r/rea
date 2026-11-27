@@ -214,7 +214,7 @@ public final class SkillManager {
             Msg.send(player, "&c" + def.getName() + " is cooling down (" + left + "s).");
             return;
         }
-        data.setMagicules(data.getMagicules() - def.getMagiculeCost());
+        data.setMagicules(data.getMagicules() - (int) def.getMagiculeCost());
         data.getSkillCooldowns().put(skillId, now);
         applyEffect(player, def);
         plugin.getDataManager().save(data);
