@@ -97,10 +97,10 @@ Auto-update only works if the latest GitHub **release has a `.jar` asset attache
 
 ### Publishing a release (maintainers)
 
-1. Push a tag: `git tag v1.1.0 && git push origin v1.1.0`
-2. The CI workflow builds `rea-1.1.0.jar` and uploads it as the `rea-jar` artifact.
-3. Create a GitHub Release for the tag and **attach that jar** to it.
-4. Every server running Rea will pick it up automatically on its next restart.
+1. Bump `version` in `pom.xml` and `version:` in `plugin.yml`.
+2. Create the draft release (`v1.1.0`, notes ready) — then push a commit whose message contains `[release]`.
+3. CI builds `rea-1.1.0.jar` and **attaches it to the draft automatically** (`.github/workflows/build.yml` → `release` job).
+4. Publish the release. Every server running Rea picks it up automatically on its next restart.
 
 ## Commands
 

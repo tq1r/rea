@@ -45,3 +45,26 @@ jobs:
         with:
           name: rea-jar
           path: target/*.jar
+  release:
+    needs: [build]
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[release]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package
+      - name: Attach the jar to the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=v$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
+          echo "Uploading target/rea-${TAG#v}.jar to release ${TAG}"
+          gh release upload "$TAG" "target/rea-${TAG#v}.jar" --clobber --repo ${{ github.repository }}
