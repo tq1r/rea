@@ -1,5 +1,5 @@
 # Rea quests (Tensura canon): the path from reincarnation to Demon Lord.
-# Quests are sequential. Types: RACE, MINE, KILL, CRAFT, CODEX, REACH_LEVEL.
+# Quests are sequential. Types: RACE, MINE, KILL, CRAFT, CODEX, REACH_LEVEL, DUNGEON.
 # Rewards: reward-runes, reward-xp, reward-ep, reward-item (MATERIAL:amount).
 
 quests:
@@ -87,3 +87,51 @@ quests:
     reward-item: ""
     description: "Reach level 12 and evolve to the Demon Lord form. Your Unique Skill will become an Ultimate Skill."
     complete: "The Harvest Festival begins. You are a Demon Lord."
+  - id: "q3-1"
+    chapter: 3
+    name: "The Ruins Open"
+    type: "DUNGEON"
+    target: ""
+    amount: 1
+    reward-runes: 200
+    reward-xp: 200
+    reward-ep: 1000
+    reward-item: ""
+    description: "Clear your first dungeon with /rea dungeon enter ogre_hunt."
+    complete: "The ruins bow before you."
+  - id: "q3-2"
+    chapter: 3
+    name: "Cardinal Arsenal"
+    type: "DUNGEON"
+    target: ""
+    amount: 3
+    reward-runes: 400
+    reward-xp: 400
+    reward-ep: 2500
+    reward-item: ""
+    description: "Clear 3 dungeons. Cardinal weapons sleep in the deep ruins."
+    complete: "Named swords whisper your name."
+  - id: "q3-3"
+    chapter: 3
+    name: "The Lords of Jura"
+    type: "CODEX"
+    target: ""
+    amount: 25
+    reward-runes: 500
+    reward-xp: 500
+    reward-ep: 3000
+    reward-item: ""
+    description: "Record 25 Codex entries of the Tensura world."
+    complete: "The world remembers those who remember it."
+  - id: "q3-4"
+    chapter: 3
+    name: "Hero of the Federation"
+    type: "KILL"
+    target: "ANY"
+    amount: 100
+    reward-runes: 750
+    reward-xp: 750
+    reward-ep: 5000
+    reward-item: "cache:5"
+    description: "Slay 100 monsters. The Federation endures because you do."
+    complete: "The Federation sings your name."

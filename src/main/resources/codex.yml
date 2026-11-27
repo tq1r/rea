@@ -179,3 +179,59 @@ codex:
     reward-runes: 10
     reward-xp: 10
     reward-ep: 10
+  true_dragons:
+    title: "True Dragons"
+    subtitle: "The oldest beings in existence"
+    pages:
+      - "True Dragons are the first of all things, born with Veldanava's creation of the world."
+      - "Veldora the Storm Dragon slumbered beneath the Jura Forest for two thousand years."
+      - "Invegal sleeps beneath the sea. Velda waits in her frozen palace. Luminous walks among us."
+      - "Their every act is history. A single breath of theirs outlasts empires."
+    reward-runes: 20
+    reward-xp: 20
+    reward-ep: 25
+  tempest_federation:
+    title: "Jura Tempest Federation"
+    subtitle: "Rimuru Tempest's nation"
+    pages:
+      - "Founded in the Jura Forest by Rimuru Tempest, the Federation welcomes monsters and humans alike."
+      - "Its citizens include goblins, lizardmen, ogres, dwarves, elves, orcs, and spirits."
+      - "The Federation abolished the slave trade and freed every monster it could reach."
+      - "The Harvest Festival — Rimuru's nation-changing announcement — echoes through every named soul."
+    reward-runes: 20
+    reward-xp: 20
+    reward-ep: 25
+  name_humanization:
+    title: "Naming and Humanization"
+    subtitle: "The power behind the Harvest Festival"
+    pages:
+      - "A True Demon Lord's name can change a soul: humanization awakens reason in monsters."
+      - "Names also awaken dormant talents, boosting a being's EP and resistance to fate."
+      - "Rimuru named hundreds in his Harvest Festival — a burden that nearly consumed him."
+      - "Those who bear a name are bound to their namer's soul line."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15
+  cardinal_weapons:
+    title: "Cardinal Weapons"
+    subtitle: "Named arms of the world's great powers"
+    pages:
+      - "Asura, the Heavenly Demon — one of the Seven Genesis-grade weapons forged by Veldanava. Milim's scimitar."
+      - "Deva (Masayuki Rudra) and Ark (Feldway) serve the heroes of the Holy."
+      - "True Gorikimaru, Flame Pillar, Night Rose, and Truth burn in the hands of legend."
+      - "The Holy Sword Dragon Buster was forged by the Seven Luminaries to fell dragons."
+      - "Cardinal weapons are won in the ruins — Vál Velmyra guards the rarest."
+    reward-runes: 25
+    reward-xp: 25
+    reward-ep: 30
+  dungeon:
+    title: "The Dungeons"
+    subtitle: "Veil-torn ruins above the world"
+    pages:
+      - "Dungeons are storm-torn slabs of ruined worlds, wedged into this one."
+      - "Their air is thick with magicules; their treasures hum with stored power."
+      - "Ogre Hunt, the Orc Lord's Fortress, and the ruins of Vál Velmyra — each deeper than the last."
+      - "Cardinal weapons are buried in the deepest floors."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15

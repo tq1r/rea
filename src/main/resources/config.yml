@@ -13,15 +13,17 @@ settings:
   xp-per-kill: 3
   cache-cost: 25
   cache-xp: 40
+  dungeon-cooldown-minutes: 15
+  cardinal-ep-bonus: 1.10
 
 messages:
   welcome-no-race:
     - "&d&lWelcome to Rea"
-    - "&7Long ago the First Flame burned at the heart of the world."
-    - "&7Then came the Sundering, and the ten bloodlines scattered."
-    - "&7Your bloodline still sleeps. &7An admin must run &e/rea start &7to wake it."
+    - "&7A world of magicules, monsters, and merciless evolution."
+    - "&7Somewhere beyond the veil, a name calls you into this world."
+    - "&7Your reincarnation awaits. &7An admin must run &e/rea start &7to begin it."
   welcome:
-    - "&7The bloodlines hum a little louder today. Welcome back."
+    - "&7The magicules stir. Welcome back, otherworlder."
   start-broadcast:
-    - "&d&lThe bloodlines wake in Rea..."
-    - "&7Ten sparks. Ten peoples. One Sundering. &dWho will you be?"
+    - "&d&lA new otherworlder descends into the Jura Sea..."
+    - "&7The Federation watches. Monsters gather. &dWho will you become?"

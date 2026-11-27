@@ -10,10 +10,12 @@ import org.bukkit.plugin.Plugin;
 public final class Keys {
     private final NamespacedKey codex;
     private final NamespacedKey cache;
+    private final NamespacedKey cardinal;
 
     public Keys(Plugin plugin) {
         this.codex = new NamespacedKey(plugin, "codex");
         this.cache = new NamespacedKey(plugin, "cache");
+        this.cardinal = new NamespacedKey(plugin, "cardinal");
     }
 
     public NamespacedKey codex() {
@@ -22,5 +24,9 @@ public final class Keys {
 
     public NamespacedKey cache() {
         return cache;
+    }
+
+    public NamespacedKey cardinal() {
+        return cardinal;
     }
 }

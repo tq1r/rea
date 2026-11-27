@@ -1,10 +1,9 @@
 # Rea
 
 Rea is a **Tensura** (That Time I Got Reincarnated as a Slime) plugin for **Paper 26.3**.
-Players reincarnate as a random Tensura race, receive a **Unique Skill**, gain
-**Existence Points (EP)** and **magicules**, devour foes to learn **Common Skills**,
-and evolve through their race's chain to a **Demon Lord awakening** — where their
-Unique Skill evolves into an **Ultimate Skill**.
+You wake in the Jura Forest as an otherworlder. The world of magicules tests you:
+devour, evolve, and at last awaken as a Demon Lord — your Unique Skill becoming an
+Ultimate Skill — while you delve Tensura's sealed ruins for its named, cardinal weapons.
 
 Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only.
 
@@ -28,17 +27,57 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
   (Goblin → Hobgoblin → Ogre → Demon Lord, Lizardman → Dragonewt → True Dragonewt,
   Orc → High Orc → Orc Lord, Demon → Arch Demon → Demon Peer).
 - **Ranks:** EP ranks F, E, D, C, B, A, S, SS, SSS.
+- **Naming (Rimuru-style):** a demon lord names a soul, granting humanization and a
+  power spike. Rea's Demon Lord awakening does the same for your skills.
+- **Cardinal weapons:** named, high-grade armaments of the Tensura world — won in
+  the dungeons, never bought. Hold one for **+10% EP**.
 
 ## Commands
 
-- `/rea start` — reincarnate as a random race and receive a Unique Skill.
-- `/rea status` — race, form, EP, rank, magicules, runes, skills.
-- `/rea evolve` — evolve to the next form (triggers Ultimate evolution at Demon Lord).
-- `/rea skill <id>` — cast a skill.
+- `/rea start` — (admin) reincarnate everyone with random races and Unique Skills.
+- `/rea race` — your bloodline, form, EP, and evolution chain.
+- `/rea evolve` — evolve to your next form (Ultimate evolution at Demon Lord).
+- `/rea skill <id>` — cast a skill (costs magicules).
 - `/rea skills` — list your skills by tier.
-- `/rea admin <give|set|reset> ...` — admin tools (`rea.admin`).
-- `/ability` — open the skills GUI.
-- `/runes` — view your runes.
+- `/rea ability` — cast your intrinsic skill.
+- `/rea profile` — level, rank, EP, magicules, runes, codex, stats.
+- `/rea quests` — the story so far.
+- `/rea codex [read <id>]` — the 25 entries of Tensura's world.
+- `/rea daily` — daily rune gift.
+- `/rea buy cache [n]` — trade runes for XP.
+- `/rea runes` — your balance.
+- `/rea dungeon` — the Tensura ruins: dive or claim prizes.
+- `/rea dungeon enter <id>` — enter a ruin (15-minute cooldown).
+- `/rea dungeon leave` — abandon a run (no rewards).
+- `/rea weapons` — the cardinal weapons of legend.
+- `/ability`, `/runes` — shortcuts.
+
+## Dungeons
+
+Three ruins torn from broken worlds, opened as sky-arenas far above the world:
+
+| Ruin | Difficulty | Rewards | Weapon chance |
+| --- | --- | --- | --- |
+| `ogre_hunt` | Ogre Hunt | 300 EP · 80 runes · 60 XP | 30% (Unique grade) |
+| `orc_fortress` | Orc Lord's Fortress | 750 EP · 200 runes · 150 XP | 45% (Unique/Legend) |
+| `val_velmyra` | Vál Velmyra | 1500 EP · 400 runes · 300 XP | 60% (Legend/Mythical/Genesis) |
+
+Clear the boss to win. You drop nothing and gain no XP from the trash — the prize
+is the ruin itself. Defeat the boss, claim the loot, return to Jura.
+
+## Cardinal weapons
+
+Fourteen named weapons, from Unique to Genesis grade:
+
+- **Unique:** Demon Slayer (Saare), Dragon Slayer (Youm Farmenas), Gorikimaru (Shion),
+  Dragon Buster (the Seven Luminaries → Hinata), Curse Sword (Albert).
+- **Legend:** True Gorikimaru (Shion), Flame Pillar (Leon Cromwell),
+  Night Rose (Luminous Valentine), Truth (Granbell Rosso → Hinata).
+- **Mythical:** Crumbling Fang (Dino), Moon Mistress (Chloe Aubert),
+  Ark (Feldway), Deva (Masayuki Rudra).
+- **Genesis:** Asura (天魔) — Veldanava's scimitar, Milim's treasure.
+
+Cardinal weapons grant **+10% EP** while held. The dungeons guard them all.
 
 ## Skills
 
@@ -49,7 +88,7 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
   Telepathy, Farsight, Hydraulic Propulsion, Magic Sense.
 - **Unique** (granted on reincarnation): Predator, Great Sage, Divine Blessing,
   Infinity Prison, Starved, Godly Craftsman, Truth.
-- **Ultimate** (evolved at Demon Lord awakening): Beelzebuth, Raphael, Uriel,
+- **Ultimate** (evolved at the Demon Lord awakening): Beelzebuth, Raphael, Uriel,
   Azathoth, Veldora, Faust, Mammon, Lucifer, Satanael, Amaterasu, Hastur, Mephisto,
   Michael, Samael, Abaddon, Belial, Asmodeus, Sariel, Yog-Sothoth, Azazel, True Hero.
 

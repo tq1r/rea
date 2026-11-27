@@ -94,6 +94,7 @@ public final class QuestManager {
             case "CRAFT" -> data.counter("craft:" + quest.target());
             case "CODEX" -> data.getCodex().size();
             case "REACH_LEVEL" -> data.getLevel();
+            case "DUNGEON" -> data.counter("dungeon:clear");
             default -> 0;
         };
     }

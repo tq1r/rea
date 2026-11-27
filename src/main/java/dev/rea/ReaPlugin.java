@@ -5,6 +5,8 @@ import dev.rea.command.EvolveGui;
 import dev.rea.command.ReaCommand;
 import dev.rea.command.SkillsGui;
 import dev.rea.data.DataManager;
+import dev.rea.dungeon.DungeonManager;
+import dev.rea.listener.DungeonListener;
 import dev.rea.listener.GameListener;
 import dev.rea.listener.GuiListener;
 import dev.rea.quest.QuestManager;
@@ -13,6 +15,7 @@ import dev.rea.scoreboard.ScoreboardManager;
 import dev.rea.skill.SkillManager;
 import dev.rea.util.ItemFactory;
 import dev.rea.util.Keys;
+import dev.rea.weapon.WeaponManager;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +37,8 @@ public final class ReaPlugin extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private SkillsGui skillsGui;
     private EvolveGui evolveGui;
+    private WeaponManager weaponManager;
+    private DungeonManager dungeonManager;
 
     @Override
     public void onEnable() {
@@ -48,6 +53,8 @@ public final class ReaPlugin extends JavaPlugin {
         scoreboardManager = new ScoreboardManager(this);
         skillsGui = new SkillsGui(this);
         evolveGui = new EvolveGui(this);
+        weaponManager = new WeaponManager(this);
+        dungeonManager = new DungeonManager(this);
 
         ReaCommand command = new ReaCommand(this);
         PluginCommand root = getCommand("rea");
@@ -66,11 +73,12 @@ public final class ReaPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
         getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, evolveGui), this);
+        getServer().getPluginManager().registerEvents(new DungeonListener(this), this);
         scoreboardManager.start();
         raceManager.startPassiveTask();
         dataManager.startAutosave();
         dataManager.startMagiculeRegen();
-        getLogger().info("Rea awakened. The bloodlines wake.");
+        getLogger().info("Rea awakened. The magicules stir.");
     }
 
     @Override
@@ -121,5 +129,13 @@ public final class ReaPlugin extends JavaPlugin {
 
     public EvolveGui getEvolveGui() {
         return evolveGui;
+    }
+
+    public WeaponManager getWeaponManager() {
+        return weaponManager;
+    }
+
+    public DungeonManager getDungeonManager() {
+        return dungeonManager;
     }
 }

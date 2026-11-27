@@ -107,6 +107,10 @@ public final class DataManager {
         if (data.getSkills().contains("truth")) {
             multiplied *= 1.25;
         }
+        if (plugin.getWeaponManager() != null
+                && plugin.getWeaponManager().isCardinal(player.getInventory().getItemInMainHand())) {
+            multiplied *= plugin.getConfig().getDouble("settings.cardinal-ep-bonus", 1.10);
+        }
         long gained = Math.max(1, Math.round(multiplied));
         String before = rank(data);
         data.setEp(data.getEp() + gained);

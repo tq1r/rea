@@ -5,9 +5,12 @@ import dev.rea.codex.CodexEntry;
 import dev.rea.data.PlayerData;
 import dev.rea.quest.QuestDef;
 import dev.rea.race.RaceType;
+import dev.rea.dungeon.DungeonDef;
 import dev.rea.skill.SkillDef;
 import dev.rea.util.Msg;
 import dev.rea.util.Util;
+import dev.rea.weapon.WeaponDef;
+import dev.rea.weapon.WeaponManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -96,6 +99,8 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                     Msg.send(player, "&dRunes: &l" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
                 }
             }
+            case "dungeon" -> dungeon(sender, args);
+            case "weapons" -> weapons(sender);
             case "give" -> give(sender, args);
             case "reset" -> reset(sender, args);
             case "reload" -> reload(sender);
@@ -119,6 +124,11 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&e/rea daily &7- daily rune gift");
         Msg.send(sender, "&e/rea buy cache [n] &7- trade runes for XP");
         Msg.send(sender, "&e/rea runes &7- your balance");
+        Msg.send(sender, "&dDungeons &7(Tensura ruins):");
+        Msg.send(sender, "&e/rea dungeon &7- list the ruins and their rewards");
+        Msg.send(sender, "&e/rea dungeon enter <id> &7- dive into a ruin");
+        Msg.send(sender, "&e/rea dungeon leave &7- abandon the ruin (no rewards)");
+        Msg.send(sender, "&e/rea weapons &7- the cardinal weapons of legend");
         Msg.send(sender, Msg.bar());
     }
 
@@ -378,6 +388,69 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Their bloodline sleeps again until /rea start.");
     }
 
+    private void dungeon(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            Msg.send(sender, "&cOnly players can dive.");
+            return;
+        }
+        if (args.length < 2) {
+            Msg.send(player, Msg.bar());
+            Msg.send(player, "&d&lThe Ruins of Rea");
+            for (DungeonDef def : plugin.getDungeonManager().all().values()) {
+                Msg.send(player, "&e" + def.id() + " &7- &d" + def.name());
+                Msg.send(player, "  &7" + stripColors(def.description()));
+                Msg.send(player, "  &7Reward: &d" + def.epReward() + " EP &7+ &d" + def.runeReward() + " runes &7+ &d" + def.xpReward() + " XP"
+                        + " &7| Weapon chance: &d" + (int) (def.weaponChance() * 100) + "%");
+            }
+            Msg.send(player, "&7Enter with &e/rea dungeon enter <id> &7(cooldown 15 minutes).");
+            Msg.send(player, Msg.bar());
+            return;
+        }
+        String action = args[1].toLowerCase();
+        switch (action) {
+            case "enter" -> {
+                if (args.length < 3) {
+                    Msg.send(player, "&e/rea dungeon enter <id> &7- see &e/rea dungeon");
+                    return;
+                }
+                DungeonDef def = plugin.getDungeonManager().get(args[2]);
+                if (def == null) {
+                    Msg.send(player, "&cNo dungeon named &e" + args[2] + "&c.");
+                    return;
+                }
+                plugin.getDungeonManager().enter(player, def);
+            }
+            case "leave" -> {
+                if (!plugin.getDungeonManager().inDungeon(player)) {
+                    Msg.send(player, "&cYou are not in a dungeon.");
+                    return;
+                }
+                plugin.getDungeonManager().endRun(player, false);
+            }
+            default -> Msg.send(player, "&cUnknown dungeon subcommand. &e/rea dungeon");
+        }
+    }
+
+    private String stripColors(String text) {
+        return text == null ? "" : text.replaceAll("&.", "");
+    }
+
+    private void weapons(CommandSender sender) {
+        Msg.send(sender, Msg.bar());
+        Msg.send(sender, "&d&lCardinal Weapons");
+        Msg.send(sender, "&7Named arms of Tensura. Hold one for &f+10% EP&7. Won in the ruins.");
+        for (WeaponDef def : plugin.getWeaponManager().allWeapons().values()) {
+            String gradeColor = switch (def.grade()) {
+                case WeaponManager.GRADE_GENESIS -> "&4";
+                case WeaponManager.GRADE_MYTHICAL -> "&d";
+                case WeaponManager.GRADE_LEGEND -> "&6";
+                default -> "&a";
+            };
+            Msg.send(sender, gradeColor + def.name() + " &7- " + def.grade() + " grade");
+        }
+        Msg.send(sender, Msg.bar());
+    }
+
     private void reload(CommandSender sender) {
         if (!sender.hasPermission("rea.admin")) {
             Msg.send(sender, "&cNo permission.");
@@ -396,7 +469,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return out;
         }
         if (args.length == 1) {
-            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "give", "reset", "reload")) {
+            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "dungeon", "weapons", "give", "reset", "reload")) {
                 if (sub.startsWith(args[0].toLowerCase())) {
                     out.add(sub);
                 }
@@ -417,6 +490,13 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                 }
             }
             switch (args[0].toLowerCase()) {
+                case "dungeon" -> {
+                    for (String sub : List.of("enter", "leave")) {
+                        if (sub.startsWith(args[1].toLowerCase())) {
+                            out.add(sub);
+                        }
+                    }
+                }
                 case "codex" -> {
                     if ("read".startsWith(args[1].toLowerCase())) {
                         out.add("read");
@@ -433,6 +513,12 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                     }
                 }
                 default -> {
+                }
+            }
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("dungeon") && args[1].equalsIgnoreCase("enter")) {
+            for (DungeonDef def : plugin.getDungeonManager().all().values()) {
+                if (def.id().startsWith(args[2].toLowerCase())) {
+                    out.add(def.id());
                 }
             }
         }
