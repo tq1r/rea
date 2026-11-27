@@ -13,7 +13,7 @@ import dev.rea.listener.GameListener;
 import dev.rea.listener.GuiListener;
 import dev.rea.quest.QuestManager;
 import dev.rea.race.RaceManager;
-import dev.rea.scoreboard.ScoreboardManager;
+import dev.rea.hud.HudManager;
 import dev.rea.skill.SkillManager;
 import dev.rea.update.UpdateManager;
 import dev.rea.util.ItemFactory;
@@ -38,7 +38,7 @@ public final class ReaPlugin extends JavaPlugin {
     private QuestManager questManager;
     private CodexManager codexManager;
     private SkillManager skillManager;
-    private ScoreboardManager scoreboardManager;
+    private HudManager hudManager;
     private SkillsGui skillsGui;
     private DungeonGui dungeonGui;
     private AdminGui adminGui;
@@ -57,7 +57,7 @@ public final class ReaPlugin extends JavaPlugin {
         questManager = new QuestManager(this);
         codexManager = new CodexManager(this);
         skillManager = new SkillManager(this);
-        scoreboardManager = new ScoreboardManager(this);
+        hudManager = new HudManager(this);
         skillsGui = new SkillsGui(this);
         dungeonGui = new DungeonGui(this);
         adminGui = new AdminGui(this);
@@ -81,7 +81,7 @@ public final class ReaPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, dungeonGui), this);
         getServer().getPluginManager().registerEvents(new AdminGuiListener(this, adminGui), this);
         getServer().getPluginManager().registerEvents(new DungeonListener(this), this);
-        scoreboardManager.start();
+        hudManager.start();
         raceManager.startPassiveTask();
         dataManager.startAutosave();
         dataManager.startMagiculeRegen();
@@ -95,8 +95,8 @@ public final class ReaPlugin extends JavaPlugin {
         if (dataManager != null) {
             dataManager.saveAll();
         }
-        if (scoreboardManager != null) {
-            scoreboardManager.stop();
+        if (hudManager != null) {
+            hudManager.stop();
         }
     }
 
@@ -128,8 +128,8 @@ public final class ReaPlugin extends JavaPlugin {
         return skillManager;
     }
 
-    public ScoreboardManager getScoreboardManager() {
-        return scoreboardManager;
+    public HudManager getHudManager() {
+        return hudManager;
     }
 
     public SkillsGui getSkillsGui() {

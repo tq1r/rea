@@ -47,7 +47,7 @@ public final class GameListener implements Listener {
         PlayerData data = plugin.getDataManager().get(player);
         data.setName(player.getName());
         plugin.getRaceManager().applyPassives(player);
-        plugin.getScoreboardManager().update(player);
+        plugin.getHudManager().update(player);
         if (data.getRace() == null) {
             for (String line : plugin.getConfig().getStringList("messages.welcome-no-race")) {
                 Msg.send(player, line);
@@ -62,7 +62,7 @@ public final class GameListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         plugin.getDataManager().save(plugin.getDataManager().get(event.getPlayer()));
-        plugin.getScoreboardManager().remove(event.getPlayer().getUniqueId());
+        plugin.getHudManager().remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

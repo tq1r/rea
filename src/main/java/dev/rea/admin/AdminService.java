@@ -15,7 +15,7 @@ public final class AdminService {
 
     /**
      * Total data wipe for one player: dungeon run abandoned, Rea data deleted,
-     * Rea racials cleared, scoreboard refreshed. The next /rea start deals a
+     * Rea racials cleared, HUD refreshed. The next /rea start deals a
      * completely fresh reincarnation.
      */
     public static void resetPlayer(ReaPlugin plugin, Player target) {
@@ -25,7 +25,7 @@ public final class AdminService {
         plugin.getDataManager().delete(target.getUniqueId());
         // Race is gone now, so applyPassives wipes Rea's racials instead of re-adding them.
         plugin.getRaceManager().applyPassives(target);
-        plugin.getScoreboardManager().update(target);
+        plugin.getHudManager().update(target);
         Msg.send(target, "&cAn admin wiped your Rea data. Your next reincarnation starts from nothing.");
     }
 

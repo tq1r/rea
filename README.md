@@ -5,14 +5,14 @@ You wake in the Jura Forest as an otherworlder. The world of magicules tests you
 devour, evolve, and at last awaken as a Demon Lord — your Unique Skill becoming an
 Ultimate Skill — while you delve Tensura's sealed ruins for its named, cardinal weapons.
 
-Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only.
+Everything is Bedrock-safe: chat, standard GUIs, boss bars, and action bars only.
 
 ## Anti-lag
 
 Rea is built for small hosts (it runs happily on an 8 GB box): repeating work is
-minimal (5-minute autosave, 60-second racials refresh, and a sidebar that only
-sends packets when something actually changed). No per-tick loops, no chunk
-loading, no entity spam. For the server around it:
+minimal (5-minute autosave, 60-second racials refresh, one action-bar HUD
+packet per player per second). No per-tick loops, no chunk loading, no entity
+spam. For the server around it:
 
 - Keep `view-distance` at 6–8 and `simulation-distance` at 5–6 in `server.properties`.
 - Don't stack a second heavy plugin that pre-generates chunks or spams particles.
@@ -34,7 +34,7 @@ Geyser translates cleanly for Bedrock clients:
 
 - **Chests & GUIs** — Talents, Ruins, and the admin menu are plain container inventories (no custom rendering, no packet tricks). Bedrock players open and click them normally.
 - **Trading** — trained specialists are ordinary villagers with real professions, types, and trade levels; the Bedrock trading UI just works.
-- **Scoreboards, boss bars, chat, action bars, titles** — all standard, all Geyser-safe.
+- **Action-bar HUD, boss bars, chat, action bars, titles** — all standard, all Geyser-safe.
 - **No Java-only APIs** — no packets, no custom model data requirements, no NBT the client must parse, no signed chat dependencies.
 
 Out of the box, Bedrock players get the full game. Known limits, honestly:
@@ -54,7 +54,7 @@ Out of the box, Bedrock players get the full game. Known limits, honestly:
 
 ## What to expect at launch
 
-- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, wipe a test account with `/rea admin`, then `/rea start` to confirm the fresh reincarnation, and check skills, quests, codex, the scoreboard, and the admin menus on both Java and Bedrock.
+- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, wipe a test account with `/rea admin`, then `/rea start` to confirm the fresh reincarnation, and check skills, quests, codex, the action-bar HUD, and the admin menus on both Java and Bedrock.
 - Dungeon difficulty is fixed, not scaled to your EP — bring friends or bring potions.
 - Balance (EP/rune costs, loot rates) is tuned by feel, not by telemetry. Feedback welcome.
 
