@@ -1,0 +1,131 @@
+# The Codex of the Vale — collectible lore.
+# Right-click a Codex Page to record its entry. Pages can be copied and shared with friends.
+# Edit the words freely. The Vale will adapt.
+
+codex:
+  song:
+    title: "The Song of the Crown"
+    subtitle: "Codex Entry I"
+    reward-shards: 15
+    reward-xp: 10
+    pages:
+      - "Before the Breaking, the Sky-Crown sang. It was no king's jewel, no wizard's stone. It was the world's heart, hung in the sky, and its Song was the sound of everything holding together."
+      - "When the Crown sang, the crops grew sweet, the storms turned aside at the borders of the Vale, and the dead slept quietly under the hill. No one remembers the words. Everyone remembers the feeling."
+      - "The Song did not need to be understood. It needed to be kept. The Pillars were its keepers. This is the first thing every Shardbearer must know: the world was once a single chord, and it can be one again."
+  pillars:
+    title: "The Four Pillars"
+    subtitle: "Codex Entry II"
+    reward-shards: 15
+    reward-xp: 10
+    pages:
+      - "Four Wardens swore the Oath of Keeping: Ember, who walked in fire and feared nothing; Tide, who spoke to the deep and came back with answers; Verdant, who could make a desert bloom by asking nicely; and Stone, who held the mountain up and never once complained."
+      - "Each Pillar walked a Path, and each Path is still walked today. Choose yours with care. The shards remember your first choice the way the sea remembers the shore."
+      - "The Oath was simple: guard the Crown, keep the Song, and if the worst ever came — carry the pieces. The worst came. The pieces are everywhere. So are you."
+  cracking:
+    title: "The Night of Cracking"
+    subtitle: "Codex Entry III"
+    reward-shards: 20
+    reward-xp: 15
+    pages:
+      - "The official history fits on one line: a star fell, the Crown cracked, and its shards rained across the Vale. The Song stopped. The Pillars fell silent. The sea rose a hand's breadth and never went back."
+      - "It is a tidy story. It has a cause, a moment, and no one to blame. Scholars love it. Children do not. Children ask the question the scholars will not: if a star fell, why did the shards fall toward the villages?"
+      - "Keep the official story. You will need it at the council fire. But keep the children's question too. You will need it everywhere else."
+  child:
+    title: "A Child's Version"
+    subtitle: "Codex Entry IV"
+    reward-shards: 20
+    reward-xp: 15
+    pages:
+      - "Grandmother says the Crown sang so beautifully that it broke itself from joy, the way a bell can crack from being rung too hard. Grandfather says someone wanted it broken, and that wanting is a kind of breaking too."
+      - "Mother says not to listen to old stories. But Mother also keeps a shard in her sewing box, and it hums when the wind is wrong, and she pretends not to hear it."
+      - "When I am big I will find the piece that fell nearest our house and ask it what happened. Shards are honest. It is people who learn to lie."
+  silent:
+    title: "The Silent Pillar"
+    subtitle: "Codex Entry V"
+    reward-shards: 25
+    reward-xp: 20
+    pages:
+      - "After the Shattering, three of the Pillars answered the call. They sent word, they sent help, they sent shards to the villages. One Pillar never answered. Not a word. Not a sign. Not even a refusal."
+      - "The records disagree about which one. Ember's tower says Tide went silent. Tide's temple says Ember. Verdant's grove says Stone. Stone's hall says nothing at all, which the others find the most suspicious."
+      - "A silence that long is not an absence. It is a decision. Whatever the Silent Pillar decided, it decided for all of us. Find out what. Carefully."
+  want:
+    title: "What the Shards Want"
+    subtitle: "Codex Entry VI"
+    reward-shards: 25
+    reward-xp: 20
+    pages:
+      - "People ask what the shards are for. Gold is for buying. Grain is for eating. The shards are not for anything, and that is why they are dangerous: a thing with no use can only have a purpose."
+      - "They hum near Shardbearers. They sing louder in a quiet pack than in a full vault. They do not want worship, and they do not want war. They want to be carried. They want to be heard."
+      - "Carry them gently. Spend them wisely. And when one hums a note you almost recognize — write it down. The Song was made of notes like that."
+  first-warden:
+    title: "The Ruins of the First Warden"
+    subtitle: "Codex Entry VII"
+    reward-shards: 30
+    reward-xp: 25
+    pages:
+      - "The oldest ruins in the Vale predate the Crown by a thousand years. The stones there are older than the Song, older than the Pillars, older than the names we give to things."
+      - "Someone was a warden before there was a Crown to guard. Someone stood watch over this land when the sky was still dark and the first light had not yet been named."
+      - "What were they guarding? The ruins do not say. But the shards gather near them, the way birds gather before a storm. Whatever the First Warden watched, it is still down there. Still waiting."
+  tide:
+    title: "The Tide Remembers"
+    subtitle: "Codex Entry VIII"
+    reward-shards: 30
+    reward-xp: 25
+    pages:
+      - "The sea rose a hand's breadth on the Night of Cracking and never went back. The old harbors are dry. The old roads end in sand. The Tide keeps what it is given, and it was given a great deal that night."
+      - "The Tide Pillar's temple still stands, half in the water, half in the air. On calm nights you can hear the bell under the waves, ringing once, very slowly, like something counting."
+      - "The sea does not forget. Neither does the deep. If you walk the Tidepath, walk it politely. The water is listening, and it has a long memory and a longer patience."
+  ember-last:
+    title: "Ember's Last Words"
+    subtitle: "Codex Entry IX"
+    reward-shards: 30
+    reward-xp: 25
+    pages:
+      - "A scorched tablet, found in the ashes of the Ember tower: 'If you find this, do not trust the quiet. The quiet is where it hides. The loud things — the fire, the storm, the sea — they are only loud because they are afraid.'"
+      - "'It is not the crack that matters. It is what crawls through the crack. Guard the shards. Carry them far apart. And if the Song ever starts again —' The tablet ends there. The rest is ash."
+      - "Ember feared nothing. That is what the tablet says, and the handwriting shakes. Whatever Ember saw that night, it was the only thing in the world that frightened the fire."
+  verdant:
+    title: "The Verdant Bargain"
+    subtitle: "Codex Entry X"
+    reward-shards: 30
+    reward-xp: 25
+    pages:
+      - "The forest grew over the ruins in a single season. A single season! Trees do not grow like that. Trees grow like that when something asks them to, and something in the wilds is very good at asking."
+      - "The Verdant Pillar made a bargain with the wilds to hold the ruins safe. The wilds agreed. The wilds always agree. The wilds always collect, and the price is never written down."
+      - "Walk the Verdantpath gently. Take only what you need. Leave the forest its quiet. It is keeping something for us, and it expects to be paid in respect."
+  stone-below:
+    title: "Stone Below"
+    subtitle: "Codex Entry XI"
+    reward-shards: 35
+    reward-xp: 30
+    pages:
+      - "The miners hear knocking from below the deep places. Rhythmic. Patient. Like something counting the years. The Stone Pillar's hall was built over the deepest shaft in the Vale, and the hall is empty, and the knocking continues."
+      - "The Stone Pillar swore to hold the mountain up. Perhaps the mountain is not the thing being held. Perhaps the mountain is the lid."
+      - "Dig carefully. The deep places are old, and old things do not like being woken, and the knocking — the knocking has never once stopped to listen."
+  second-crack:
+    title: "The Second Crack"
+    subtitle: "Codex Entry XII"
+    reward-shards: 40
+    reward-xp: 35
+    pages:
+      - "Tremors in the north. Shards singing in their sleep. The old bells ringing under the water with no hand to pull them. The Crown is cracking again — slowly, from the inside, the way ice cracks before it gives."
+      - "Whatever broke it the first time is still here. It never left. It has been waiting in the quiet, counting the years, the way the deep places count."
+      - "This is why you carry shards. This is why the Paths are walked again. The Song is not yet sung, Shardbearer. But it is almost. And almost is where everything important begins."
+  how-to-sing:
+    title: "How to Sing"
+    subtitle: "Codex Entry XIII"
+    reward-shards: 40
+    reward-xp: 35
+    pages:
+      - "To sing the Song again, you will need the shards, and the Paths, and the truth of what happened. But those are only the instruments. The Song itself is not a spell. It is a promise."
+      - "The promise is this: that the world holds together. That the crops grow sweet and the storms turn aside and the dead sleep quietly. That what was broken can be carried, piece by piece, until it is whole."
+      - "You do not sing it alone. No one ever did. The Pillars sang it together, and the Vale sang with them. Gather your friends. The Song needs a choir."
+  letter:
+    title: "For Whoever Finds This"
+    subtitle: "Codex Entry XIV"
+    reward-shards: 50
+    reward-xp: 50
+    pages:
+      - "If you are reading this, the shards chose you too. I carried them for eleven years. I got close. Closer than anyone has said out loud. The truth is worse than the silence and better than the fear."
+      - "Do not go looking for a villain. There is no villain. There is a door, and something on the other side of it that has been waiting a very long time to be let in — or let out. I never learned which."
+      - "Carry the shards far apart. Trust the loud things. And when the Song starts again — and it will, because you are reading this — sing with all your heart. I will be listening. — M."

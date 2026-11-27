@@ -1,0 +1,49 @@
+# Aetherfall configuration
+# The shards remember. Edit freely — the Vale will adapt.
+
+settings:
+  shard-mine-chance: 0.15
+  shard-mine-min: 1
+  shard-mine-max: 3
+  kill-shard-chance: 0.10
+  kill-shard-min: 1
+  kill-shard-max: 2
+  path-change-cost: 50
+  ruin-tp-cost: 10
+  order-create-cost: 100
+  order-home-cost: 10
+  ability-cooldown-seconds: 30
+  event-interval-minutes: 10
+  event-duration-minutes: 5
+  level-cap: 20
+  xp-per-kill: 3
+  veil-xp-multiplier: 2
+  cache-shards: 25
+
+messages:
+  welcome:
+    - "&d&lWelcome to the Vale of Aetheria"
+    - "&7Long ago the Sky-Crown sang, and the world held together."
+    - "&7Then it broke. Its shards fell across the land."
+    - "&7You are a Shardbearer. The shards hum when you are near."
+    - "&7Choose your Path to begin: &e/aetherfall path"
+    - "&7Type &e/aetherfall help &7for everything else."
+  event-start:
+    shard_storm:
+      - "&d&lA Shard Storm gathers over the Vale..."
+      - "&7The air hums. Shards fall like slow rain. &dShard drops are tripled!"
+    blood_moon:
+      - "&c&lThe moon runs red tonight."
+      - "&7The wild things are bold and cruel. &cThey hit harder — and drop more."
+    meteor:
+      - "&6&lSomething bright is falling..."
+      - "&7A meteor streaks toward the Vale. Find it. Claim what it carries."
+    veil:
+      - "&b&lThe Veil Thins."
+      - "&7Ghost-light pools in the hollows. &bExperience is doubled."
+  veil-whispers:
+    - "&7...you hear a note you almost recognize..."
+    - "&7...something is counting the years..."
+    - "&7...the quiet is where it hides..."
+    - "&7...carry the pieces..."
+    - "&7...the Song is not yet sung..."

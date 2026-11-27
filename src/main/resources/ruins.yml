@@ -1,0 +1,38 @@
+# Ruins of the Vale. Each ruin grants a Codex Page on first visit.
+# Move them to match your world, or add new ones in-game:
+#   /aetherfall ruin add <name> <codexId>   (admin, records your current position)
+# World must match your world name. Coordinates are block positions.
+
+ruins:
+  - name: "first-warden"
+    display: "Ruins of the First Warden"
+    world: "world"
+    x: 60
+    y: 70
+    z: 60
+    codex: "first-warden"
+    hint: "East of spawn, where the old stones stand."
+  - name: "ember-tower"
+    display: "Ashes of the Ember Tower"
+    world: "world"
+    x: -80
+    y: 70
+    z: 40
+    codex: "ember-last"
+    hint: "West, where the ground is warm."
+  - name: "tide-temple"
+    display: "The Drowned Temple"
+    world: "world"
+    x: 40
+    y: 64
+    z: -90
+    codex: "tide"
+    hint: "North, by the water."
+  - name: "verdant-grove"
+    display: "The Verdant Grove"
+    world: "world"
+    x: -50
+    y: 70
+    z: -70
+    codex: "verdant"
+    hint: "Southwest, where the trees grow too tall."

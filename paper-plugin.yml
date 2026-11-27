@@ -1,0 +1,23 @@
+name: Aetherfall
+version: '1.0.0'
+main: dev.aetherfall.AetherfallPlugin
+author: 'tq1r'
+description: 'A lore-rich SMP adventure plugin for Paper 26.3 + Geyser. The shards remember.'
+commands:
+  aetherfall:
+    description: Aetherfall commands
+    usage: /aetherfall <subcommand>
+    aliases: [af]
+  ability:
+    description: Use your Path ability
+    usage: /ability
+  shards:
+    description: Show your Aether Shard balance
+    usage: /shards
+permissions:
+  aetherfall.use:
+    description: Use Aetherfall features
+    default: true
+  aetherfall.admin:
+    description: Administer Aetherfall
+    default: op
