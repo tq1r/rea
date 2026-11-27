@@ -155,6 +155,45 @@ public final class SkillManager {
         return plugin.getDataManager().get(player).hasSkill(id);
     }
 
+    /** Active skills (with a cost) deserve an orb; passives just exist with you. */
+    public boolean castable(SkillDef def) {
+        return def.getMagiculeCost() > 0 || def.getCooldownMillis() > 0;
+    }
+
+    /** Grant the player an orb for one skill (no-op for passives). */
+    public void grantOrb(Player player, SkillDef def) {
+        if (!castable(def)) {
+            return;
+        }
+        String tier = def.getTier().name();
+        tier = tier.charAt(0) + tier.substring(1).toLowerCase(java.util.Locale.ROOT);
+        dev.rea.util.Util.giveItem(player,
+                plugin.getItemFactory().skillOrb(def.getId(), def.getName(), tier, player.getUniqueId()));
+    }
+
+    /** Re-issue any missing orbs for the player's known skills (join, reincarnation, evolution). */
+    public void reissueOrbs(Player player) {
+        PlayerData data = plugin.getDataManager().get(player);
+        for (String id : new java.util.HashSet<>(data.getSkills())) {
+            SkillDef def = skills.get(id);
+            if (def == null || !castable(def)) {
+                continue;
+            }
+            boolean found = false;
+            for (org.bukkit.inventory.ItemStack item : player.getInventory().getContents()) {
+                if (plugin.getItemFactory().isSkillOrb(item)
+                        && id.equals(plugin.getItemFactory().skillOrbSkill(item))
+                        && player.getUniqueId().equals(plugin.getItemFactory().skillOrbOwner(item))) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                grantOrb(player, def);
+            }
+        }
+    }
+
     /** Learn a skill (quest/codex rewards, predation, evolution). */
     public void learn(Player player, String id) {
         SkillDef def = skills.get(id);
@@ -169,6 +208,8 @@ public final class SkillManager {
         Msg.send(player, "&b&lSkill learned! &f" + def.getName() + " &8(&7" + def.getTier() + "&8)");
         Msg.send(player, "&7" + def.getDescription());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
+        grantOrb(player, def);
+        Msg.send(player, "&7An orb takes shape in your pack — hold it out and use it to call on " + def.getName() + ".");
         plugin.getDataManager().save(data);
     }
 

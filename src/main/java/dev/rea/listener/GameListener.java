@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -47,6 +48,7 @@ public final class GameListener implements Listener {
         PlayerData data = plugin.getDataManager().get(player);
         data.setName(player.getName());
         plugin.getRaceManager().applyPassives(player);
+        plugin.getSkillManager().reissueOrbs(player);
         plugin.getHudManager().update(player);
         if (data.getRace() == null) {
             for (String line : plugin.getConfig().getStringList("messages.welcome-no-race")) {
@@ -171,6 +173,17 @@ public final class GameListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
         if (item == null || item.getType() == Material.AIR) {
+            return;
+        }
+        String orbSkill = plugin.getItemFactory().skillOrbSkill(item);
+        if (orbSkill != null) {
+            event.setCancelled(true);
+            UUID owner = plugin.getItemFactory().skillOrbOwner(item);
+            if (owner == null || !owner.equals(player.getUniqueId())) {
+                Msg.send(player, "&cThis orb is bound to another soul.");
+                return;
+            }
+            plugin.getSkillManager().useSkill(player, orbSkill);
             return;
         }
         String codexId = plugin.getCodexManager().getCodexId(item);

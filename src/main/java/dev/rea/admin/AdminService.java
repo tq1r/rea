@@ -25,6 +25,20 @@ public final class AdminService {
         plugin.getDataManager().delete(target.getUniqueId());
         // Race is gone now, so applyPassives wipes Rea's racials instead of re-adding them.
         plugin.getRaceManager().applyPassives(target);
+        int removed = 0;
+        org.bukkit.inventory.ItemStack[] contents = target.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            org.bukkit.inventory.ItemStack it = contents[i];
+            if (it != null
+                    && plugin.getItemFactory().isSkillOrb(it)
+                    && target.getUniqueId().equals(plugin.getItemFactory().skillOrbOwner(it))) {
+                contents[i] = null;
+                removed++;
+            }
+        }
+        if (removed > 0) {
+            target.getInventory().setContents(contents);
+        }
         plugin.getHudManager().update(target);
         Msg.send(target, "&cAn admin wiped your Rea data. Your next reincarnation starts from nothing.");
     }

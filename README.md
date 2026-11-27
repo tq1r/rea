@@ -115,13 +115,13 @@ commands.
 | `/rea dungeon` | Menu of the ruins — click a ruin to dive |
 | `/rea dungeon leave` | Abandon the ruin you are inside |
 | `/rea trader …` | Name and train villager specialists |
-| `/ability` | Your Talents menu: skills by tier, click to cast, evolve button |
+| `/ability` | Your Talents menu: skills by tier, cast, evolve button |
 | `/rea start` | (admin) reincarnate everyone with random races |
 | `/rea admin` | (admin) the everything menu: races, skills, resources, lore, danger zone |
 | `/rea give`, `/rea reset`, `/rea reload`, `/rea update` | (admin) tools |
 
-Everything else — casting skills, evolving, diving — happens in menus or on
-its own.
+Everything else — casting skills (your orbs), evolving, diving — happens in
+menus, on your orb, or on its own.
 
 ## Dungeons
 
@@ -174,6 +174,8 @@ What each master offers:
 - **Scribe** — paper and books → rune caches → Master: codex tomes (*Jura Tempest Federation*, *True Dragons*, *Cardinal Weapons*).
 
 ## Skills
+
+**Casting:** every active skill you learn materializes as a **Skill Orb** (a prismarine crystal bound to your soul) in your pack. Hold it out and use it — **right-click** on Java, or **hold and press/tap your screen** on Bedrock (MCPE via Geyser) — to cast. Orbs are not consumable, cost nothing, and are bound to their owner; anyone else holding your orb is just holding a crystal. Missing one after a launch? Rejoin (or open `/ability`) and it is re-conjured automatically. The Talents menu (`/ability`) still works for casting too, and for evolving.
 
 - **Intrinsic** (born with the race): Dissolve, Absorb, Coercion, Scale Armor,
   Strengthen, Second Wind, Elven Step, Stonehide, Fang Rush, Poison Breath, Hellfire.

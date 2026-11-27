@@ -109,10 +109,11 @@ public final class RaceManager {
         Msg.send(player, "&7Blood gift: &f" + type.getPassiveDescription());
         Msg.send(player, "&7Intrinsic skill: &f" + type.getIntrinsicName() + " &7- " + type.getIntrinsicDescription());
         Msg.send(player, "&bUnique skill: &f" + unique.getName() + " &7- " + unique.getDescription());
-        Msg.send(player, "&7Use &e/rea skill " + type.getIntrinsicId() + " &7to call on it. Your race is permanent. Your form can evolve.");
+        Msg.send(player, "&7Your skill orb is in your pack — hold it out and use it to call on it. &7Your race is permanent. Your form can evolve.");
         Msg.send(player, Msg.bar());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 40, 0.6, 1.0, 0.6);
+        plugin.getSkillManager().reissueOrbs(player);
         Bukkit.broadcastMessage(Msg.c("&7" + player.getName() + " reincarnates as a " + type.getColor() + type.getDisplayName() + "&7!"));
         data.incrementCounter("race", 1);
         plugin.getQuestManager().checkCompletion(player);
@@ -188,6 +189,7 @@ public final class RaceManager {
                 data.setUniqueSkillId(ultimate.getId());
                 Msg.send(player, "&bYour Unique Skill evolves into the Ultimate Skill &l" + ultimate.getName() + "&b!");
                 Msg.send(player, "&7" + ultimate.getDescription());
+                plugin.getSkillManager().reissueOrbs(player);
             }
         }
         Msg.send(player, Msg.bar());

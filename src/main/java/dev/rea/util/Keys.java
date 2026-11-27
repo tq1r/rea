@@ -11,11 +11,13 @@ public final class Keys {
     private final NamespacedKey codex;
     private final NamespacedKey cache;
     private final NamespacedKey cardinal;
+    private final NamespacedKey skillOrb;
 
     public Keys(Plugin plugin) {
         this.codex = new NamespacedKey(plugin, "codex");
         this.cache = new NamespacedKey(plugin, "cache");
         this.cardinal = new NamespacedKey(plugin, "cardinal");
+        this.skillOrb = new NamespacedKey(plugin, "skill_orb");
     }
 
     public NamespacedKey codex() {
@@ -28,5 +30,9 @@ public final class Keys {
 
     public NamespacedKey cardinal() {
         return cardinal;
+    }
+
+    public NamespacedKey skillOrb() {
+        return skillOrb;
     }
 }

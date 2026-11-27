@@ -147,6 +147,7 @@ public final class AdminGuiListener implements Listener {
                             }
                         }
                         plugin.getDataManager().save(data);
+                        plugin.getSkillManager().reissueOrbs(target);
                         Msg.send(admin, "&aGranted &f" + count + " &7skills to &f" + target.getName() + "&7.");
                     }
                     case "clear" -> {
