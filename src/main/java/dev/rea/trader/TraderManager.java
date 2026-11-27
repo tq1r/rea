@@ -52,11 +52,11 @@ public final class TraderManager {
                 for (Entity entity : player.getNearbyEntities(24, 16, 24)) {
                     if (entity instanceof Villager villager && isSpecialist(villager) && tier(villager) >= 3) {
                         villager.getWorld().spawnParticle(Particle.ENCHANT,
-                                villager.getLocation().add(0, 1.2, 0), 2, 0.25, 0.4, 0.25, 0.02);
+                                villager.getLocation().add(0, 1.2, 0), 1, 0.25, 0.4, 0.25, 0.01);
                     }
                 }
             }
-        }, 40L, 40L);
+        }, 60L, 60L);
     }
 
     // ---- identification ----

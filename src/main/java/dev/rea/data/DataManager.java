@@ -55,8 +55,12 @@ public final class DataManager {
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 PlayerData data = get(player);
+                int max = maxMagicules(data);
+                if (data.getMagicules() >= max) {
+                    continue; // Full — skip the write entirely.
+                }
                 int regen = data.getSkills().contains("magic_sense") ? 3 : 2;
-                data.setMagicules(Math.min(maxMagicules(data), data.getMagicules() + regen));
+                data.setMagicules(Math.min(max, data.getMagicules() + regen));
             }
         }, 20L, 20L);
     }

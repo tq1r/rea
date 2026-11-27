@@ -62,6 +62,7 @@ public final class GameListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         plugin.getDataManager().save(plugin.getDataManager().get(event.getPlayer()));
+        plugin.getScoreboardManager().remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

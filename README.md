@@ -7,12 +7,25 @@ Ultimate Skill — while you delve Tensura's sealed ruins for its named, cardina
 
 Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only.
 
+## Anti-lag
+
+Rea is built for small hosts (it runs happily on an 8 GB box): repeating work is
+minimal (5-minute autosave, 60-second racials refresh, and a sidebar that only
+sends packets when something actually changed). No per-tick loops, no chunk
+loading, no entity spam. For the server around it:
+
+- Keep `view-distance` at 6–8 and `simulation-distance` at 5–6 in `server.properties`.
+- Don't stack a second heavy plugin that pre-generates chunks or spams particles.
+- If the server still chugs, it's vanilla spawns and tick entities — Rea's share is negligible.
+
 ## Install
 
 1. Download `rea-1.0.0.jar` from the GitHub Actions build (`rea-jar` artifact) or build it with `mvn -B package`.
 2. Drop the jar into your server's `plugins/` folder.
 3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
 4. Optional: **Geyser** for Bedrock players — Rea runs on Bedrock/MCPE through Geyser (see below).
+
+> **Installing from the GitHub artifact?** The download is `rea-jar.zip`. Unzip it — the **file** inside is `rea-1.0.0.jar`. If you upload the extracted **folder** instead of the jar, Paper refuses to load the plugin with `Directory 'plugins/rea-1.0.0.jar' does not contain a paper-plugin.yml`. Delete the folder, put the actual `.jar` in `plugins/`, restart.
 
 ## Bedrock (MCPE) support
 
