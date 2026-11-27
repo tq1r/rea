@@ -89,6 +89,36 @@ public final class GameListener implements Listener {
         plugin.getQuestManager().checkCompletion(player);
     }
 
+    /** EP a monster is worth when predated (Tensura-style). */
+    private long predationEp(org.bukkit.entity.EntityType type) {
+        return switch (type) {
+            case SLIME -> 5L;
+            case ZOMBIE -> 8L;
+            case SKELETON -> 10L;
+            case SPIDER, CAVE_SPIDER -> 12L;
+            case CREEPER -> 15L;
+            case WITCH -> 20L;
+            case BLAZE -> 25L;
+            case ENDERMAN -> 30L;
+            default -> 10L;
+        };
+    }
+
+    /** The common skill each monster carries (learned by predation). */
+    private String predationSkill(org.bukkit.entity.EntityType type) {
+        return switch (type) {
+            case SPIDER, CAVE_SPIDER -> "steel_thread";
+            case SKELETON -> "bone_arrow";
+            case ZOMBIE -> "flesh_shield";
+            case CREEPER -> "explosion";
+            case ENDERMAN -> "teleport";
+            case BLAZE -> "flame_breath";
+            case WITCH -> "poison_cloud";
+            case SLIME -> "absorb";
+            default -> null;
+        };
+    }
+
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
@@ -107,6 +137,21 @@ public final class GameListener implements Listener {
             int max = plugin.getConfig().getInt("settings.kill-rune-max", 2);
             int amount = min + (int) (Math.random() * Math.max(1, max - min + 1));
             plugin.getDataManager().addRunes(killer, amount);
+        }
+        // Predation: devour the monster for EP, magicules, and maybe its skill.
+        plugin.getDataManager().addEp(killer, predationEp(entity.getType()));
+        data.setMagicules(Math.min(plugin.getDataManager().maxMagicules(data), data.getMagicules() + 10));
+        Msg.send(killer, "&7You devoured the " + entity.getType().name().toLowerCase().replace('_', ' ') + ".");
+        String skillId = predationSkill(entity.getType());
+        if (skillId != null && !data.getSkills().contains(skillId)) {
+            double learnChance = data.getSkills().contains("predator") ? 0.25 : 0.15;
+            if (Math.random() < learnChance) {
+                plugin.getSkillManager().learn(killer, skillId);
+            }
+        }
+        // Deed skills.
+        if (data.getKills() >= 10) {
+            plugin.getSkillManager().learn(killer, "predator");
         }
         plugin.getQuestManager().checkCompletion(killer);
     }
@@ -167,8 +212,12 @@ public final class GameListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker) {
             PlayerData data = plugin.getDataManager().get(attacker);
+            double bonus = data.getForm() * 0.5 + plugin.getDataManager().rankIndex(data) * 0.3;
             if ("orc".equals(data.getRace())) {
-                event.setDamage(event.getDamage() + 2.0);
+                bonus += 2.0;
+            }
+            if (bonus > 0) {
+                event.setDamage(event.getDamage() + bonus);
             }
         }
     }

@@ -55,7 +55,8 @@ public final class CodexManager {
                     entry.getString("subtitle", ""),
                     entry.getStringList("pages"),
                     entry.getLong("reward-runes", 10L),
-                    entry.getInt("reward-xp", 10)));
+                    entry.getInt("reward-xp", 10),
+                    entry.getLong("reward-ep", 10L)));
         }
         plugin.getLogger().info("Loaded " + entries.size() + " Codex entries.");
     }
@@ -132,6 +133,10 @@ public final class CodexManager {
         Msg.send(player, "&dCodex entry recorded: &l" + entry.title() + " &7(" + data.getCodex().size() + "/" + total() + ")");
         plugin.getDataManager().addRunes(player, entry.rewardRunes());
         plugin.getDataManager().addXp(player, entry.rewardXp());
+        plugin.getDataManager().addEp(player, entry.rewardEp());
+        if (data.getCodex().size() >= 3) {
+            plugin.getSkillManager().learn(player, "great_sage");
+        }
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         plugin.getQuestManager().checkCompletion(player);
         plugin.getDataManager().save(data);

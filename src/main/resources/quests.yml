@@ -6,12 +6,13 @@
 quests:
   - id: "q1-1"
     chapter: 1
-    name: "Blood Remembers"
+    name: "Reincarnation"
     type: "RACE"
     target: ""
     amount: 1
     reward-runes: 20
     reward-xp: 0
+    reward-ep: 20
     reward-item: ""
     description: "Wake your bloodline. The Flame has chosen you."
     complete: "The blood remembers. You are one of the ten now."
@@ -23,6 +24,7 @@ quests:
     amount: 16
     reward-runes: 30
     reward-xp: 20
+    reward-ep: 20
     reward-item: ""
     description: "Mine 16 ores. The Runes hide in the stone, humming."
     complete: "The stone gives up its secrets. Good."
@@ -34,8 +36,9 @@ quests:
     amount: 5
     reward-runes: 30
     reward-xp: 20
+    reward-ep: 30
     reward-item: ""
-    description: "Slay 5 monsters. Rea is not empty, and it is not kind."
+    description: "Predate 5 monsters. Rea is not empty, and it is not kind."
     complete: "The wilds step back. For now."
   - id: "q1-4"
     chapter: 1
@@ -45,9 +48,10 @@ quests:
     amount: 2
     reward-runes: 40
     reward-xp: 25
+    reward-ep: 30
     reward-item: "cache:1"
     description: "Unlock 2 Codex entries. The truth is written down — you only have to read it."
-    complete: "Two pages of the truth. Rea grows clearer."
+    complete: "Two pages of the truth. Rea grows clearer. Magic Sense wakes in your blood."
 
   - id: "q2-1"
     chapter: 2
@@ -57,8 +61,9 @@ quests:
     amount: 20
     reward-runes: 80
     reward-xp: 60
+    reward-ep: 80
     reward-item: ""
-    description: "Slay 20 monsters. The quiet needs answering."
+    description: "Predate 20 monsters. The quiet needs answering."
     complete: "Steel answers. The quiet retreats a little."
   - id: "q2-2"
     chapter: 2
@@ -68,6 +73,7 @@ quests:
     amount: 8
     reward-runes: 60
     reward-xp: 30
+    reward-ep: 40
     reward-item: ""
     description: "Craft 8 items. Making things is also a kind of remembering."
     complete: "The forge hums a low note. It remembers."
@@ -79,6 +85,7 @@ quests:
     amount: 6
     reward-runes: 80
     reward-xp: 60
+    reward-ep: 80
     reward-item: ""
     description: "Unlock 6 Codex entries. Read like your life depends on it. It does."
     complete: "The story is assembling itself. So are you."
@@ -90,6 +97,7 @@ quests:
     amount: 5
     reward-runes: 150
     reward-xp: 50
-    reward-item: "codex:sundering"
+    reward-ep: 100
+    reward-item: "codex:evolution"
     description: "Reach Level 5. The blood becomes a voice."
     complete: "The blood becomes a voice. It says: almost. The eleventh spark still sleeps — more chapters are coming."

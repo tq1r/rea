@@ -8,105 +8,128 @@ codex:
     subtitle: "Codex Entry I"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "At the heart of the world burned the First Flame. It was no fire of wood or oil. It was the world's own warmth, and where it burned the seasons turned, the rivers ran sweet, and the dead rested easy."
-      - "Ten bloodlines tended the Flame, each with a different gift. The elves kept its voice. The dwarves its hands. The orcs its wrath. The dragons — the dragonborn — were its first children, and the Flame loved them best."
-      - "Rea was whole then. Rea was one chord. What follows in this Codex is the story of how it broke — told, as all true stories are, by people who disagree."
-  sundering:
-    title: "The Sundering"
+      - "Rea is a world where souls do not leave. When a life ends, the spark returns to the First Flame, and the Flame sends it back — into a new body, a new bloodline, a new chance. You are one of the returned."
+      - "The Flame remembers everything. It remembers the ten bloodlines, the Sundering that scattered them, and the eleventh spark that never woke. It remembers you, too, though you do not remember it."
+      - "This Codex is the Flame's memory, written down. Read it. The world will make more sense, and then less sense, and then — if you are lucky — sense again."
+  reincarnation:
+    title: "Reincarnation"
     subtitle: "Codex Entry II"
-    reward-runes: 20
-    reward-xp: 15
+    reward-runes: 15
+    reward-xp: 10
+    reward-ep: 15
     pages:
-      - "The official history fits on one line: the Flame split into ten sparks, each bloodline carried one away, and the realm cracked beneath the weight of the parting. The sparks scattered across the world and became Runes."
-      - "It is a tidy story. It has a cause, a moment, and no one to blame. But the old records mention eleven sparks, and only ten bloodlines ever woke. The eleventh spark was never found. It sleeps somewhere, still burning, still waiting."
-      - "Keep the official story for the council fire. Keep the eleventh spark for everywhere else. A flame that splits does not split by accident. Someone wanted the bloodlines divided. Someone still does."
-  bloodlines:
-    title: "The Ten Bloodlines"
+      - "You woke in a body that was not your first. That is reincarnation: the Flame's way of giving the world another try at you. Your race is permanent, because the Flame does not make mistakes."
+      - "But your form is not permanent. The Flame left room to grow. Predate, learn, gather EP, and evolve. Every wanderer in Rea is walking a road that ends, if they are lucky, at Demon Lord."
+      - "The Flame does not hurry. Neither should you. But it does not stop, either."
+  skills:
+    title: "Skills"
     subtitle: "Codex Entry III"
     reward-runes: 20
     reward-xp: 15
+    reward-ep: 20
     pages:
-      - "Each bloodline remembers the Sundering differently, and each memory is true the way a song is true: completely, and not at all. The elves say the Flame spoke. The dwarves say they built its house. The orcs say they burned with it."
-      - "Trust none of them completely. Trust all of them a little. The truth is in the overlap, the way the truth of any old fire is in the ashes."
-      - "What matters now is simpler: the bloodlines wake again, one wanderer at a time. Yours has chosen you. Carry it well. The Flame is watching — or whatever is left of it."
-  human:
-    title: "Origin of the Humans"
+      - "Every bloodline carries an Intrinsic Skill — a gift of the Flame, born with the body. Beyond that, skills are learned: Common skills by predating the monsters that carry them, Unique skills by deeds and evolution."
+      - "Skills cost magicules, the Flame's fuel, which flows back into you over time. The stronger your EP, the deeper the well. Use skills wisely. The Flame is watching the meter."
+      - "At the summit, Unique skills can evolve into Ultimate skills — powers the Flame itself barely remembers. Lord of Darkness. Truth. The old words. Earn them."
+  evolution:
+    title: "Evolution"
     subtitle: "Codex Entry IV"
-    reward-runes: 15
-    reward-xp: 10
+    reward-runes: 20
+    reward-xp: 15
+    reward-ep: 25
     pages:
-      - "We were the keepers of the Flame's heart. When the Sundering came, we carried our spark the farthest, because someone had to, and the others were busy being right."
-      - "Humans learn fast. That is our gift and our curse. We can be anything, which means we must choose, every day, what to be. The bloodline does not choose for us. That is the point."
-  elf:
-    title: "Origin of the Elves"
+      - "Evolution is the Flame's promise: nothing stays as it was. Gather Existential Points — EP — by predating monsters, and the Flame will reshape you. Evolved. Apex. And at the summit, Demon Lord."
+      - "EP also sets your Rank, from F to SSS, the world's measure of a monster's weight. Ranks open no doors by themselves. But the Flame respects weight."
+      - "Evolution needs EP, level, and runes — the Flame's three prices. Pay them, and become more of what you already are."
+  slime:
+    title: "Origin of the Slimes"
     subtitle: "Codex Entry V"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's voice. It spoke, and we listened, and we have been listening ever since. The elves do not forget. That is our gift and our curse."
-      - "Long lives make long memories. We remember the world whole, and we will remember it whole again. The Flame's voice is quiet now. We are still listening."
-  dwarf:
-    title: "Origin of the Dwarves"
+      - "Slimes are the Flame's first draft: soft, patient, and impossible to kill for long. They absorb the world one bite at a time, and the world, eventually, lets them."
+      - "Every Demon Lord in the old songs was something else first. Many were slimes. The Flame has a sense of humor."
+  goblin:
+    title: "Origin of the Goblins"
     subtitle: "Codex Entry VI"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's hands. We built its house of stone and iron, and the house is still standing. Barely. The dwarves do not stop. That is our gift and our curse."
-      - "Stone remembers everything. So do we. When the world is whole again, it will be built by hands that never stopped working."
-  orc:
-    title: "Origin of the Orcs"
+      - "Goblins are the Flame's cunning: small, quick, and everywhere. They sneak, they scheme, they survive. The world underestimates them. The world is wrong."
+      - "A goblin with a plan is worth ten soldiers without one. The Flame knows this. It made them anyway."
+  lizardman:
+    title: "Origin of the Lizardmen"
     subtitle: "Codex Entry VII"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's wrath. It burned, and we burned with it, and we would again. The orcs do not break. That is our gift and our curse."
-      - "People fear the wrath. They should fear the silence more. The Flame's wrath kept the dark at bay for a thousand years. It can do it again."
-  halfling:
-    title: "Origin of the Halflings"
+      - "Lizardmen are the Flame's patience: cold blood, warm heart. They wait in the rivers and the reeds, and when the moment comes, they do not miss."
+      - "Their road runs to dragons. The Flame does not hand out such roads lightly. It hands them out to those who wait."
+  orc:
+    title: "Origin of the Orcs"
     subtitle: "Codex Entry VIII"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's luck. When the sparks were divided, the Flame chose us last. It chose right. The halflings are impossible to catch and harder to hold."
-      - "Small hands, quick feet, quicker hearts. The world is big and the Flame is small, and someone has to carry it through the cracks. That someone is us."
-  tiefling:
-    title: "Origin of the Tieflings"
+      - "Orcs are the Flame's wrath: fierce, proud, unbroken. They hit harder than anything their size has any right to, and they hit first."
+      - "The world fears the wrath. It should fear the silence after. Orcs do not break. They bend, they burn, they return."
+  human:
+    title: "Origin of the Humans"
     subtitle: "Codex Entry IX"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's shadow. Every flame casts one. The tieflings are warm, wry, and fire-touched, and we are sorry about the shadow. Not really."
-      - "The shadow is not the enemy. The shadow is where the Flame's light ends and the world begins. Someone has to stand there. We volunteer."
-  dragonborn:
-    title: "Origin of the Dragonborn"
+      - "Humans are the Flame's heart: adaptable, stubborn, everywhere. They learn faster than any bloodline, which is their gift and their curse."
+      - "A human can be anything, which means a human must choose, every day, what to be. The Flame does not choose for them. That is the point."
+  elf:
+    title: "Origin of the Elves"
     subtitle: "Codex Entry X"
-    reward-runes: 20
-    reward-xp: 15
+    reward-runes: 15
+    reward-xp: 10
+    reward-ep: 10
     pages:
-      - "Before bloodlines, there were dragons. The First Flame was theirs, and the dragonborn are its heirs. We carry dragonfire in our blood the way the sea carries salt."
-      - "Proud, strong, draconic. The Flame loved us best, and we loved it back, and when it broke, we broke loudest. The world will hear us again."
-  gnome:
-    title: "Origin of the Gnomes"
+      - "Elves are the Flame's voice: swift, keen, long-lived. They remember the world whole, and they will remember it whole again."
+      - "Long lives make long memories. The Flame's voice is quiet now. The elves are still listening."
+  dwarf:
+    title: "Origin of the Dwarves"
     subtitle: "Codex Entry XI"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's making. We built the tools, the hinges, the clever little engines that kept the Flame fed. The Flame made us, and we made everything else."
-      - "Clever, curious, bouncy. Give a gnome a broken thing and a free afternoon and the world gets fixed. The Flame's making is in good hands."
-  aasimar:
-    title: "Origin of the Aasimar"
+      - "Dwarves are the Flame's hands: sturdy, tireless, loyal. They built the Flame's house of stone and iron, and the house is still standing. Barely."
+      - "Stone remembers everything. So do dwarves. When the world is whole again, it will be built by hands that never stopped working."
+  dire_wolf:
+    title: "Origin of the Dire Wolves"
     subtitle: "Codex Entry XII"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's light. We watched it burn, and we watch still. The aasimar are radiant, calm, and patient the way dawn is patient."
-      - "Light does not hurry. It simply arrives, every morning, without fail. The bloodline's gift is certainty: the Flame will burn again, because we are still watching."
-  goliath:
-    title: "Origin of the Goliaths"
+      - "Dire wolves are the Flame's hunt: loyal, swift, relentless. They run in packs and they finish what they start."
+      - "A wolf's loyalty is not a metaphor. The Flame made them that way on purpose, and the world is safer for it."
+  serpent:
+    title: "Origin of the Serpents"
     subtitle: "Codex Entry XIII"
     reward-runes: 15
     reward-xp: 10
+    reward-ep: 10
     pages:
-      - "We were the keepers of the Flame's strength. We held it up when the world shook, and it was heavy, and it still is. The goliaths are towering, gentle, and immovable."
-      - "Strength is not the same as violence. Strength is carrying the heavy thing so others do not have to. The Flame's strength is in good hands."
+      - "Serpents are the Flame's venom: silent, patient, deadly. They strike once, and the strike is enough."
+      - "Their road runs to hydras, if the old songs are true. The Flame does not confirm. The Flame never confirms."
+  demon:
+    title: "Origin of the Demons"
+    subtitle: "Codex Entry XIV"
+    reward-runes: 20
+    reward-xp: 15
+    reward-ep: 15
+    pages:
+      - "Demons are the Flame's shadow: warm, wry, fire-touched. Every flame casts a shadow, and the shadow, eventually, walks."
+      - "Their road runs straight to Demon Lord, the summit of all bloodlines. The Flame is not worried. The Flame is curious."

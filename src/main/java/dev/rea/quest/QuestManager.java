@@ -43,6 +43,7 @@ public final class QuestManager {
                     num(map, "amount"),
                     num(map, "reward-runes"),
                     num(map, "reward-xp"),
+                    num(map, "reward-ep"),
                     str(map, "reward-item"),
                     str(map, "description"),
                     str(map, "complete")));
@@ -117,6 +118,12 @@ public final class QuestManager {
         }
         if (current.rewardXp() > 0) {
             plugin.getDataManager().addXp(player, current.rewardXp());
+        }
+        if (current.rewardEp() > 0) {
+            plugin.getDataManager().addEp(player, current.rewardEp());
+        }
+        if (current.id().equals("q1-4")) {
+            plugin.getSkillManager().learn(player, "magic_sense");
         }
         grantItemReward(player, current.rewardItem());
         Msg.send(player, Msg.bar());

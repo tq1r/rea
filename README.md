@@ -1,70 +1,67 @@
 # Rea
 
-**A fantasy bloodline SMP plugin for Paper 26.3 + Geyser.**
-*The bloodlines wake. Who will you be?*
+**A Tensura-style reincarnation SMP plugin for Paper 26.3 + Geyser.**
+*Reincarnate. Predate. Evolve. Become a Demon Lord.*
 
 ---
 
-## The story
+## The loop (Tensura-style)
 
-At the heart of the world burned the **First Flame** — the world's own warmth,
-keeping the seasons turning and the dead resting easy. Ten bloodlines tended it:
-elves its voice, dwarves its hands, orcs its wrath, dragonborn its first fire.
-
-Then came **the Sundering**. The Flame split into ten sparks, each bloodline
-carried one away, and the realm cracked. The sparks scattered and became **Runes**.
-The old records mention *eleven* sparks — but only ten bloodlines ever woke.
-The eleventh still sleeps somewhere, still burning, still waiting.
-
-Now the bloodlines wake again, one wanderer at a time. Each bloodline remembers
-the Sundering differently, and each memory is true the way a song is true:
-completely, and not at all. The Codex holds all of them. Trust none completely.
-Trust all of them a little.
-
-## How it works
-
-1. The server starts fresh. Players wander without a bloodline.
-2. An op runs **`/rea start`** — every player without a bloodline is **dealt a
-   random race** from the ten, with a lore reveal and a server-wide announcement.
-3. Bloodlines are **permanent**. One race, one life. The deal matters.
-4. From there: level up, gather Runes, read the Codex, and walk the story quests.
+1. **Reincarnate** — An op runs `/rea start`. Every player without a bloodline is
+   dealt a **random race** from the ten: Slime, Goblin, Lizardman, Orc, Human, Elf,
+   Dwarf, Dire Wolf, Serpent, Demon. Races are permanent.
+2. **Predate** — Kill monsters to devour them: gain **EP** (Existential Points),
+   magicules, and a chance to learn the monster's **skill** (Spider → Steel Thread,
+   Blaze → Flame Breath, Enderman → Teleport…).
+3. **Grow** — EP sets your **Rank** (F → SSS) and fills your **magicules** well.
+   Levels, quests, and Codex lore feed the same climb.
+4. **Evolve** — With EP + level + runes, `/rea evolve` reshapes you:
+   Base → Evolved → Apex → **Demon Lord**. Evolution grants Unique skills
+   (Beelzebuth at Apex) and, at Demon Lord, **Ultimate skills**
+   (Lord of Darkness, Truth).
+5. **Skills** — Intrinsic (race), Common (predation), Unique (deeds/evolution),
+   Ultimate (Demon Lord). Actives cost magicules; passives run always.
 
 ## The ten bloodlines
 
-| Bloodline | Gift (passive) | Ability (`/ability`) |
+| Bloodline | Gift (passive) | Intrinsic skill |
 |---|---|---|
-| **Human** | +10% XP from everything | **Second Wind** — heal + sprint |
-| **Elf** | Regeneration + Speed | **Elven Step** — blink forward 6 blocks |
-| **Dwarf** | Resistance + Haste | **Stonehide** — Resistance II for 8s |
+| **Slime** | Regeneration | **Dissolve** — acid melts nearby foes |
+| **Goblin** | Speed | **Sneak** — vanish for 6s |
+| **Lizardman** | Swim faster | **Tail Slash** — sweep foes away |
 | **Orc** | +2 melee damage | **Bloodrage** — Strength II for 10s |
-| **Halfling** | Luck + Speed | **Lucky Dodge** — Resistance + Speed II |
-| **Tiefling** | Fire resistance | **Hellfire** — burn and scorch nearby foes |
-| **Dragonborn** | +4 max health | **Dragon's Breath** — fire in a cone |
-| **Gnome** | Haste II + Jump Boost | **Mend** — repair the item in your hand |
-| **Aasimar** | Night Vision + Slow Falling | **Dawn's Blessing** — heal 6 + Resistance |
-| **Goliath** | Strength I | **Giant's Slam** — hurt and hurl nearby foes |
+| **Human** | +10% XP | **Second Wind** — heal + sprint |
+| **Elf** | Speed + Night Vision | **Elven Step** — blink forward 6 blocks |
+| **Dwarf** | Resistance + Haste | **Stonehide** — Resistance II for 8s |
+| **Dire Wolf** | Speed + Jump Boost | **Fang Rush** — dash and bite |
+| **Serpent** | Water Breathing | **Venom Bite** — poison nearby foes |
+| **Demon** | Fire resistance | **Hellfire** — burn and scorch foes |
 
-Abilities grow slightly stronger as you level. All ten bloodlines are balanced
-for a friends SMP — no race is strictly best, every race has a moment.
+**Evolution chains** (Base → Evolved → Apex → Demon Lord):
+Slime→Evolved Slime→Ogre · Goblin→Hobgoblin→Ogre · Lizardman→Dragon Newt→Wyvern ·
+Orc→High Orc→Ogre · Human→Enhanced Human→Hero · Elf→High Elf→Fairy Queen ·
+Dwarf→Master Dwarf→Rune Lord · Dire Wolf→Evolved Dire Wolf→Alpha Wolf ·
+Serpent→Black Serpent→Hydra · Demon→Arch Demon→Demon Peer. All roads end at **Demon Lord**.
+
+**Skills beyond bloodlines:** 8 Common (predation), 4 Unique (Predator, Great Sage,
+Magic Sense, Beelzebuth), 2 Ultimate (Lord of Darkness, Truth). See `/rea skills`.
 
 ## Features
 
-- **Random bloodline deal** at `/rea start` (op), with lore reveals + broadcast
-- **Levels & XP** (1–20) from kills, quests, and Codex — Humans learn faster
-- **Runes** — the world's scattered sparks, earned from mining, kills, quests,
-  Codex, and daily gifts; spent on Rune Caches (XP)
-- **13 Codex entries** — collectible lore books: the world, the Sundering, and
-  an origin tale for every bloodline (they disagree — that's the mystery)
-- **2 story chapters, 8 quests** — *The Waking* and *The Sundering Truth*,
-  ending on the eleventh spark
+- **Random reincarnation** at `/rea start` (op), with lore reveals + broadcast
+- **Predation** — EP, magicules, and skill learning from every kill
+- **EP & Ranks** (F–SSS), **magicules** with regeneration
+- **4-stage evolution** with EP/level/rune costs
+- **Levels & XP** (1–20), **Runes** currency (→ XP caches)
+- **14 Codex entries** — reincarnation, skills, evolution, and an origin tale per bloodline
+- **2 story chapters, 8 quests** — *The Waking* and *The Sundering Truth*
 - **Daily gifts** — 7-day streak cycle
-- **Scoreboard** — bloodline, level, runes, Codex, current quest
+- **Scoreboard** — bloodline/form, rank, EP, magicules, level, runes, quest
 
 ## Geyser / Bedrock friendly
 
-Everything is chat, boss-bar-free, packet-free, vanilla sounds and particles.
-Bedrock players get the full game with the same commands. Books, scoreboards,
-and potion effects all render on Bedrock.
+Everything is chat, scoreboards, books, and vanilla effects — no custom resource
+packs, no packets. Bedrock players get the full game with the same commands.
 
 ## Install
 
@@ -78,22 +75,24 @@ and potion effects all render on Bedrock.
 2. Drop `rea-1.0.0.jar` into your server's `plugins/` folder.
 3. Start the server once. It creates `plugins/Rea/` with `config.yml`,
    `codex.yml`, and `quests.yml`.
-4. As op, run **`/rea start`** to deal bloodlines to everyone online.
-5. Invite your friends. The bloodlines are waiting.
+4. As op, run **`/rea start`** to reincarnate everyone online.
+5. Invite your friends. The Flame is waiting.
 
-> Upgrading from Aetherfall? Delete the old `plugins/Aetherfall/` folder —
-> Rea starts fresh.
+> Upgrading? Delete the old `plugins/Aetherfall/` folder — Rea starts fresh.
 
 ## Commands
 
 | Command | What it does |
 |---|---|
 | `/rea` | Help + all subcommands |
-| `/rea start` | (admin) Deal random bloodlines to everyone without one |
-| `/rea start <player>` | (admin) Deal a bloodline to one player |
-| `/rea race` | Your bloodline and its gifts |
-| `/ability` | Use your bloodline ability |
-| `/rea profile` | Level, runes, Codex, quests, stats |
+| `/rea start` | (admin) Reincarnate everyone without a bloodline |
+| `/rea start <player>` | (admin) Reincarnate one player |
+| `/rea race` | Your bloodline, form, and evolution chain |
+| `/rea evolve` | Evolve to your next form (EP + level + runes) |
+| `/rea skill <id>` | Use a skill (costs magicules) |
+| `/rea skills` | Skills you know + how to learn the rest |
+| `/ability` | Use your intrinsic skill |
+| `/rea profile` | Rank, EP, magicules, level, runes, stats |
 | `/rea quests` | Current story quest + progress |
 | `/rea codex` | List collected lore |
 | `/rea codex read <id>` | Re-read an entry in chat |
@@ -109,7 +108,7 @@ and potion effects all render on Bedrock.
 ## Configuration
 
 - `config.yml` — rune chances, costs, level cap, welcome/start messages.
-- `codex.yml` — the 13 lore entries. **Edit the words freely.**
+- `codex.yml` — the 14 lore entries. **Edit the words freely.**
 - `quests.yml` — the 8 story quests (types: `RACE`, `MINE`, `KILL`, `CRAFT`,
   `CODEX`, `REACH_LEVEL`).
 - Player data: `data/players/<uuid>.yml`.
@@ -117,8 +116,9 @@ and potion effects all render on Bedrock.
 ## Roadmap
 
 - Chapter III: *The Eleventh Spark* — find the sleeping spark.
-- Bloodline mastery trees (spend XP to deepen your gift).
-- Seasonal bloodline festivals.
+- Subordinates: name monsters to gain followers.
+- Skill levels and more Ultimate skills.
+- Demon Lord trials and seasonal festivals.
 
 ---
 

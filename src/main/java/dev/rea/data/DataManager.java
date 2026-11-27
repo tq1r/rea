@@ -50,6 +50,74 @@ public final class DataManager {
         plugin.getServer().getScheduler().runTaskTimer(plugin, this::saveAll, 6000L, 6000L);
     }
 
+    /** Magicules regenerate over time (Magic Sense makes them flow faster). */
+    public void startMagiculeRegen() {
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                PlayerData data = get(player);
+                int regen = data.getSkills().contains("magic_sense") ? 3 : 2;
+                data.setMagicules(Math.min(maxMagicules(data), data.getMagicules() + regen));
+            }
+        }, 20L, 20L);
+    }
+
+    public int maxMagicules(PlayerData data) {
+        long max = 100 + data.getEp() / 10 + data.getForm() * 100L;
+        return (int) Math.min(1500, max);
+    }
+
+    /** Tensura monster ranks from EP. */
+    public String rank(PlayerData data) {
+        long ep = data.getEp();
+        if (ep >= 100000) return "SSS";
+        if (ep >= 50000) return "SS";
+        if (ep >= 20000) return "S";
+        if (ep >= 10000) return "A";
+        if (ep >= 5000) return "B";
+        if (ep >= 2000) return "C";
+        if (ep >= 500) return "D";
+        if (ep >= 100) return "E";
+        return "F";
+    }
+
+    public int rankIndex(PlayerData data) {
+        return switch (rank(data)) {
+            case "F" -> 0;
+            case "E" -> 1;
+            case "D" -> 2;
+            case "C" -> 3;
+            case "B" -> 4;
+            case "A" -> 5;
+            case "S" -> 6;
+            case "SS" -> 7;
+            default -> 8;
+        };
+    }
+
+    /** Gain Existential Points. Predator and Truth make them flow faster. */
+    public void addEp(Player player, long amount) {
+        if (amount <= 0) {
+            return;
+        }
+        PlayerData data = get(player);
+        double multiplied = amount;
+        if (data.getSkills().contains("predator")) {
+            multiplied *= 1.25;
+        }
+        if (data.getSkills().contains("truth")) {
+            multiplied *= 1.25;
+        }
+        long gained = Math.max(1, Math.round(multiplied));
+        String before = rank(data);
+        data.setEp(data.getEp() + gained);
+        String after = rank(data);
+        if (!before.equals(after)) {
+            Msg.send(player, "&d&lYour rank rises: &l" + before + " -> " + after + "!");
+            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
+        }
+        plugin.getQuestManager().checkCompletion(player);
+    }
+
     public void saveAll() {
         for (PlayerData data : cache.values()) {
             save(data);
@@ -61,6 +129,10 @@ public final class DataManager {
         YamlConfiguration config = new YamlConfiguration();
         config.set("name", data.getName());
         config.set("race", data.getRace());
+        config.set("form", data.getForm());
+        config.set("ep", data.getEp());
+        config.set("magicules", data.getMagicules());
+        config.set("skills", data.getSkills().stream().sorted().toList());
         config.set("level", data.getLevel());
         config.set("xp", data.getXp());
         config.set("runes", data.getRunes());
@@ -91,6 +163,10 @@ public final class DataManager {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         data.setName(config.getString("name", name));
         data.setRace(config.getString("race", null));
+        data.setForm(config.getInt("form", 0));
+        data.setEp(config.getLong("ep", 0L));
+        data.setMagicules(config.getInt("magicules", 100));
+        data.getSkills().addAll(config.getStringList("skills"));
         data.setLevel(config.getInt("level", 1));
         data.setXp(config.getInt("xp", 0));
         data.setRunes(config.getLong("runes", 0L));
@@ -155,6 +231,12 @@ public final class DataManager {
         PlayerData data = get(player);
         if (RaceType.HUMAN.getId().equals(data.getRace())) {
             amount = (int) Math.round(amount * 1.1);
+        }
+        if (data.getSkills().contains("great_sage")) {
+            amount = (int) Math.round(amount * 1.25);
+        }
+        if (data.getSkills().contains("truth")) {
+            amount = (int) Math.round(amount * 1.5);
         }
         int cap = plugin.getConfig().getInt("settings.level-cap", 20);
         data.setXp(data.getXp() + amount);

@@ -36,7 +36,13 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         String name = command.getName().toLowerCase();
         if (name.equals("ability")) {
             if (sender instanceof Player player) {
-                plugin.getRaceManager().useAbility(player);
+                PlayerData data = plugin.getDataManager().get(player);
+                RaceType race = RaceType.fromId(data.getRace());
+                if (race == null) {
+                    Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
+                } else {
+                    plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
+                }
             }
             return true;
         }
@@ -56,9 +62,26 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             case "help" -> help(sender);
             case "start" -> start(sender, args);
             case "race" -> race(sender);
+            case "evolve" -> {
+                if (sender instanceof Player player) {
+                    plugin.getRaceManager().evolve(player);
+                }
+            }
+            case "skill" -> skill(sender, args);
+            case "skills" -> {
+                if (sender instanceof Player player) {
+                    plugin.getSkillManager().list(player);
+                }
+            }
             case "ability" -> {
                 if (sender instanceof Player player) {
-                    plugin.getRaceManager().useAbility(player);
+                    PlayerData data = plugin.getDataManager().get(player);
+                    RaceType race = RaceType.fromId(data.getRace());
+                    if (race == null) {
+                        Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
+                    } else {
+                        plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
+                    }
                 }
             }
             case "profile" -> profile(sender);
@@ -84,8 +107,11 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&lRea &7- the bloodlines wake.");
         Msg.send(sender, "&e/rea start &7- (admin) deal bloodlines to everyone");
-        Msg.send(sender, "&e/rea race &7- your bloodline and its gifts");
-        Msg.send(sender, "&e/rea ability &7- use your bloodline ability");
+        Msg.send(sender, "&e/rea race &7- your bloodline, form, and chain");
+        Msg.send(sender, "&e/rea evolve &7- evolve to your next form");
+        Msg.send(sender, "&e/rea skill <id> &7- use a skill (costs magicules)");
+        Msg.send(sender, "&e/rea skills &7- skills you know (and how to learn the rest)");
+        Msg.send(sender, "&e/rea ability &7- use your intrinsic skill");
         Msg.send(sender, "&e/rea profile &7- level, runes, Codex, stats");
         Msg.send(sender, "&e/rea quests &7- the story so far");
         Msg.send(sender, "&e/rea codex [read <id>] &7- lore you have collected");
@@ -130,14 +156,33 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             Msg.send(sender, Msg.bar());
             return;
         }
-        Msg.send(sender, type.getColor() + "&l" + type.getDisplayName());
+        Msg.send(sender, type.getColor() + "&l" + type.formName(data.getForm()));
         for (String line : type.getLore()) {
             Msg.send(sender, "&7" + line);
         }
         Msg.send(sender, "&7Blood gift: &f" + type.getPassiveDescription());
-        Msg.send(sender, "&7Ability: &f" + type.getAbilityName() + " &7- " + type.getAbilityDescription());
-        Msg.send(sender, "&7Bloodlines are permanent. This one is yours.");
+        Msg.send(sender, "&7Intrinsic skill: &f" + type.getIntrinsicName() + " &7- " + type.getIntrinsicDescription());
+        StringBuilder chain = new StringBuilder();
+        for (int i = 0; i < type.getForms().length; i++) {
+            if (i > 0) {
+                chain.append(" &7-> ");
+            }
+            chain.append(i <= data.getForm() ? type.getColor() + type.getForms()[i] : "&7" + type.getForms()[i]);
+        }
+        Msg.send(sender, "&7Evolution: " + chain);
+        Msg.send(sender, "&7Your race is permanent. Your form evolves with &e/rea evolve&7.");
         Msg.send(sender, Msg.bar());
+    }
+
+    private void skill(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            return;
+        }
+        if (args.length < 2) {
+            Msg.send(player, "&e/rea skill <id> &7- see &e/rea skills &7for the list.");
+            return;
+        }
+        plugin.getSkillManager().useSkill(player, args[1].toLowerCase());
     }
 
     private void profile(CommandSender sender) {
@@ -148,7 +193,9 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         RaceType race = RaceType.fromId(data.getRace());
         Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&l" + player.getName());
-        Msg.send(sender, "&7Bloodline: " + (race == null ? "Sleeping" : race.getColor() + race.getDisplayName()));
+        Msg.send(sender, "&7Bloodline: " + (race == null ? "Sleeping" : race.getColor() + race.formName(data.getForm())));
+        Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp()
+                + " &7Magicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
         Msg.send(sender, "&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)");
         Msg.send(sender, "&7Runes: &d" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
         Msg.send(sender, "&7Codex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total()
@@ -342,12 +389,26 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return out;
         }
         if (args.length == 1) {
-            for (String sub : List.of("help", "start", "race", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "give", "reset", "reload")) {
+            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "give", "reset", "reload")) {
                 if (sub.startsWith(args[0].toLowerCase())) {
                     out.add(sub);
                 }
             }
         } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("skill")) {
+                for (var def : plugin.getSkillManager().allSkills()) {
+                    if (def.id().startsWith(args[1].toLowerCase())) {
+                        out.add(def.id());
+                    }
+                }
+                PlayerData data = sender instanceof Player player ? plugin.getDataManager().get(player) : null;
+                if (data != null && data.getRace() != null) {
+                    RaceType race = RaceType.fromId(data.getRace());
+                    if (race != null && race.getIntrinsicId().startsWith(args[1].toLowerCase())) {
+                        out.add(race.getIntrinsicId());
+                    }
+                }
+            }
             switch (args[0].toLowerCase()) {
                 case "codex" -> {
                     if ("read".startsWith(args[1].toLowerCase())) {

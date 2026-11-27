@@ -14,6 +14,10 @@ public final class PlayerData {
     private final UUID uuid;
     private String name;
     private String race; // null until /rea start deals a bloodline
+    private int form = 0; // evolution stage: 0 Base, 1 Evolved, 2 Apex, 3 Demon Lord
+    private long ep = 0; // Existential Points (Tensura-style)
+    private int magicules = 100; // mana, spent on skills
+    private final Set<String> skills = new HashSet<>();
     private int level = 1;
     private int xp = 0;
     private long runes = 0;
@@ -50,6 +54,34 @@ public final class PlayerData {
 
     public void setRace(String race) {
         this.race = race;
+    }
+
+    public int getForm() {
+        return form;
+    }
+
+    public void setForm(int form) {
+        this.form = form;
+    }
+
+    public long getEp() {
+        return ep;
+    }
+
+    public void setEp(long ep) {
+        this.ep = ep;
+    }
+
+    public int getMagicules() {
+        return magicules;
+    }
+
+    public void setMagicules(int magicules) {
+        this.magicules = magicules;
+    }
+
+    public Set<String> getSkills() {
+        return skills;
     }
 
     public int getLevel() {

@@ -55,9 +55,11 @@ public final class ScoreboardManager {
             board.resetScores(entry);
         }
         RaceType race = RaceType.fromId(data.getRace());
-        String raceLine = race == null ? "&7Sleeping" : race.getColor() + race.getDisplayName();
+        String raceLine = race == null ? "&7Sleeping" : race.getColor() + race.formName(data.getForm());
         int score = 10;
         setLine(objective, "&fBloodline: " + raceLine, score--);
+        setLine(objective, "&fRank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp(), score--);
+        setLine(objective, "&fMagicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data), score--);
         setLine(objective, "&fLevel: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)", score--);
         setLine(objective, "&fRunes: &d" + data.getRunes(), score--);
         setLine(objective, "&fCodex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total(), score--);

@@ -7,6 +7,7 @@ import dev.rea.listener.GameListener;
 import dev.rea.quest.QuestManager;
 import dev.rea.race.RaceManager;
 import dev.rea.scoreboard.ScoreboardManager;
+import dev.rea.skill.SkillManager;
 import dev.rea.util.ItemFactory;
 import dev.rea.util.Keys;
 import org.bukkit.command.PluginCommand;
@@ -23,6 +24,7 @@ public final class ReaPlugin extends JavaPlugin {
     private RaceManager raceManager;
     private QuestManager questManager;
     private CodexManager codexManager;
+    private SkillManager skillManager;
     private ScoreboardManager scoreboardManager;
 
     @Override
@@ -34,6 +36,7 @@ public final class ReaPlugin extends JavaPlugin {
         raceManager = new RaceManager(this);
         questManager = new QuestManager(this);
         codexManager = new CodexManager(this);
+        skillManager = new SkillManager(this);
         scoreboardManager = new ScoreboardManager(this);
 
         ReaCommand command = new ReaCommand(this);
@@ -55,6 +58,7 @@ public final class ReaPlugin extends JavaPlugin {
         scoreboardManager.start();
         raceManager.startPassiveTask();
         dataManager.startAutosave();
+        dataManager.startMagiculeRegen();
         getLogger().info("Rea awakened. The bloodlines wake.");
     }
 
@@ -90,6 +94,10 @@ public final class ReaPlugin extends JavaPlugin {
 
     public CodexManager getCodexManager() {
         return codexManager;
+    }
+
+    public SkillManager getSkillManager() {
+        return skillManager;
     }
 
     public ScoreboardManager getScoreboardManager() {
