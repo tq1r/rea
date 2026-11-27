@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Handles clicks in the Talents and Ruins GUIs.
+ * Handles clicks in the Skills and Ruins GUIs.
  */
 public final class GuiListener implements Listener {
 
@@ -36,12 +36,12 @@ public final class GuiListener implements Listener {
         String title = event.getView().getTitle();
         ItemStack item = event.getCurrentItem();
         if (item == null || item.getItemMeta() == null) {
-            if (title.contains("Talents") || title.contains("Ruins")) {
+            if (title.contains("Skills") || title.contains("Ruins")) {
                 event.setCancelled(true);
             }
             return;
         }
-        if (title.contains("Talents")) {
+        if (title.contains("Skills")) {
             event.setCancelled(true);
             Byte evolve = item.getItemMeta().getPersistentDataContainer().get(skillsGui.evolveKey(), PersistentDataType.BYTE);
             if (evolve != null) {

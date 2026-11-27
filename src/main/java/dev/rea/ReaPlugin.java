@@ -89,6 +89,7 @@ public final class ReaPlugin extends JavaPlugin {
         updateManager.start();
         traderManager.startAuraTask();
         getLogger().info("Rea awakened. The magicules stir.");
+        getLogger().info("Host tip: run '/rea start' in-game to reincarnate your players.");
     }
 
     @Override

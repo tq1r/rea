@@ -90,6 +90,19 @@ public final class DataManager {
         return "F";
     }
 
+    /** @return EP still needed to reach the next rank, or null when already SSS. */
+    public Long nextRankEp(PlayerData data) {
+        long ep = data.getEp();
+        long[] marks = {100, 500, 2000, 5000, 10000, 20000, 50000, 100000};
+        String[] next = {"E", "D", "C", "B", "A", "S", "SS", "SSS"};
+        for (int i = 0; i < marks.length; i++) {
+            if (ep < marks[i]) {
+                return marks[i] - ep;
+            }
+        }
+        return null;
+    }
+
     public int rankIndex(PlayerData data) {
         return switch (rank(data)) {
             case "F" -> 0;

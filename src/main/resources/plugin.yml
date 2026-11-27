@@ -1,5 +1,5 @@
 name: Rea
-version: '1.0.1'
+version: '1.0.2'
 main: dev.rea.ReaPlugin
 api-version: '26.3'
 load: POSTWORLD
@@ -11,8 +11,9 @@ commands:
     description: Rea commands
     usage: /rea <subcommand>
   ability:
-    description: Open your talent menu (skills and evolution)
+    description: Open your skills (cast here, or use your Skill Orbs) and evolve
     usage: /ability
+    aliases: [talents]
 permissions:
   rea.use:
     description: Use Rea features

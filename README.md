@@ -7,6 +7,27 @@ Ultimate Skill — while you delve Tensura's sealed ruins for its named, cardina
 
 Everything is Bedrock-safe: chat, standard GUIs, boss bars, and action bars only.
 
+## Quickstart (5 minutes)
+
+1. Download `rea-1.0.2.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) → drop it in `plugins/` → restart.
+2. Console or in-game as an op: **`/rea start`** — every online (and future) wanderer reincarnates as a random Tensura race with a Unique Skill.
+3. Tell your players three things:
+   - **`/ability`** opens the Skills menu — evolve there.
+   - **Their Skill Orbs** cast their skills — hold one out, use it (right-click Java / hold-and-press on Bedrock).
+   - **`/rea help`** if they feel lost.
+
+That is the whole install. No config editing is required for a normal server.
+
+## How a life works (the 30-second loop)
+
+1. **Reincarnate** — `/rea start` (admin) deals a random race + one random Unique Skill.
+2. **Fight** — slaying monsters grants **EP** (raises your Tensura rank: F → SSS), **XP** (levels) and runes. Predator holders also devour foes to learn Common Skills.
+3. **Cast** — learned active skills materialize as **Skill Orbs** in your pack: prismarine crystals bound to your soul. Hold one out and use it; magicules are the fuel; cooldowns apply; orbs are never consumed and re-appear on join if lost.
+4. **Evolve** — `/ability` → the beacon slot. Meet the EP/level/rune cost and click Evolve. Each form is stronger; at Demon Lord your Unique Skill becomes an **Ultimate Skill** (Predator → Beelzebuth, Great Sage → Raphael, and so on).
+5. **Risk it** — three ruins (`/rea dungeon`) guard Tensura's named, cardinal weapons.
+
+Profile is always one `/rea` away: race, form, EP to next rank, magicules, runes, codex and quest progress.
+
 ## Anti-lag
 
 Rea is built for small hosts (it runs happily on an 8 GB box): repeating work is
@@ -20,19 +41,19 @@ spam. For the server around it:
 
 ## Install
 
-1. Download `rea-1.0.1.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) or build it with `mvn -B package`.
+1. Download `rea-1.0.2.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) or build it with `mvn -B package`.
 2. Drop the jar into your server's `plugins/` folder.
 3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
 4. Optional: **Geyser** for Bedrock players — Rea runs on Bedrock/MCPE through Geyser (see below).
 
-> **One Rea jar only.** `plugins/` must contain exactly one `rea*.jar` (plus whatever `plugins/update/` stages). Old `rea-1.0.0.jar` copies left in `plugins/update/` were the cause of "ghost" sidebars and duplicate loads — delete them. Rea 1.0.1 also stages updates under the same file name as the running jar, so this can't happen again on its own.
+> **One Rea jar only.** `plugins/` must contain exactly one `rea*.jar` (plus whatever `plugins/update/` stages). Old `rea-1.0.0.jar`/`rea-1.0.1.jar` copies left in `plugins/update/` were the cause of "ghost" sidebars and duplicate loads — delete them. Rea 1.0.1 also stages updates under the same file name as the running jar, so this can't happen again on its own.
 
 ## Bedrock (MCPE) support
 
 Rea is built to work on both editions. Every interactive feature uses only what
 Geyser translates cleanly for Bedrock clients:
 
-- **Chests & GUIs** — Talents, Ruins, and the admin menu are plain container inventories (no custom rendering, no packet tricks). Bedrock players open and click them normally.
+- **Chests & GUIs** — Skills, Ruins, and the admin menu are plain container inventories (no custom rendering, no packet tricks). Bedrock players open and click them normally.
 - **Trading** — trained specialists are ordinary villagers with real professions, types, and trade levels; the Bedrock trading UI just works.
 - **Action-bar HUD, boss bars, chat, action bars, titles** — all standard, all Geyser-safe.
 - **No Java-only APIs** — no packets, no custom model data requirements, no NBT the client must parse, no signed chat dependencies.
@@ -54,7 +75,7 @@ Out of the box, Bedrock players get the full game. Known limits, honestly:
 
 ## What to expect at launch
 
-- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, wipe a test account with `/rea admin`, then `/rea start` to confirm the fresh reincarnation, and check skills, quests, codex, the action-bar HUD, and the admin menus on both Java and Bedrock.
+- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Skills menu, clear all three dungeons, name and train a villager to Master, wipe a test account with `/rea admin`, then `/rea start` to confirm the fresh reincarnation, and check skills, quests, codex, the action-bar HUD, and the admin menus on both Java and Bedrock.
 - Dungeon difficulty is fixed, not scaled to your EP — bring friends or bring potions.
 - Balance (EP/rune costs, loot rates) is tuned by feel, not by telemetry. Feedback welcome.
 
@@ -115,7 +136,7 @@ commands.
 | `/rea dungeon` | Menu of the ruins — click a ruin to dive |
 | `/rea dungeon leave` | Abandon the ruin you are inside |
 | `/rea trader …` | Name and train villager specialists |
-| `/ability` | Your Talents menu: skills by tier, cast, evolve button |
+| `/ability` (alias `/talents`) | Your Skills menu: skills by tier, cast, evolve button |
 | `/rea start` | (admin) reincarnate everyone with random races |
 | `/rea admin` | (admin) the everything menu: races, skills, resources, lore, danger zone |
 | `/rea give`, `/rea reset`, `/rea reload`, `/rea update` | (admin) tools |
@@ -175,7 +196,7 @@ What each master offers:
 
 ## Skills
 
-**Casting:** every active skill you learn materializes as a **Skill Orb** (a prismarine crystal bound to your soul) in your pack. Hold it out and use it — **right-click** on Java, or **hold and press/tap your screen** on Bedrock (MCPE via Geyser) — to cast. Orbs are not consumable, cost nothing, and are bound to their owner; anyone else holding your orb is just holding a crystal. Missing one after a launch? Rejoin (or open `/ability`) and it is re-conjured automatically. The Talents menu (`/ability`) still works for casting too, and for evolving.
+**Casting:** every active skill you learn materializes as a **Skill Orb** (a prismarine crystal bound to your soul) in your pack. Hold it out and use it — **right-click** on Java, or **hold and press/tap your screen** on Bedrock (MCPE via Geyser) — to cast. Orbs are not consumable, cost nothing, and are bound to their owner; anyone else holding your orb is just holding a crystal. Missing one after a launch? Rejoin (or open `/ability`) and it is re-conjured automatically. The Skills menu (`/ability`) still works for casting too, and for evolving.
 
 - **Intrinsic** (born with the race): Dissolve, Absorb, Coercion, Scale Armor,
   Strengthen, Second Wind, Elven Step, Stonehide, Fang Rush, Poison Breath, Hellfire.

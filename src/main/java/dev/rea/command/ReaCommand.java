@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Player-facing commands are deliberately few. Everything actionable lives
- * in menus (Talents, Ruins) or happens automatically (passives, Regen).
+ * in menus (Skills, Ruins) or happens automatically (passives, Regen).
  * What remains: checks (profile, quests, codex) and the trader system.
  * All admin tooling lives here too, behind rea.admin.
  */
@@ -38,6 +38,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                 PlayerData data = plugin.getDataManager().get(player);
                 if (RaceType.fromId(data.getRace()) == null) {
                     Msg.send(player, "&cYour reincarnation awaits. An admin must run &e/rea start&c.");
+                    Msg.send(player, "&8Curious what awaits? &e/rea help");
                 } else {
                     plugin.getSkillsGui().open(player);
                 }
@@ -61,21 +62,23 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             case "give" -> give(sender, args);
             case "reset" -> reset(sender, args);
             case "reload" -> reload(sender);
-            default -> Msg.send(sender, "&cUnknown subcommand. &e/rea help");
+            default -> Msg.send(sender, "&cUnknown subcommand. &e/rea help &7for the tour.");
         }
         return true;
     }
 
     private void help(CommandSender sender) {
-        Msg.send(sender, "&d&lRea &7- from Slime to Demon Lord.");
-        Msg.send(sender, "&e/rea &7- your profile card");
-        Msg.send(sender, "&e/rea quests &7- the story so far");
-        Msg.send(sender, "&e/rea codex [read <id>] &7- the lore you have gathered");
-        Msg.send(sender, "&e/rea dungeon &7- the ruins (enter a ruin from the menu)");
-        Msg.send(sender, "&e/rea dungeon leave &7- abandon a run");
-        Msg.send(sender, "&e/rea trader &7- name and train villager specialists");
-        Msg.send(sender, "&e/ability &7- your talents: cast skills, evolve");
-        Msg.send(sender, "&e/rea admin &7- (admin) the everything menu");
+        Msg.send(sender, "&d&lRea &7- your journey from slime to Demon Lord");
+        Msg.send(sender, "&71. &fReincarnate: &7an admin runs &e/rea start&7 — you get a random race and a Unique Skill.");
+        Msg.send(sender, "&72. &fFight: &7slaying monsters grants &dEP&7 (rank), &eXP&7 (level) and runes; devouring with Predator teaches new skills.");
+        Msg.send(sender, "&73. &fCast: &fhold your Skill Orb out and use it &7(right-click Java · hold-and-press Bedrock). Your magicules fuel it.");
+        Msg.send(sender, "&74. &fEvolve: &f/ability &7(or &e/talents&7) — meet the EP, level and rune costs, click Evolve, grow a form. Demon Lord = Ultimate Skill.");
+        Msg.send(sender, "&7Check yourself: &e/rea&7 profile · &e/rea quests&7 story · &e/rea codex&7 lore");
+        Msg.send(sender, "&7Risk your life: &e/rea dungeon&7 ruins hold named cardinal weapons.");
+        Msg.send(sender, "&7Community: &e/rea trader&7 name and train villager specialists.");
+        if (sender.hasPermission("rea.admin")) {
+            Msg.send(sender, "&7Admin: &e/rea admin&7 everything menu · &e/rea start&7 · &e/rea update&7 · &e/rea reload&7");
+        }
     }
 
     private void profile(CommandSender sender) {
@@ -88,10 +91,13 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&d&l" + player.getName());
         if (race == null) {
             Msg.send(sender, "&7Your reincarnation awaits. An admin must run &e/rea start&7.");
+            Msg.send(sender, "&8New here? &e/rea help &8explains the journey in 7 lines.");
         } else {
             Msg.send(sender, "&7Race: " + race.getColor() + race.formName(data.getForm()));
         }
-        Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp()
+        Long toNext = plugin.getDataManager().nextRankEp(data);
+        String nextRank = toNext != null ? " &8(+" + toNext + " EP to next rank)" : " &8(max rank)";
+        Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp() + nextRank
                 + " &7Magicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
         Msg.send(sender, "&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)");
         Msg.send(sender, "&7Runes: &d" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");

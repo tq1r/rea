@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The one and only skills menu (Tensura: "Talents").
+ * The skills menu — skills by tier, cast on click, evolve button.
  * Top row: your race and evolution. Middle: your skills, click to cast.
  * Everything is a standard chest GUI — Bedrock-safe.
  */
@@ -45,7 +45,7 @@ public final class SkillsGui {
     public void open(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
         RaceType race = RaceType.fromId(data.getRace());
-        Inventory inv = Bukkit.createInventory(null, 54, Msg.c("&8Your Talents"));
+        Inventory inv = Bukkit.createInventory(null, 54, Msg.c("&8Your Skills"));
 
         // Slot 45: evolution.
         int form = data.getForm();

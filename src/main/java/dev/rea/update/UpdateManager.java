@@ -60,10 +60,10 @@ public final class UpdateManager {
                 .build();
     }
 
-    /** Current plugin version, from the jar manifest (falls back to 1.0.1). */
+    /** Current plugin version, from the jar manifest (falls back to 1.0.2). */
     public String currentVersion() {
         String v = plugin.getClass().getPackage().getImplementationVersion();
-        return v == null || v.isBlank() ? "1.0.1" : v;
+        return v == null || v.isBlank() ? "1.0.2" : v;
     }
 
     /** File name of the running jar, e.g. {@code rea-1.0.1.jar}; null in dev mode. */
