@@ -146,6 +146,26 @@ public final class RaceManager {
         if (!plugin.getDataManager().takeRunes(player, needRunes)) {
             return;
         }
+        performEvolution(player, data, type, next);
+    }
+
+    /** Admin-only: advance a form ignoring EP/level/rune requirements. */
+    public void forceEvolve(Player player) {
+        PlayerData data = plugin.getDataManager().get(player);
+        RaceType type = RaceType.fromId(data.getRace());
+        if (type == null) {
+            Msg.send(player, "&cThat wanderer has no race yet.");
+            return;
+        }
+        int next = data.getForm() + 1;
+        if (next > maxStage()) {
+            Msg.send(player, "&cAlready a &lDemon Lord&c.");
+            return;
+        }
+        performEvolution(player, data, type, next);
+    }
+
+    private void performEvolution(Player player, PlayerData data, RaceType type, int next) {
         data.setForm(next);
         data.setMagicules(plugin.getDataManager().maxMagicules(data));
         String formName = type.formName(next);
@@ -161,7 +181,6 @@ public final class RaceManager {
             SkillDef unique = data.getUniqueSkillId() != null ? plugin.getSkillManager().getSkill(data.getUniqueSkillId()) : null;
             SkillDef ultimate = plugin.getSkillManager().ultimateEvolutionOf(unique);
             if (ultimate == null) {
-                // No verified canon chain: the skill evolves into an unknown Ultimate.
                 ultimate = plugin.getSkillManager().randomUltimate();
             }
             if (ultimate != null) {

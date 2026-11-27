@@ -8,19 +8,21 @@ import org.bukkit.entity.Villager;
  * Master tiers unlock Rea's own treasures as trades.
  */
 public enum TraderRole {
-    BLACKSMITH("blacksmith", "Blacksmith", Villager.Profession.WEAPONSMITH),
-    FARMER("farmer", "Farmer", Villager.Profession.FARMER),
-    ALCHEMIST("alchemist", "Alchemist", Villager.Profession.CLERIC),
-    SCRIBE("scribe", "Scribe", Villager.Profession.LIBRARIAN);
+    BLACKSMITH("blacksmith", "Blacksmith", Villager.Profession.WEAPONSMITH, Villager.Type.SAVANNA),
+    FARMER("farmer", "Farmer", Villager.Profession.FARMER, Villager.Type.PLAINS),
+    ALCHEMIST("alchemist", "Alchemist", Villager.Profession.CLERIC, Villager.Type.SWAMP),
+    SCRIBE("scribe", "Scribe", Villager.Profession.LIBRARIAN, Villager.Type.JUNGLE);
 
     private final String id;
     private final String displayName;
     private final Villager.Profession profession;
+    private final Villager.Type type;
 
-    TraderRole(String id, String displayName, Villager.Profession profession) {
+    TraderRole(String id, String displayName, Villager.Profession profession, Villager.Type type) {
         this.id = id;
         this.displayName = displayName;
         this.profession = profession;
+        this.type = type;
     }
 
     public String id() {
@@ -33,6 +35,10 @@ public enum TraderRole {
 
     public Villager.Profession profession() {
         return profession;
+    }
+
+    public Villager.Type type() {
+        return type;
     }
 
     public static TraderRole fromId(String id) {

@@ -16,5 +16,5 @@ permissions:
     description: Use Rea features
     default: true
   rea.admin:
-    description: Administer Rea (run /rea start, give, reset)
+    description: Administer Rea (/rea start, /rea admin, /rea give, /rea reset, /rea reload, /rea update)
     default: op

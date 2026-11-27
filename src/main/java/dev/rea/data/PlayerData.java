@@ -29,8 +29,6 @@ public final class PlayerData {
     private int kills = 0;
     private int mines = 0;
     private int crafts = 0;
-    private int dailyStreak = 0;
-    private String lastDaily = "";
     private final Map<String, Integer> counters = new HashMap<>();
 
     public PlayerData(UUID uuid, String name) {
@@ -168,22 +166,6 @@ public final class PlayerData {
 
     public void setCrafts(int crafts) {
         this.crafts = crafts;
-    }
-
-    public int getDailyStreak() {
-        return dailyStreak;
-    }
-
-    public void setDailyStreak(int dailyStreak) {
-        this.dailyStreak = dailyStreak;
-    }
-
-    public String getLastDaily() {
-        return lastDaily;
-    }
-
-    public void setLastDaily(String lastDaily) {
-        this.lastDaily = lastDaily;
     }
 
     public Map<String, Integer> getCounters() {

@@ -48,7 +48,6 @@ public final class GameListener implements Listener {
         data.setName(player.getName());
         plugin.getRaceManager().applyPassives(player);
         plugin.getScoreboardManager().update(player);
-        plugin.getDailyManager().claimOnJoin(player);
         if (data.getRace() == null) {
             for (String line : plugin.getConfig().getStringList("messages.welcome-no-race")) {
                 Msg.send(player, line);

@@ -2,11 +2,12 @@ package dev.rea;
 
 import dev.rea.codex.CodexManager;
 import dev.rea.command.ReaCommand;
+import dev.rea.command.AdminGui;
 import dev.rea.command.DungeonGui;
 import dev.rea.command.SkillsGui;
-import dev.rea.daily.DailyManager;
 import dev.rea.data.DataManager;
 import dev.rea.dungeon.DungeonManager;
+import dev.rea.listener.AdminGuiListener;
 import dev.rea.listener.DungeonListener;
 import dev.rea.listener.GameListener;
 import dev.rea.listener.GuiListener;
@@ -40,7 +41,7 @@ public final class ReaPlugin extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private SkillsGui skillsGui;
     private DungeonGui dungeonGui;
-    private DailyManager dailyManager;
+    private AdminGui adminGui;
     private WeaponManager weaponManager;
     private DungeonManager dungeonManager;
     private UpdateManager updateManager;
@@ -59,7 +60,7 @@ public final class ReaPlugin extends JavaPlugin {
         scoreboardManager = new ScoreboardManager(this);
         skillsGui = new SkillsGui(this);
         dungeonGui = new DungeonGui(this);
-        dailyManager = new DailyManager(this);
+        adminGui = new AdminGui(this);
         weaponManager = new WeaponManager(this);
         dungeonManager = new DungeonManager(this);
         updateManager = new UpdateManager(this);
@@ -75,19 +76,17 @@ public final class ReaPlugin extends JavaPlugin {
         if (ability != null) {
             ability.setExecutor(command);
         }
-        PluginCommand runes = getCommand("runes");
-        if (runes != null) {
-            runes.setExecutor(command);
-        }
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
         getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, dungeonGui), this);
+        getServer().getPluginManager().registerEvents(new AdminGuiListener(this, adminGui), this);
         getServer().getPluginManager().registerEvents(new DungeonListener(this), this);
         scoreboardManager.start();
         raceManager.startPassiveTask();
         dataManager.startAutosave();
         dataManager.startMagiculeRegen();
         updateManager.start();
+        traderManager.startAuraTask();
         getLogger().info("Rea awakened. The magicules stir.");
     }
 
@@ -141,8 +140,8 @@ public final class ReaPlugin extends JavaPlugin {
         return dungeonGui;
     }
 
-    public DailyManager getDailyManager() {
-        return dailyManager;
+    public AdminGui getAdminGui() {
+        return adminGui;
     }
 
     public WeaponManager getWeaponManager() {

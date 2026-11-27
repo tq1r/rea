@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Loads, saves, and mutates PlayerData. Runes and XP live here so every
- * system (quests, codex, daily...) grants them the same way.
+ * system (quests, codex, runes) grants them the same way.
  * Humans gain +10% XP from everything (their racial gift).
  */
 public final class DataManager {
@@ -150,8 +150,6 @@ public final class DataManager {
         config.set("kills", data.getKills());
         config.set("mines", data.getMines());
         config.set("crafts", data.getCrafts());
-        config.set("streak", data.getDailyStreak());
-        config.set("lastDaily", data.getLastDaily());
         for (Map.Entry<String, Integer> entry : data.getCounters().entrySet()) {
             config.set("counters." + entry.getKey(), entry.getValue());
         }
@@ -191,8 +189,6 @@ public final class DataManager {
         data.setKills(config.getInt("kills", 0));
         data.setMines(config.getInt("mines", 0));
         data.setCrafts(config.getInt("crafts", 0));
-        data.setDailyStreak(config.getInt("streak", 0));
-        data.setLastDaily(config.getString("lastDaily", ""));
         ConfigurationSection counters = config.getConfigurationSection("counters");
         if (counters != null) {
             for (String key : counters.getKeys(false)) {

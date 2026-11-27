@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Player-facing commands are deliberately few. Everything actionable lives
- * in menus (Talents, Ruins) or happens automatically (daily gifts on join).
+ * in menus (Talents, Ruins) or happens automatically (passives, Regen).
  * What remains: checks (profile, quests, codex) and the trader system.
  * All admin tooling lives here too, behind rea.admin.
  */
@@ -56,6 +56,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             case "codex" -> codex(sender, args);
             case "dungeon" -> dungeon(sender, args);
             case "trader" -> trader(sender, args);
+            case "admin" -> admin(sender);
             case "update" -> update(sender);
             case "give" -> give(sender, args);
             case "reset" -> reset(sender, args);
@@ -75,7 +76,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&e/rea dungeon leave &7- abandon a run");
         Msg.send(sender, "&e/rea trader &7- name and train villager specialists");
         Msg.send(sender, "&e/ability &7- your talents: cast skills, evolve");
-        Msg.send(sender, "&7(Admin: &e/rea start, give, reset, reload, update&7)");
+        Msg.send(sender, "&e/rea admin &7- (admin) the everything menu");
         Msg.send(sender, Msg.bar());
     }
 
@@ -100,7 +101,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&7Codex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total()
                 + " &7Quests: &d" + data.getQuestsDone().size() + "/" + plugin.getQuestManager().allQuests().size());
         Msg.send(sender, "&7Kills: &d" + data.getKills() + " &7Mined: &d" + data.getMines() + " &7Crafted: &d" + data.getCrafts()
-                + " &7Streak: &d" + data.getDailyStreak());
+               );
         Msg.send(sender, Msg.bar());
     }
 
@@ -267,8 +268,20 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             Msg.send(sender, "&cThat player is not online.");
             return;
         }
-        plugin.getDataManager().delete(target.getUniqueId());
-        Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Their reincarnation awaits again until /rea start.");
+        dev.rea.admin.AdminService.resetPlayer(plugin, target);
+        Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Reincarnate fresh with /rea start.");
+    }
+
+    private void admin(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            Msg.send(sender, "&cOnly players can open the admin menu.");
+            return;
+        }
+        if (!player.hasPermission("rea.admin")) {
+            Msg.send(player, "&cNo permission.");
+            return;
+        }
+        plugin.getAdminGui().open(player);
     }
 
     private void update(CommandSender sender) {
@@ -297,7 +310,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return out;
         }
         if (args.length == 1) {
-            for (String sub : List.of("help", "quests", "codex", "dungeon", "trader", "start", "update", "give", "reset", "reload")) {
+            for (String sub : List.of("help", "quests", "codex", "dungeon", "trader", "start", "admin", "update", "give", "reset", "reload")) {
                 if (sub.startsWith(args[0].toLowerCase())) {
                     out.add(sub);
                 }

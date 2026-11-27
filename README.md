@@ -12,18 +12,36 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 1. Download `rea-1.0.0.jar` from the GitHub Actions build (`rea-jar` artifact) or build it with `mvn -B package`.
 2. Drop the jar into your server's `plugins/` folder.
 3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
-4. Optional: **Geyser** for Bedrock players — Rea is fully Bedrock-safe (chat, standard GUIs, boss bars, scoreboards).
+4. Optional: **Geyser** for Bedrock players — Rea runs on Bedrock/MCPE through Geyser (see below).
+
+## Bedrock (MCPE) support
+
+Rea is built to work on both editions. Every interactive feature uses only what
+Geyser translates cleanly for Bedrock clients:
+
+- **Chests & GUIs** — Talents, Ruins, and the admin menu are plain container inventories (no custom rendering, no packet tricks). Bedrock players open and click them normally.
+- **Trading** — trained specialists are ordinary villagers with real professions, types, and trade levels; the Bedrock trading UI just works.
+- **Scoreboards, boss bars, chat, action bars, titles** — all standard, all Geyser-safe.
+- **No Java-only APIs** — no packets, no custom model data requirements, no NBT the client must parse, no signed chat dependencies.
+
+Out of the box, Bedrock players get the full game. Known limits, honestly:
+
+- Items keep vanilla textures on Bedrock (Rea does not ship resource packs).
+- Particle auras (Master-tier specialists, evolution bursts) render as ordinary Bedrock particles.
+- Geyser itself decides how container clicks map; if a click seems ignored, check `geyser.yml`'s emulation settings rather than this plugin.
+
+**Not yet load-tested on a live Geyser instance** — the smoke-test list above applies to both editions before you open the world to followers.
 
 ## Permissions
 
 | Permission | Default | Grants |
 | --- | --- | --- |
 | `rea.use` | true | All player features (skills, races, dungeons, quests, codex) |
-| `rea.admin` | op | `/rea start`, `/rea give`, `/rea reset`, `/rea reload` |
+| `rea.admin` | op | `/rea start`, `/rea admin`, `/rea give`, `/rea reset`, `/rea reload`, `/rea update` |
 
 ## What to expect at launch
 
-- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, claim a daily gift by rejoining, and check skills, quests, codex, and the scoreboard on both Java and Bedrock.
+- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, wipe a test account with `/rea admin`, then `/rea start` to confirm the fresh reincarnation, and check skills, quests, codex, the scoreboard, and the admin menus on both Java and Bedrock.
 - Dungeon difficulty is fixed, not scaled to your EP — bring friends or bring potions.
 - Balance (EP/rune costs, loot rates) is tuned by feel, not by telemetry. Feedback welcome.
 
@@ -74,7 +92,7 @@ Auto-update only works if the latest GitHub **release has a `.jar` asset attache
 ## Commands
 
 Rea keeps the command list deliberately tiny. Actions live in menus; checks are
-commands; daily gifts arrive automatically when you join.
+commands.
 
 | Command | What it does |
 | --- | --- |
@@ -86,10 +104,11 @@ commands; daily gifts arrive automatically when you join.
 | `/rea trader …` | Name and train villager specialists |
 | `/ability` | Your Talents menu: skills by tier, click to cast, evolve button |
 | `/rea start` | (admin) reincarnate everyone with random races |
+| `/rea admin` | (admin) the everything menu: races, skills, resources, lore, danger zone |
 | `/rea give`, `/rea reset`, `/rea reload`, `/rea update` | (admin) tools |
 
-Everything else — casting skills, evolving, diving, the daily gift — happens
-in menus or on its own.
+Everything else — casting skills, evolving, diving — happens in menus or on
+its own.
 
 ## Dungeons
 
@@ -121,12 +140,18 @@ Cardinal weapons grant **+10% EP** while held. The dungeons guard them all.
 ## Named villagers (Rimuru's Naming, for farmers and smiths alike)
 
 Name an ordinary villager as your specialist — like Rimuru named Kurobe — and mentor them
-to greatness. Specialists are persistent (works across restarts), cost runes, and unlock
-strictly better wares at each tier.
+to greatness. Naming is not a menu: it is done on the villager's own body. Specialists are
+physical beings — each role claims a distinct face (savanna blacksmiths, plains farmers,
+swamp alchemists, jungle scribes), their profession outfit, a trade level badge that grows
+with training (Novice I → Master V), a floating name, and masters shed faint magical
+particles. They are persistent (works across restarts, never wander off), cost runes, and
+unlock strictly better wares at each tier.
 
 - `/rea trader specialize <blacksmith|farmer|alchemist|scribe> <name...>` — claim a villager you're looking at (100 runes).
 - `/rea trader train` — Novice → Apprentice → Journeyman → Master (100 / 250 / 500 runes per step).
 - `/rea trader rename <name...>` and `/rea trader info`.
+
+Look at your specialist to inspect them — the wand of training is literally looking at them.
 
 What each master offers:
 

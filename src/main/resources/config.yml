@@ -15,7 +15,6 @@ settings:
   dungeon-cooldown-minutes: 15
   cardinal-ep-bonus: 1.10
   trader-specialize-cost: 100
-  daily-auto-claim: true
   # Auto-update: on boot (and every <hours> after), Rea checks GitHub Releases
   # for a newer version. If found, the new jar is staged in plugins/update/
   # and Paper swaps it in on the NEXT restart (the running jar is never

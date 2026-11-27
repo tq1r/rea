@@ -45,6 +45,20 @@ public final class TraderManager {
         this.nameKey = new NamespacedKey(plugin, "trader_name");
     }
 
+    /** Master specialists shed faint magic — an aura players can spot from afar. */
+    public void startAuraTask() {
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                for (Entity entity : player.getNearbyEntities(24, 16, 24)) {
+                    if (entity instanceof Villager villager && isSpecialist(villager) && tier(villager) >= 3) {
+                        villager.getWorld().spawnParticle(Particle.ENCHANT,
+                                villager.getLocation().add(0, 1.2, 0), 2, 0.25, 0.4, 0.25, 0.02);
+                    }
+                }
+            }
+        }, 40L, 40L);
+    }
+
     // ---- identification ----
 
     public boolean isSpecialist(Villager villager) {
@@ -214,8 +228,13 @@ public final class TraderManager {
     // ---- presentation & trades ----
 
     private void applyStage(Villager villager, TraderRole role, int tier, String name) {
+        // Physical transformation: each role wears a different villager face,
+        // profession gear, and trade level badge. Masters glow with restless magic.
         villager.setProfession(role.profession());
+        villager.setVillagerType(role.type());
         villager.setVillagerLevel(Math.min(5, tier + 1));
+        villager.setRemoveWhenFarAway(false);
+        villager.setPersistent(true);
         if (!villager.isAdult()) {
             villager.setAdult();
         }
