@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.2 — Revamp for readability (unreleased: publish pending)
+## v1.0.2 — Revamp for readability (2026-11-27)
 
 - **In-game guide**: `/rea help` is now a 7-line tour (reincarnate → fight → cast orbs → evolve), with an admin appendix when you have `rea.admin`.
 - **`/talents` alias** for `/ability`; menu renamed "Your Skills" (it was "Your Talents").
