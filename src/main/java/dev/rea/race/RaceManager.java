@@ -16,8 +16,8 @@ import java.util.Random;
 
 /**
  * Reincarnates wanderers (/rea start), applies racials, and evolves forms.
- * Passives are potion effects (re-applied on join/respawn and every minute),
- * so they work identically for Java and Bedrock players.
+ * Passives are potion effects (11 seconds each, re-applied on join/respawn and
+ * every 10 seconds), so they work identically for Java and Bedrock players.
  * Active skills live in SkillManager.
  *
  * Canon (Tensura): otherworlders receive a Unique Skill on reincarnation
@@ -25,7 +25,12 @@ import java.util.Random;
  * evolves into an Ultimate Skill (Predator -> Beelzebuth, etc.).
  */
 public final class RaceManager {
-    private static final int LONG = Integer.MAX_VALUE;
+    // Racial passives are applied as "infinite" effects the Bedrock-friendly
+    // way: an 11-second PotionEffect re-applied every 10 seconds. Vanilla
+    // never runs dry, Geyser renders it correctly, and players can always
+    // tell the truth by hovering the icon (or type /effect).
+    private static final int PASSIVE_TICKS = 220;   // 11 seconds
+    private static final long LONG = Integer.MAX_VALUE;
 
     // Evolution thresholds per stage (1 Evolved, 2 Apex, 3 Demon Lord).
     private static final long[] EVOLVE_EP = {0, 500, 2000, 8000};
@@ -101,16 +106,11 @@ public final class RaceManager {
         data.addSkill(unique.getId());
         data.setUniqueSkillId(unique.getId());
         applyPassives(player);
-        Msg.send(player, Msg.bar());
         Msg.send(player, type.getColor() + "&lReincarnation! You are a " + type.getDisplayName() + "!");
-        for (String line : type.getLore()) {
-            Msg.send(player, "&7" + line);
-        }
         Msg.send(player, "&7Blood gift: &f" + type.getPassiveDescription());
-        Msg.send(player, "&7Intrinsic skill: &f" + type.getIntrinsicName() + " &7- " + type.getIntrinsicDescription());
-        Msg.send(player, "&bUnique skill: &f" + unique.getName() + " &7- " + unique.getDescription());
-        Msg.send(player, "&7Your skill orb is in your pack — hold it out and use it to call on it. &7Your race is permanent. Your form can evolve.");
-        Msg.send(player, Msg.bar());
+        Msg.send(player, "&7Intrinsic: &f" + type.getIntrinsicName() + "&8 - &7" + type.getIntrinsicDescription());
+        Msg.send(player, "&bUnique: &f" + unique.getName() + "&8 - &7" + unique.getDescription());
+        Msg.send(player, "&7Skill orb gained — hold it out and use it. &8(Race is permanent; forms evolve.)");
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 40, 0.6, 1.0, 0.6);
         plugin.getSkillManager().reissueOrbs(player);
@@ -170,7 +170,6 @@ public final class RaceManager {
         data.setForm(next);
         data.setMagicules(plugin.getDataManager().maxMagicules(data));
         String formName = type.formName(next);
-        Msg.send(player, Msg.bar());
         Msg.send(player, type.getColor() + "&lEVOLUTION! &lYou are now a " + formName + "!");
         if (next == 1) {
             Msg.send(player, "&7Your blood remembers more of itself. Skills grow stronger.");
@@ -192,7 +191,6 @@ public final class RaceManager {
                 plugin.getSkillManager().reissueOrbs(player);
             }
         }
-        Msg.send(player, Msg.bar());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 60, 0.8, 1.2, 0.8);
         Bukkit.broadcastMessage(Msg.c("&d" + player.getName() + " evolves into a " + type.getColor() + formName + "&d!"));
@@ -201,8 +199,9 @@ public final class RaceManager {
 
     public void applyPassives(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
-        // Clear only Rea's own passive effects (duration == Integer.MAX_VALUE),
-        // so vanilla gifts like golden apples are never stripped.
+        // One-time upgrade scrub: Rea <= 1.0.0 applied passives with
+        // Integer.MAX_VALUE duration. Those leftovers got saved to player NBT
+        // and can survive relogs forever — strip them once.
         List<PotionEffectType> reaPassives = List.of(
                 PotionEffectType.REGENERATION, PotionEffectType.SPEED,
                 PotionEffectType.RESISTANCE, PotionEffectType.HASTE,
@@ -219,23 +218,23 @@ public final class RaceManager {
             return;
         }
         switch (type) {
-            case SLIME -> player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, LONG, 0, false, false, false));
-            case GOBLIN -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, LONG, 0, false, false, false));
-            case LIZARDMAN -> player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, LONG, 0, false, false, false));
+            case SLIME -> player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, PASSIVE_TICKS, 0, false, false, false));
+            case GOBLIN -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PASSIVE_TICKS, 0, false, false, false));
+            case LIZARDMAN -> player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, PASSIVE_TICKS, 0, false, false, false));
             case ELF -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, LONG, 0, false, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, LONG, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PASSIVE_TICKS, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, PASSIVE_TICKS, 0, false, false, false));
             }
             case DWARF -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, LONG, 0, false, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, LONG, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, PASSIVE_TICKS, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, PASSIVE_TICKS, 0, false, false, false));
             }
             case DIRE_WOLF -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, LONG, 0, false, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, LONG, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PASSIVE_TICKS, 0, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, PASSIVE_TICKS, 0, false, false, false));
             }
-            case SERPENT -> player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, LONG, 0, false, false, false));
-            case DEMON -> player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, LONG, 0, false, false, false));
+            case SERPENT -> player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, PASSIVE_TICKS, 0, false, false, false));
+            case DEMON -> player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PASSIVE_TICKS, 0, false, false, false));
             case HUMAN, ORC -> {
                 // Human: XP bonus (in DataManager). Orc: melee bonus (in GameListener).
             }
@@ -243,10 +242,11 @@ public final class RaceManager {
     }
 
     public void startPassiveTask() {
+        // Refresh every 10 seconds; each application lasts 11 — a constant 1s overlap.
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 applyPassives(player);
             }
-        }, 1200L, 1200L);
+        }, 200L, 200L);
     }
 }

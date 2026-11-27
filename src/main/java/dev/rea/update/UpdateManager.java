@@ -60,10 +60,22 @@ public final class UpdateManager {
                 .build();
     }
 
-    /** Current plugin version, from the jar manifest (falls back to 1.0.0). */
+    /** Current plugin version, from the jar manifest (falls back to 1.0.1). */
     public String currentVersion() {
         String v = plugin.getClass().getPackage().getImplementationVersion();
-        return v == null || v.isBlank() ? "1.0.0" : v;
+        return v == null || v.isBlank() ? "1.0.1" : v;
+    }
+
+    /** File name of the running jar, e.g. {@code rea-1.0.1.jar}; null in dev mode. */
+    private String runningJarName() {
+        try {
+            java.net.URI location = plugin.getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().toURI();
+            String name = java.nio.file.Path.of(location).getFileName().toString();
+            return name.toLowerCase(java.util.Locale.ROOT).endsWith(".jar") ? name : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /** Kick off the hourly check (called on enable). Does nothing when disabled in config. */
@@ -71,6 +83,10 @@ public final class UpdateManager {
         if (!plugin.getConfig().getBoolean("settings.auto-update", true)) {
             plugin.getLogger().info("Auto-update is disabled in config.yml.");
             return;
+        }
+        String running = runningJarName();
+        if (running != null) {
+            plugin.getLogger().info("Running jar: " + running);
         }
         int hours = Math.max(1, plugin.getConfig().getInt("settings.auto-update-hours", 6));
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::check);
@@ -146,7 +162,12 @@ public final class UpdateManager {
                 return new Result(Status.NO_JAR_ASSET, current, latest, "Release v" + latest + " has no jar asset.");
             }
             String jarUrl = jarMatcher.group(1);
-            String fileName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1);
+            String assetName = jarUrl.substring(jarUrl.lastIndexOf('/') + 1);
+            // Stage under the SAME file name as the running jar. Paper's update
+            // swap then replaces plugins/<running>.jar in place instead of
+            // leaving a second, stale Rea jar behind — stale jars were the
+            // source of "ghost" behavior like pre-1.0 sidebars surviving.
+            String fileName = runningJarName() != null ? runningJarName() : assetName;
 
             HttpRequest download = HttpRequest.newBuilder(URI.create(jarUrl))
                     .header("User-Agent", "Rea/" + current + " (+https://github.com/tq1r/rea)")
@@ -163,6 +184,21 @@ public final class UpdateManager {
             }
             Path updateDir = plugin.getDataFolder().toPath().getParent().resolve("update");
             Files.createDirectories(updateDir);
+            // Drop stale Rea jars staged earlier (from previous releases) so the
+            // update folder can never hold two Reas at once.
+            try (var stream = Files.list(updateDir)) {
+                for (Path stale : stream
+                        .filter(p -> {
+                            String n = p.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
+                            return n.startsWith("rea") && n.endsWith(".jar") && !n.equals(fileName.toLowerCase(java.util.Locale.ROOT));
+                        })
+                        .toList()) {
+                    Files.delete(stale);
+                    plugin.getLogger().info("Auto-update: removed stale staged jar " + stale.getFileName());
+                }
+            } catch (IOException e) {
+                plugin.getLogger().warning("Auto-update: could not clean plugins/update (" + e.getMessage() + "); continuing anyway.");
+            }
             Files.write(updateDir.resolve(fileName), bytes);
             plugin.getLogger().info("Auto-update: downloaded " + fileName + " (" + bytes.length + " bytes) to plugins/update. Restart to apply.");
             return new Result(Status.DOWNLOADED, current, latest, fileName);

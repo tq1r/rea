@@ -128,12 +128,10 @@ public final class DungeonManager {
         runs.put(player.getUniqueId(), new DungeonRun(def, entry, summoned, bossId));
         player.teleport(center.clone().add(0, 1, 0));
         player.playSound(player.getLocation(), Sound.BLOCK_PORTAL_TRAVEL, 1f, 1.4f);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&l" + def.name());
         Msg.send(player, def.description());
         Msg.send(player, "&7Defeat &f" + def.bossName() + "&7 to claim your prize.");
         Msg.send(player, "&7Abandon with &e/rea dungeon leave &7(no rewards).");
-        Msg.send(player, Msg.bar());
     }
 
     /** End a run (victory or abandon). Rewards only on victory. */
@@ -162,7 +160,6 @@ public final class DungeonManager {
         }
         PlayerData data = plugin.getDataManager().get(player);
         data.incrementCounter("dungeon:clear", 1);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&l" + def.name() + " cleared!");
         Msg.send(player, "&7Runes: &d" + def.runeReward() + " &7| XP: &d" + def.xpReward() + " &7| EP: &d" + def.epReward());
         plugin.getDataManager().addRunes(player, def.runeReward());
@@ -177,7 +174,6 @@ public final class DungeonManager {
         } else {
             Msg.send(player, "&7No cardinal weapon this time. The ruins keep their secrets.");
         }
-        Msg.send(player, Msg.bar());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         player.teleport(run.entry());
         plugin.getQuestManager().checkCompletion(player);

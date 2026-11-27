@@ -137,7 +137,9 @@ public final class GameListener implements Listener {
         // Predation: only Predator holders devour foes to learn Common Skills.
         if (data.hasSkill("predator")) {
             data.setMagicules(Math.min(plugin.getDataManager().maxMagicules(data), data.getMagicules() + 10));
-            Msg.send(killer, "&7You devoured the " + entity.getType().name().toLowerCase().replace('_', ' ') + ".");
+            if (ThreadLocalRandom.current().nextInt(5) == 0) {
+                Msg.send(killer, "&7You devoured the " + entity.getType().name().toLowerCase().replace('_', ' ') + ".");
+            }
             int learnChance = data.hasSkill("great_sage") ? 40 : 20;
             if (ThreadLocalRandom.current().nextInt(100) < learnChance) {
                 for (SkillDef def : plugin.getSkillManager().commonSkills()) {

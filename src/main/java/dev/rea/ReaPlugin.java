@@ -53,6 +53,7 @@ public final class ReaPlugin extends JavaPlugin {
         keys = new Keys(this);
         itemFactory = new ItemFactory(this);
         dataManager = new DataManager(this);
+        dataManager.backupIfVersionChanged();
         raceManager = new RaceManager(this);
         questManager = new QuestManager(this);
         codexManager = new CodexManager(this);

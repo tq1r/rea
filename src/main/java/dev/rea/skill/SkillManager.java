@@ -206,10 +206,11 @@ public final class SkillManager {
         }
         data.addSkill(id);
         Msg.send(player, "&b&lSkill learned! &f" + def.getName() + " &8(&7" + def.getTier() + "&8)");
-        Msg.send(player, "&7" + def.getDescription());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         grantOrb(player, def);
-        Msg.send(player, "&7An orb takes shape in your pack — hold it out and use it to call on " + def.getName() + ".");
+        if (def.getMagiculeCost() > 0 || def.getCooldownMillis() > 0) {
+            Msg.send(player, "&7Orb gained — hold it out and use it.");
+        }
         plugin.getDataManager().save(data);
     }
 
@@ -255,7 +256,6 @@ public final class SkillManager {
 
     public void list(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&b&lSkills &8(&7" + data.getSkills().size() + "&8)");
         for (String id : data.getSkills()) {
             SkillDef def = skills.get(id);
@@ -263,7 +263,6 @@ public final class SkillManager {
                 Msg.send(player, " &8- &f" + def.getName() + " &8(&7" + def.getTier() + "&8) &7" + def.getDescription());
             }
         }
-        Msg.send(player, Msg.bar());
     }
 
     /** Area skills only hit hostile targets: monsters and (in PvP) players — never pets, villagers, or the caster. */

@@ -24,10 +24,7 @@ settings:
 
 messages:
   welcome-no-race:
-    - "&d&lWelcome to Rea"
-    - "&7A world of magicules, monsters, and merciless evolution."
-    - "&7Somewhere beyond the veil, a name calls you into this world."
-    - "&7Your reincarnation awaits. &7An admin must run &e/rea start &7to begin it."
+    - "&d&lWelcome to Rea&7 — your reincarnation awaits. Ask an admin to run &e/rea start&7."
   welcome:
     - "&7The magicules stir. Welcome back, otherworlder."
   start-broadcast:

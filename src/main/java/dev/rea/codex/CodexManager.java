@@ -144,7 +144,6 @@ public final class CodexManager {
     }
 
     public void showEntry(Player player, CodexEntry entry) {
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&l" + entry.title());
         if (!entry.subtitle().isEmpty()) {
             Msg.send(player, "&7" + entry.subtitle());
@@ -152,6 +151,5 @@ public final class CodexManager {
         for (String page : entry.pages()) {
             Msg.send(player, "&f" + page);
         }
-        Msg.send(player, Msg.bar());
     }
 }

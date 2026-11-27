@@ -6,6 +6,8 @@ import dev.rea.util.Msg;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.UUID;
 
@@ -37,6 +39,16 @@ public final class HudManager {
     }
 
     public void update(Player player) {
+        // Legacy scrub: Rea <= 1.0.0 could leave a per-player sidebar behind
+        // ('rea' objective on a private board). If one exists, hand the player
+        // back the server main scoreboard — read-only check, zero packets when
+        // nothing is wrong.
+        ScoreboardManager boards = Bukkit.getScoreboardManager();
+        Scoreboard main = boards != null ? boards.getMainScoreboard() : null;
+        Scoreboard current = player.getScoreboard();
+        if (main != null && current != null && current != main && current.getObjective("rea") != null) {
+            player.setScoreboard(main);
+        }
         PlayerData data = plugin.getDataManager().get(player);
         int max = plugin.getDataManager().maxMagicules(data);
         String line = Msg.c("&bMagicules &f" + data.getMagicules() + "/" + max

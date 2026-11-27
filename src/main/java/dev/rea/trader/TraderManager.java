@@ -145,10 +145,8 @@ public final class TraderManager {
         PlayerData data = plugin.getDataManager().get(player);
         data.incrementCounter("trader:specialize", 1);
         plugin.getDataManager().save(data);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&lNaming! &f" + name.trim() + " &7is now &byour " + role.displayName() + "&7.");
         Msg.send(player, "&7Train them with &e/rea trader train &7to unlock better wares.");
-        Msg.send(player, Msg.bar());
         villager.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, villager.getLocation().add(0, 1.5, 0), 30, 0.4, 0.6, 0.4);
         villager.getWorld().playSound(villager.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1.6f);
     }
@@ -198,10 +196,8 @@ public final class TraderManager {
         int next = tier + 1;
         setTag(villager, role, next, name);
         applyStage(villager, role, next, name);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&lTraining! &f" + name + " &7advances to &b" + TraderRole.tierName(next) + " " + role.displayName() + "&7.");
         Msg.send(player, "&7New wares unlocked — trade with them to see.");
-        Msg.send(player, Msg.bar());
         villager.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, villager.getLocation().add(0, 1.5, 0), 50, 0.5, 0.8, 0.5);
         villager.getWorld().playSound(villager.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1.3f);
     }
@@ -214,7 +210,6 @@ public final class TraderManager {
             return;
         }
         int tier = tier(villager);
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&b" + givenName(villager) + " &7- " + TraderRole.tierName(tier) + " " + role(villager).displayName());
         if (tier < TraderRole.MAX_TIER) {
             Msg.send(player, "&7Next training costs &d" + TraderRole.TRAIN_COSTS[tier] + " runes &7(&e/rea trader train&7).");
@@ -222,7 +217,6 @@ public final class TraderManager {
             Msg.send(player, "&dMaster of the craft. &7Their finest wares await.");
         }
         Msg.send(player, "&7Rename with &e/rea trader rename <name>&7.");
-        Msg.send(player, Msg.bar());
     }
 
     // ---- presentation & trades ----

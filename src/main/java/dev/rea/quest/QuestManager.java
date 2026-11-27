@@ -109,7 +109,6 @@ public final class QuestManager {
             return;
         }
         data.getQuestsDone().add(current.id());
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&lQuest complete: &l" + current.name());
         if (!current.complete().isEmpty()) {
             Msg.send(player, "&7" + current.complete());
@@ -127,7 +126,6 @@ public final class QuestManager {
             plugin.getSkillManager().learn(player, "magic_sense");
         }
         grantItemReward(player, current.rewardItem());
-        Msg.send(player, Msg.bar());
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         plugin.getDataManager().save(data);
         // Completing one quest may complete the next (e.g. counters already satisfied).

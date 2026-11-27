@@ -20,12 +20,12 @@ spam. For the server around it:
 
 ## Install
 
-1. Download `rea-1.0.0.jar` from the GitHub Actions build (`rea-jar` artifact) or build it with `mvn -B package`.
+1. Download `rea-1.0.1.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) or build it with `mvn -B package`.
 2. Drop the jar into your server's `plugins/` folder.
 3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
 4. Optional: **Geyser** for Bedrock players — Rea runs on Bedrock/MCPE through Geyser (see below).
 
-> **Installing from the GitHub artifact?** The download is `rea-jar.zip`. Unzip it — the **file** inside is `rea-1.0.0.jar`. If you upload the extracted **folder** instead of the jar, Paper refuses to load the plugin with `Directory 'plugins/rea-1.0.0.jar' does not contain a paper-plugin.yml`. Delete the folder, put the actual `.jar` in `plugins/`, restart.
+> **One Rea jar only.** `plugins/` must contain exactly one `rea*.jar` (plus whatever `plugins/update/` stages). Old `rea-1.0.0.jar` copies left in `plugins/update/` were the cause of "ghost" sidebars and duplicate loads — delete them. Rea 1.0.1 also stages updates under the same file name as the running jar, so this can't happen again on its own.
 
 ## Bedrock (MCPE) support
 

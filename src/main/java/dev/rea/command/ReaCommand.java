@@ -67,7 +67,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
     }
 
     private void help(CommandSender sender) {
-        Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&lRea &7- from Slime to Demon Lord.");
         Msg.send(sender, "&e/rea &7- your profile card");
         Msg.send(sender, "&e/rea quests &7- the story so far");
@@ -77,7 +76,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&e/rea trader &7- name and train villager specialists");
         Msg.send(sender, "&e/ability &7- your talents: cast skills, evolve");
         Msg.send(sender, "&e/rea admin &7- (admin) the everything menu");
-        Msg.send(sender, Msg.bar());
     }
 
     private void profile(CommandSender sender) {
@@ -87,7 +85,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         }
         PlayerData data = plugin.getDataManager().get(player);
         RaceType race = RaceType.fromId(data.getRace());
-        Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&l" + player.getName());
         if (race == null) {
             Msg.send(sender, "&7Your reincarnation awaits. An admin must run &e/rea start&7.");
@@ -102,7 +99,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                 + " &7Quests: &d" + data.getQuestsDone().size() + "/" + plugin.getQuestManager().allQuests().size());
         Msg.send(sender, "&7Kills: &d" + data.getKills() + " &7Mined: &d" + data.getMines() + " &7Crafted: &d" + data.getCrafts()
                );
-        Msg.send(sender, Msg.bar());
     }
 
     private void quests(CommandSender sender) {
@@ -110,7 +106,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return;
         }
         PlayerData data = plugin.getDataManager().get(player);
-        Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&lThe Story of Rea &7(" + data.getQuestsDone().size() + "/" + plugin.getQuestManager().allQuests().size() + " quests)");
         QuestDef current = plugin.getQuestManager().currentQuest(data);
         if (current == null) {
@@ -123,7 +118,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             Msg.send(sender, "&7Rewards: &d" + current.rewardRunes() + " runes"
                     + (current.rewardXp() > 0 ? " &7+" + current.rewardXp() + " XP" : ""));
         }
-        Msg.send(sender, Msg.bar());
     }
 
     private void codex(CommandSender sender, String[] args) {
@@ -144,7 +138,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             plugin.getCodexManager().showEntry(player, entry);
             return;
         }
-        Msg.send(player, Msg.bar());
         Msg.send(player, "&d&lCodex of Rea &7(" + data.getCodex().size() + "/" + plugin.getCodexManager().total() + ")");
         for (CodexEntry entry : plugin.getCodexManager().allEntries()) {
             if (data.getCodex().contains(entry.id())) {
@@ -153,7 +146,6 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                 Msg.send(player, "&7[???] &7" + entry.subtitle());
             }
         }
-        Msg.send(player, Msg.bar());
     }
 
     private void dungeon(CommandSender sender, String[] args) {

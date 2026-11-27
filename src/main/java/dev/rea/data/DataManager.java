@@ -10,6 +10,12 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -157,11 +163,97 @@ public final class DataManager {
         for (Map.Entry<String, Integer> entry : data.getCounters().entrySet()) {
             config.set("counters." + entry.getKey(), entry.getValue());
         }
+        // Atomic write: save to a temp file, then move it over the real one.
+        // A crash mid-save can never leave a half-written player file behind.
+        File tmp = new File(playersDir, data.getUuid() + ".yml.tmp");
         try {
-            config.save(file);
+            config.save(tmp);
+            try {
+                Files.move(tmp.toPath(), file.toPath(),
+                        StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException atomicUnsupported) {
+                Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
         } catch (IOException e) {
+            tmp.delete();
             plugin.getLogger().warning("Could not save data for " + data.getName() + ": " + e.getMessage());
         }
+    }
+
+    /**
+     * One-time safety net for updates: the first time Rea boots on a new
+     * version, copy plugins/Rea/data/players aside before anything else can
+     * touch it. Keeps the last few backups so a bad update never eats a life.
+     */
+    public void backupIfVersionChanged() {
+        String current;
+        try {
+            current = plugin.getPluginMeta().getVersion();
+        } catch (Exception e) {
+            current = "unknown";
+        }
+        File dataDir = plugin.getDataFolder();
+        File marker = new File(dataDir, "data/version.txt");
+        try {
+            String last = marker.exists() ? Files.readString(marker.toPath()).trim() : null;
+            if (current.equals(last)) {
+                return; // Same version as last boot — nothing to do.
+            }
+            File players = new File(dataDir, "data/players");
+            if (players.isDirectory()) {
+                File backups = new File(dataDir, "data/backups");
+                String stamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+                File dest = new File(backups, current + "-" + stamp);
+                copyTree(players.toPath(), dest.toPath());
+                pruneBackups(backups, 3);
+                plugin.getLogger().info("Data backup written to " + dest.getPath()
+                        + " (version changed " + (last == null ? "(first run)" : last) + " -> " + current + ")");
+            }
+            marker.getParentFile().mkdirs();
+            Files.writeString(marker.toPath(), current + System.lineSeparator());
+        } catch (Exception e) {
+            // Never let a backup failure break startup.
+            plugin.getLogger().warning("Data backup skipped: " + e.getMessage());
+        }
+    }
+
+    private void copyTree(java.nio.file.Path from, java.nio.file.Path to) throws IOException {
+        Files.walk(from).forEach(source -> {
+            try {
+                java.nio.file.Path target = to.resolve(from.relativize(source).toString());
+                if (Files.isDirectory(source)) {
+                    Files.createDirectories(target);
+                } else {
+                    Files.createDirectories(target.getParent());
+                    Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void pruneBackups(File backups, int keep) {
+        File[] dirs = backups.listFiles(File::isDirectory);
+        if (dirs == null || dirs.length <= keep) {
+            return;
+        }
+        List<File> sorted = java.util.Arrays.stream(dirs)
+                .sorted(Comparator.comparing(File::getName))
+                .toList();
+        for (int i = 0; i < sorted.size() - keep; i++) {
+            deleteTree(sorted.get(i));
+        }
+    }
+
+    private void deleteTree(File root) {
+        File[] children = root.listFiles();
+        if (children != null) {
+            for (File child : children) {
+                deleteTree(child);
+            }
+        }
+        root.delete();
     }
 
     private PlayerData load(UUID uuid, String name) {
@@ -262,10 +354,7 @@ public final class DataManager {
             long bonus = 10L * level;
             data.setRunes(data.getRunes() + bonus);
             data.setLifetimeEarned(data.getLifetimeEarned() + bonus);
-            Msg.send(player, Msg.bar());
-            Msg.send(player, "&d&lLevel up! &7You are now Level &d" + level);
-            Msg.send(player, "&7The blood sings a little louder. &d+" + bonus + " runes");
-            Msg.send(player, Msg.bar());
+            Msg.send(player, "&d&lLevel up! &7You are now Level &d" + level + " &7(+" + bonus + " runes)");
             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
             plugin.getQuestManager().checkCompletion(player);
         }
