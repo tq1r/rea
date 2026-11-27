@@ -123,7 +123,7 @@ public final class GuiManager {
         for (Ruin ruin : plugin.getRuinManager().allRuins()) {
             boolean visited = data.getRuins().contains(ruin.name());
             if (visited) {
-                gui.setItem(slot++, plugin.getItemFactory().guiButton(Material.ENDER_STONE,
+                gui.setItem(slot++, plugin.getItemFactory().guiButton(Material.END_STONE,
                         "&a" + ruin.display(),
                         List.of("&7" + ruin.hint(), "", "&eClick to travel (" + plugin.getConfig().getLong("settings.ruin-tp-cost", 10L) + " shards)"),
                         "ruin_tp", ruin.name()));

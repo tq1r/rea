@@ -33,8 +33,8 @@ public final class Util {
             for (int z = -radius; z <= radius; z++) {
                 Block block = center.getBlock().getRelative(x, 0, z);
                 BlockData data = block.getBlockData();
-                if (data instanceof Ageable ageable && ageable.getAge() < ageable.getMaxAge()) {
-                    ageable.setAge(ageable.getMaxAge());
+                if (data instanceof Ageable ageable && ageable.getAge() < ageable.getMaximumAge()) {
+                    ageable.setAge(ageable.getMaximumAge());
                     block.setBlockData(data);
                     grown++;
                 }

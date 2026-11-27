@@ -80,12 +80,12 @@ public final class CodexManager {
     public ItemStack createBook(CodexEntry entry) {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         ItemMeta meta = book.getItemMeta();
-        if (meta instanceof WrittenBookMeta written) {
+        if (meta instanceof BookMeta written) {
             written.setTitle("Codex: " + entry.title());
             written.setAuthor("The Vale");
-            written.setGeneration(BookMeta.Generation.NORMAL);
+            written.setGeneration(BookMeta.Generation.ORIGINAL);
             for (String page : entry.pages()) {
-                written.addPage(page);
+                written.addPages(Component.text(page));
             }
             written.getPersistentDataContainer().set(plugin.getKeys().codex(), PersistentDataType.STRING, entry.id());
             book.setItemMeta(written);

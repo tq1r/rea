@@ -68,7 +68,7 @@ public final class PathManager {
         player.removePotionEffect(PotionEffectType.WATER_BREATHING);
         player.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
         player.removePotionEffect(PotionEffectType.REGENERATION);
-        player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        player.removePotionEffect(PotionEffectType.RESISTANCE);
         PathType type = PathType.fromId(data.getPath());
         if (type == null) {
             return;
