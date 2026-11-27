@@ -1,30 +1,30 @@
-# The story of the Vale, told in quests. Chapters unlock in order.
-# Types: CHOOSE_PATH, MINE, KILL, CRAFT, VISIT, CODEX, EARN, REACH_LEVEL
+# The story of Rea, told in quests. Chapters unlock in order.
+# Types: RACE, MINE, KILL, CRAFT, CODEX, REACH_LEVEL
 # Target: for MINE/KILL/CRAFT use a Material/EntityType name, or ANY.
-# Reward item: "relic:<id>", "codex:<id>", or "cache:<count>". Leave empty for none.
+# Reward item: "codex:<id>" or "cache:<count>". Leave empty for none.
 
 quests:
   - id: "q1-1"
     chapter: 1
-    name: "First Light"
-    type: "CHOOSE_PATH"
+    name: "Blood Remembers"
+    type: "RACE"
     target: ""
     amount: 1
-    reward-shards: 20
+    reward-runes: 20
     reward-xp: 0
     reward-item: ""
-    description: "Choose the Path your heart already knows."
-    complete: "The shards settle into your pack. You are a Shardbearer now."
+    description: "Wake your bloodline. The Flame has chosen you."
+    complete: "The blood remembers. You are one of the ten now."
   - id: "q1-2"
     chapter: 1
-    name: "Gather the Hum"
+    name: "Gather the Runes"
     type: "MINE"
     target: "ANY"
     amount: 16
-    reward-shards: 30
+    reward-runes: 30
     reward-xp: 20
     reward-item: ""
-    description: "Mine 16 ores. The shards hide in the stone, humming."
+    description: "Mine 16 ores. The Runes hide in the stone, humming."
     complete: "The stone gives up its secrets. Good."
   - id: "q1-3"
     chapter: 1
@@ -32,33 +32,22 @@ quests:
     type: "KILL"
     target: "ANY"
     amount: 5
-    reward-shards: 30
+    reward-runes: 30
     reward-xp: 20
     reward-item: ""
-    description: "Slay 5 monsters. The Vale is not empty, and it is not kind."
+    description: "Slay 5 monsters. Rea is not empty, and it is not kind."
     complete: "The wilds step back. For now."
   - id: "q1-4"
-    chapter: 1
-    name: "Where the Old Things Sleep"
-    type: "VISIT"
-    target: "RUIN"
-    amount: 1
-    reward-shards: 40
-    reward-xp: 25
-    reward-item: "codex:song"
-    description: "Visit a ruin. The old stones are waiting to be read."
-    complete: "You stand where the First Warden stood. The stones approve."
-  - id: "q1-5"
     chapter: 1
     name: "Read What Remains"
     type: "CODEX"
     target: ""
     amount: 2
-    reward-shards: 40
+    reward-runes: 40
     reward-xp: 25
     reward-item: "cache:1"
     description: "Unlock 2 Codex entries. The truth is written down — you only have to read it."
-    complete: "Two pages of the truth. The Vale grows clearer."
+    complete: "Two pages of the truth. Rea grows clearer."
 
   - id: "q2-1"
     chapter: 2
@@ -66,7 +55,7 @@ quests:
     type: "KILL"
     target: "ANY"
     amount: 20
-    reward-shards: 80
+    reward-runes: 80
     reward-xp: 60
     reward-item: ""
     description: "Slay 20 monsters. The quiet needs answering."
@@ -77,97 +66,30 @@ quests:
     type: "CRAFT"
     target: "ANY"
     amount: 8
-    reward-shards: 60
+    reward-runes: 60
     reward-xp: 30
     reward-item: ""
     description: "Craft 8 items. Making things is also a kind of remembering."
     complete: "The forge hums a low note. It remembers."
   - id: "q2-3"
     chapter: 2
-    name: "Three Doors"
-    type: "VISIT"
-    target: "RUIN"
-    amount: 3
-    reward-shards: 80
-    reward-xp: 40
-    reward-item: "codex:silent"
-    description: "Visit 3 ruins. Every door in the Vale opens onto another door."
-    complete: "Three doors. The fourth is still silent."
-  - id: "q2-4"
-    chapter: 2
     name: "The Long Reading"
     type: "CODEX"
     target: ""
-    amount: 5
-    reward-shards: 80
+    amount: 6
+    reward-runes: 80
     reward-xp: 60
     reward-item: ""
-    description: "Unlock 5 Codex entries. Read like your life depends on it. It does."
+    description: "Unlock 6 Codex entries. Read like your life depends on it. It does."
     complete: "The story is assembling itself. So are you."
-  - id: "q2-5"
+  - id: "q2-4"
     chapter: 2
-    name: "Weight of the Vale"
-    type: "EARN"
-    target: ""
-    amount: 200
-    reward-shards: 100
-    reward-xp: 50
-    reward-item: ""
-    description: "Earn 200 lifetime shards. Carry the Vale's weight a while."
-    complete: "You carry the Vale well, Warden."
-
-  - id: "q3-1"
-    chapter: 3
-    name: "Hold the Line"
-    type: "KILL"
-    target: "ANY"
-    amount: 40
-    reward-shards: 150
-    reward-xp: 100
-    reward-item: ""
-    description: "Slay 40 monsters. The Second Crack is widening, and the wilds know it."
-    complete: "The line holds. The Vale holds. Barely."
-  - id: "q3-2"
-    chapter: 3
-    name: "Every Door"
-    type: "VISIT"
-    target: "RUIN"
-    amount: 4
-    reward-shards: 150
-    reward-xp: 75
-    reward-item: "codex:second-crack"
-    description: "Visit every ruin in the Vale. Leave no door unopened."
-    complete: "Every door opened. Every door leads here."
-  - id: "q3-3"
-    chapter: 3
-    name: "The Whole Story"
-    type: "CODEX"
-    target: ""
-    amount: 10
-    reward-shards: 150
-    reward-xp: 100
-    reward-item: ""
-    description: "Unlock 10 Codex entries. The whole story, or as much of it as remains."
-    complete: "The story is whole enough to act on."
-  - id: "q3-4"
-    chapter: 3
-    name: "Bearer of the Hum"
+    name: "Bearer of the Blood"
     type: "REACH_LEVEL"
     target: ""
     amount: 5
-    reward-shards: 200
-    reward-xp: 0
-    reward-item: ""
-    description: "Reach Shardbearer Level 5. The hum becomes a voice."
-    complete: "The hum becomes a voice. It says: almost."
-  - id: "q3-5"
-    chapter: 3
-    name: "The Song, Almost"
-    type: "EARN"
-    target: ""
-    amount: 500
-    reward-shards: 300
-    reward-xp: 100
-    reward-item: "relic:crown_fragment"
-    description: "Earn 500 lifetime shards. The Song is almost sung — and almost is where everything important begins."
-    complete: "The Song is almost sung, Shardbearer. More chapters are coming. The Vale is not done with you."
+    reward-runes: 150
+    reward-xp: 50
+    reward-item: "codex:sundering"
+    description: "Reach Level 5. The blood becomes a voice."
+    complete: "The blood becomes a voice. It says: almost. The eleventh spark still sleeps — more chapters are coming."

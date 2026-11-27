@@ -1,132 +1,126 @@
-# Aetherfall
+# Rea
 
-**A lore-rich SMP adventure plugin for Paper 26.3 + Geyser.**
-*The shards remember. Will you?*
+**A fantasy bloodline SMP plugin for Paper 26.3 + Geyser.**
+*The bloodlines wake. Who will you be?*
 
 ---
 
 ## The story
 
-Long ago, the **Sky-Crown** hung in the sky above the Vale of Aetheria, and it sang.
-Its Song was the sound of everything holding together: crops grew sweet, storms
-turned aside at the borders, and the dead slept quietly under the hill.
+At the heart of the world burned the **First Flame** — the world's own warmth,
+keeping the seasons turning and the dead resting easy. Ten bloodlines tended it:
+elves its voice, dwarves its hands, orcs its wrath, dragonborn its first fire.
 
-Then came **the Shattering**. The Crown cracked. Its shards rained across the land.
-The Song stopped. The Four Pillars — Ember, Tide, Verdant, and Stone — fell silent.
-One of them never answered the call at all.
+Then came **the Sundering**. The Flame split into ten sparks, each bloodline
+carried one away, and the realm cracked. The sparks scattered and became **Runes**.
+The old records mention *eleven* sparks — but only ten bloodlines ever woke.
+The eleventh still sleeps somewhere, still burning, still waiting.
 
-You are a **Shardbearer**: a wanderer whose heart resonates with the fallen shards.
-Gather shards. Walk a Path. Read what was left behind. Piece together what really
-happened on the Night of Cracking — and why the Crown is cracking *again*.
+Now the bloodlines wake again, one wanderer at a time. Each bloodline remembers
+the Sundering differently, and each memory is true the way a song is true:
+completely, and not at all. The Codex holds all of them. Trust none completely.
+Trust all of them a little.
 
-Aetherfall turns your friends SMP into a slow-burn mystery adventure with cozy
-building, shared goals, and a story told in fragments. The Codex disagrees with
-itself. The children ask better questions than the scholars. And the Song is not
-yet sung.
+## How it works
+
+1. The server starts fresh. Players wander without a bloodline.
+2. An op runs **`/rea start`** — every player without a bloodline is **dealt a
+   random race** from the ten, with a lore reveal and a server-wide announcement.
+3. Bloodlines are **permanent**. One race, one life. The deal matters.
+4. From there: level up, gather Runes, read the Codex, and walk the story quests.
+
+## The ten bloodlines
+
+| Bloodline | Gift (passive) | Ability (`/ability`) |
+|---|---|---|
+| **Human** | +10% XP from everything | **Second Wind** — heal + sprint |
+| **Elf** | Regeneration + Speed | **Elven Step** — blink forward 6 blocks |
+| **Dwarf** | Resistance + Haste | **Stonehide** — Resistance II for 8s |
+| **Orc** | +2 melee damage | **Bloodrage** — Strength II for 10s |
+| **Halfling** | Luck + Speed | **Lucky Dodge** — Resistance + Speed II |
+| **Tiefling** | Fire resistance | **Hellfire** — burn and scorch nearby foes |
+| **Dragonborn** | +4 max health | **Dragon's Breath** — fire in a cone |
+| **Gnome** | Haste II + Jump Boost | **Mend** — repair the item in your hand |
+| **Aasimar** | Night Vision + Slow Falling | **Dawn's Blessing** — heal 6 + Resistance |
+| **Goliath** | Strength I | **Giant's Slam** — hurt and hurl nearby foes |
+
+Abilities grow slightly stronger as you level. All ten bloodlines are balanced
+for a friends SMP — no race is strictly best, every race has a moment.
 
 ## Features
 
-- **4 Paths (classes)** — Emberpath, Tidepath, Verdantpath, Stonepath. Each has
-  passive effects and an active ability (`/ability`). Chosen on first join.
-- **14 Codex entries** — collectible lore books that tell the story in fragments.
-  Right-click a page to record it. Pages can be copied and shared with friends.
-- **3 story chapters, 15 quests** — *Awakening*, *The Silent Gods*, *The Second
-  Crack*. Sequential quests with lore, rewards, and a finale that teases more.
-- **5 relics** — named gear with story in its lore: Emberheart Blade, Tidecaller's
-  Trident, Verdant Staff, Warden's Edge, and the Sky-Crown Fragment.
-- **World events** — Shard Storms, Blood Moons, Meteor Falls, and the Veil Thinning,
-  rotating every few minutes with boss-bar announcements.
-- **Daily bounties** — 3 shared contracts each day (same for everyone, so friends
-  can work together).
-- **Ruins** — explorable lore sites granting Codex pages. Admins can add more in-game.
-- **Orders (guilds)** — found a player Order with a shared home. The new wardens.
-- **Titles** — 10 earned titles shown on your scoreboard. Never bought, always earned.
-- **Levels, shards, daily gifts** — progression with a 7-day streak cycle.
-- **Shard Trader** — spend shards on relics, Codex pages, and celebrations.
+- **Random bloodline deal** at `/rea start` (op), with lore reveals + broadcast
+- **Levels & XP** (1–20) from kills, quests, and Codex — Humans learn faster
+- **Runes** — the world's scattered sparks, earned from mining, kills, quests,
+  Codex, and daily gifts; spent on Rune Caches (XP)
+- **13 Codex entries** — collectible lore books: the world, the Sundering, and
+  an origin tale for every bloodline (they disagree — that's the mystery)
+- **2 story chapters, 8 quests** — *The Waking* and *The Sundering Truth*,
+  ending on the eleventh spark
+- **Daily gifts** — 7-day streak cycle
+- **Scoreboard** — bloodline, level, runes, Codex, current quest
 
 ## Geyser / Bedrock friendly
 
-Everything is chat, standard inventories, boss bars, and scoreboards — no custom
-resource packs, no NMS, no packets. Bedrock players get the full game:
-
-- Same commands (`/aetherfall`, `/ability`, `/shards`).
-- GUIs work on Bedrock; every GUI action also exists as a chat command.
-- Books, sounds, and particles are all vanilla.
+Everything is chat, boss-bar-free, packet-free, vanilla sounds and particles.
+Bedrock players get the full game with the same commands. Books, scoreboards,
+and potion effects all render on Bedrock.
 
 ## Install
 
-**Requirements:** Paper **26.3** (JDK **25**) + [Geyser](https://geysermc.org/)
-(optional, for Bedrock players) + Floodgate (optional).
+**Requirements:** Paper **26.3** (JDK **25**) + [Geyser](https://geysermc.org/) (optional).
 
 1. Download the jar from the [latest GitHub Actions build](../../actions)
-   (Actions → latest run → *aetherfall-jar* artifact), or build it yourself:
+   (Actions → latest run → *rea-jar* artifact), or build it yourself:
    ```bash
    mvn package   # needs JDK 25 + Maven
    ```
-2. Drop `aetherfall-1.0.0.jar` into your server's `plugins/` folder.
-3. Start the server once. It creates `plugins/Aetherfall/` with `config.yml`,
-   `codex.yml`, `quests.yml`, and `ruins.yml`.
-4. **Move the ruins** to match your world (or use the admin command below), then
-   `/aetherfall reload`.
-5. Invite your friends. The shards are waiting.
+2. Drop `rea-1.0.0.jar` into your server's `plugins/` folder.
+3. Start the server once. It creates `plugins/Rea/` with `config.yml`,
+   `codex.yml`, and `quests.yml`.
+4. As op, run **`/rea start`** to deal bloodlines to everyone online.
+5. Invite your friends. The bloodlines are waiting.
+
+> Upgrading from Aetherfall? Delete the old `plugins/Aetherfall/` folder —
+> Rea starts fresh.
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `/aetherfall` (alias `/af`) | Help + all subcommands |
-| `/aetherfall path` | View / choose your Path |
-| `/aetherfall path choose <ember\|tide\|verdant\|stone>` | Choose (or change, 50 shards) |
-| `/ability` | Use your Path ability |
-| `/aetherfall profile` | Level, shards, Codex, quests, stats |
-| `/aetherfall quests` | Current story quest + progress |
-| `/aetherfall codex` | List collected lore |
-| `/aetherfall codex read <id>` | Re-read an entry in chat |
-| `/aetherfall bounties` | Today's 3 contracts |
-| `/aetherfall ruins` | Ruins menu (travel to visited ones) |
-| `/aetherfall ruin tp <name>` | Teleport to a visited ruin (10 shards) |
-| `/aetherfall order create <name>` | Found an Order (100 shards) |
-| `/aetherfall order invite <player>` | Invite a friend |
-| `/aetherfall order accept` / `deny` | Answer an invite |
-| `/aetherfall order sethome` / `home` | Set / teleport to Order home (10 shards) |
-| `/aetherfall order info` / `list` / `leave` / `kick` / `disband` | Manage Orders |
-| `/aetherfall titles` | Earned titles menu |
-| `/aetherfall title <id>` | Wear a title |
-| `/aetherfall daily` | Daily gift (7-day streak cycle) |
-| `/aetherfall trader` | Spend shards |
-| `/shards` | Your shard balance |
-| `/aetherfall event status` | Current world event |
+| `/rea` | Help + all subcommands |
+| `/rea start` | (admin) Deal random bloodlines to everyone without one |
+| `/rea start <player>` | (admin) Deal a bloodline to one player |
+| `/rea race` | Your bloodline and its gifts |
+| `/ability` | Use your bloodline ability |
+| `/rea profile` | Level, runes, Codex, quests, stats |
+| `/rea quests` | Current story quest + progress |
+| `/rea codex` | List collected lore |
+| `/rea codex read <id>` | Re-read an entry in chat |
+| `/rea daily` | Daily rune gift (7-day streak) |
+| `/rea buy cache [n]` | Trade runes for XP caches |
+| `/runes` | Your rune balance |
 
-**Admin** (`aetherfall.admin`, default op):
+**Admin** (`rea.admin`, default op): `/rea give runes <player> <amount>`,
+`/rea reset <player>`, `/rea reload`.
 
-| Command | What it does |
-|---|---|
-| `/aetherfall ruin add <name> <codexId>` | Add a ruin at your position |
-| `/aetherfall event start <type>` / `stop` | Start / stop a world event |
-| `/aetherfall relic give <id> <player>` | Give a relic |
-| `/aetherfall give shards <player> <amount>` | Give shards |
-| `/aetherfall reset <player>` | Wipe a player's Aetherfall data |
-| `/aetherfall reload` | Reload config, Codex, quests, ruins |
-
-**Permissions:** `aetherfall.use` (default true), `aetherfall.admin` (default op).
+**Permissions:** `rea.use` (default true), `rea.admin` (default op).
 
 ## Configuration
 
-- `config.yml` — shard chances, costs, event timing, level cap, welcome/event text.
-- `codex.yml` — the 14 lore entries. **Edit the words freely.**
-- `quests.yml` — the 15 story quests (types: `CHOOSE_PATH`, `MINE`, `KILL`,
-  `CRAFT`, `VISIT`, `CODEX`, `EARN`, `REACH_LEVEL`).
-- `ruins.yml` — ruin locations. Move them, or add ruins in-game as admin.
-- Player data: `data/players/<uuid>.yml`. Orders: `data/orders.yml`.
+- `config.yml` — rune chances, costs, level cap, welcome/start messages.
+- `codex.yml` — the 13 lore entries. **Edit the words freely.**
+- `quests.yml` — the 8 story quests (types: `RACE`, `MINE`, `KILL`, `CRAFT`,
+  `CODEX`, `REACH_LEVEL`).
+- Player data: `data/players/<uuid>.yml`.
 
 ## Roadmap
 
-- Chapter IV: *The Choir* — the finale (the Song needs a choir).
-- Order wars / shared Order bank.
-- More ruins, more relics, more Codex entries.
-- Seasonal events (Winter's Quiet, Ember Week).
+- Chapter III: *The Eleventh Spark* — find the sleeping spark.
+- Bloodline mastery trees (spend XP to deepen your gift).
+- Seasonal bloodline festivals.
 
 ---
 
-*Carry the shards far apart. Trust the loud things. And when the Song starts
-again — sing with all your heart. — M.*
+*Carry the spark far. Trust the loud things. And when the Flame burns again —
+sing with all your heart.*

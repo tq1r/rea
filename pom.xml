@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.aetherfall</groupId>
-    <artifactId>aetherfall</artifactId>
+    <groupId>dev.rea</groupId>
+    <artifactId>rea</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Aetherfall</name>
-    <description>A lore-rich SMP adventure plugin for Paper 26.3 + Geyser. The shards remember.</description>
+    <name>Rea</name>
+    <description>A fantasy bloodline SMP plugin for Paper 26.3 + Geyser. The bloodlines wake.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -43,5 +43,5 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: aetherfall-jar
+          name: rea-jar
           path: target/*.jar

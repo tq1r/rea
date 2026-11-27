@@ -1,23 +1,22 @@
-name: Aetherfall
+name: Rea
 version: '1.0.0'
-main: dev.aetherfall.AetherfallPlugin
+main: dev.rea.ReaPlugin
 author: 'tq1r'
-description: 'A lore-rich SMP adventure plugin for Paper 26.3 + Geyser. The shards remember.'
+description: 'A fantasy bloodline SMP plugin for Paper 26.3 + Geyser. The bloodlines wake.'
 commands:
-  aetherfall:
-    description: Aetherfall commands
-    usage: /aetherfall <subcommand>
-    aliases: [af]
+  rea:
+    description: Rea commands
+    usage: /rea <subcommand>
   ability:
-    description: Use your Path ability
+    description: Use your bloodline ability
     usage: /ability
-  shards:
-    description: Show your Aether Shard balance
-    usage: /shards
+  runes:
+    description: Show your Rune balance
+    usage: /runes
 permissions:
-  aetherfall.use:
-    description: Use Aetherfall features
+  rea.use:
+    description: Use Rea features
     default: true
-  aetherfall.admin:
-    description: Administer Aetherfall
+  rea.admin:
+    description: Administer Rea (run /rea start, give, reset)
     default: op
