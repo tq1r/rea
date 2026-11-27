@@ -88,7 +88,14 @@ public final class RaceManager {
         data.setForm(0);
         data.setMagicules(plugin.getDataManager().maxMagicules(data));
         data.addSkill(type.getIntrinsicId());
-        // Otherworlders receive a Unique Skill on reincarnation (Slimes: Predator).
+        // Canon: Slimes have three Intrinsic Skills (Absorb, Dissolve,
+        // Self-Regeneration) — Predator is Rimuru's personal Unique Skill,
+        // not a species skill.
+        if (type == RaceType.SLIME) {
+            data.addSkill("absorb");
+            data.addSkill("self_regeneration");
+        }
+        // Otherworlders receive one random Unique Skill on reincarnation.
         SkillDef unique = plugin.getSkillManager().grantUniqueSkill(type);
         data.addSkill(unique.getId());
         data.setUniqueSkillId(unique.getId());
@@ -152,13 +159,15 @@ public final class RaceManager {
             // Demon Lord awakening: the Unique Skill evolves into an Ultimate Skill.
             SkillDef unique = data.getUniqueSkillId() != null ? plugin.getSkillManager().getSkill(data.getUniqueSkillId()) : null;
             SkillDef ultimate = plugin.getSkillManager().ultimateEvolutionOf(unique);
+            if (ultimate == null) {
+                // No verified canon chain: the skill evolves into an unknown Ultimate.
+                ultimate = plugin.getSkillManager().randomUltimate();
+            }
             if (ultimate != null) {
                 data.addSkill(ultimate.getId());
                 data.setUniqueSkillId(ultimate.getId());
                 Msg.send(player, "&bYour Unique Skill evolves into the Ultimate Skill &l" + ultimate.getName() + "&b!");
                 Msg.send(player, "&7" + ultimate.getDescription());
-            } else {
-                Msg.send(player, "&7Your Unique Skill has no known Ultimate evolution... yet.");
             }
         }
         Msg.send(player, Msg.bar());

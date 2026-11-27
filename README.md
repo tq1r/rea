@@ -11,13 +11,19 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 ## Canon rules
 
 - **Reincarnation:** `/rea start` deals a random race (Slime, Goblin, Lizardman, Orc,
-  Human, Elf, Dwarf, Dire Wolf, Serpent, Demon) and grants one **Unique Skill**
-  born of the player's desires. Slimes receive **Predator**.
-- **Predation is Slime-only:** only Predator holders devour foes to learn Common
-  Skills. Other races fight, gather EP, and evolve.
+  Human, Elf, Dwarf, Dire Wolf, Serpent, Demon) and grants one random **Unique Skill**
+  born of the player's desires. Predator is Rimuru's personal Unique Skill — it is
+  in the pool, not guaranteed to any race. Slimes as a species have Intrinsic Skills:
+  Absorb, Dissolve, Self-Regeneration.
+- **Predation belongs to Predator holders:** only players who roll the Predator
+  Unique Skill devour foes to learn Common Skills. Other races fight, gather EP,
+  and evolve.
 - **Ultimate Skills evolve from Unique Skills:** at the Demon Lord awakening,
-  Predator → Beelzebuth, Great Sage → Raphael, Infinity Prison → Uriel,
-  Starved → Azathoth.
+  Predator → Beelzebuth (Lord of Gluttony), Great Sage → Raphael (Lord of Wisdom),
+  Infinity Prison → Uriel (Lord of Vows). Other Uniques evolve into a random
+  Ultimate (Veldora, Faust, Mammon, Lucifer, Satanael, Amaterasu, Hastur, Mephisto,
+  Michael, Samael, Abaddon, Belial, Asmodeus, Sariel, Yog-Sothoth, Azazel,
+  True Hero, Azathoth, and more).
 - **Evolution:** forms evolve with EP, level, and runes along canon chains
   (Goblin → Hobgoblin → Ogre → Demon Lord, Lizardman → Dragonewt → True Dragonewt,
   Orc → High Orc → Orc Lord, Demon → Arch Demon → Demon Peer).
@@ -36,13 +42,16 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 
 ## Skills
 
-- **Intrinsic** (born with the race): Dissolve, Coercion, Scale Armor, Strengthen,
-  Second Wind, Elven Step, Stonehide, Fang Rush, Poison Breath, Hellfire.
+- **Intrinsic** (born with the race): Dissolve, Absorb, Coercion, Scale Armor,
+  Strengthen, Second Wind, Elven Step, Stonehide, Fang Rush, Poison Breath, Hellfire.
+  Slimes get the canon trio: Absorb, Dissolve, Self-Regeneration.
 - **Common** (learned by predation): Self-Regeneration, Water Blade, Voice Cannon,
-  Telepathy, Farsight, Hydraulic Propulsion.
+  Telepathy, Farsight, Hydraulic Propulsion, Magic Sense.
 - **Unique** (granted on reincarnation): Predator, Great Sage, Divine Blessing,
-  Infinity Prison, Starved, Godly Craftsman.
-- **Ultimate** (evolved at Demon Lord awakening): Beelzebuth, Raphael, Uriel, Azathoth.
+  Infinity Prison, Starved, Godly Craftsman, Truth.
+- **Ultimate** (evolved at Demon Lord awakening): Beelzebuth, Raphael, Uriel,
+  Azathoth, Veldora, Faust, Mammon, Lucifer, Satanael, Amaterasu, Hastur, Mephisto,
+  Michael, Samael, Abaddon, Belial, Asmodeus, Sariel, Yog-Sothoth, Azazel, True Hero.
 
 ## Build
 

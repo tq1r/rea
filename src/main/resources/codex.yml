@@ -31,22 +31,38 @@ codex:
     reward-ep: 10
   predator:
     title: "Predator"
-    subtitle: "The Slime's Unique Skill"
+    subtitle: "Rimuru's Unique Skill"
     pages:
+      - "Predator is a Unique Skill, not an Ultimate. Only Rimuru and Shinsha ever held it."
+      - "Slimes as a species have Intrinsic Skills: Absorb, Dissolve, Self-Regeneration."
       - "Predator devours foes and learns their Common Skills."
-      - "It belongs to the Slime path. Other races fight and evolve without it."
     reward-runes: 15
     reward-xp: 15
     reward-ep: 15
   gluttony:
     title: "Gluttony"
-    subtitle: "Predator, mastered"
+    subtitle: "Predator + Starved"
     pages:
-      - "Predator, mastered and fed on the Orc Lord, evolves into Gluttony."
+      - "Predator fused with the Orc Lord's Starved becomes Gluttony."
       - "Gluttony devours everything: skills, magicules, even souls."
+      - "Gluttony + Merciless becomes Beelzebuth, Lord of Gluttony."
     reward-runes: 15
     reward-xp: 15
     reward-ep: 15
+  ultimate_skill:
+    title: "Ultimate Skills"
+    subtitle: "The Lords"
+    pages:
+      - "Raphael, Lord of Wisdom. Beelzebuth, Lord of Gluttony. Uriel, Lord of Vows."
+      - "Veldora, Lord of Storms. Faust, Lord of Investigation. Mammon, Lord of Greed."
+      - "Lucifer, Lord of Pride. Satanael, Lord of Wrath. Amaterasu, Lord of Shimmering Flame."
+      - "Hastur, Lord of Starwind. Mephisto, Lord of Fantasy. Michael, Lord of Justice."
+      - "Samael, Lord of Deathly Poison. Abaddon, Lord of Destruction. Belial, Lord of Underworld."
+      - "Asmodeus, Lord of Lust. Sariel, Lord of Hope. Yog-Sothoth, Lord of Space-Time."
+      - "Azazel, Lord of Temptation. True Hero, Lord of Heroes. Azathoth, God of the Void."
+    reward-runes: 25
+    reward-xp: 25
+    reward-ep: 25
   beelzebuth:
     title: "Beelzebuth"
     subtitle: "Lord of Gluttony"

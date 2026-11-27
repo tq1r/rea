@@ -36,6 +36,8 @@ public final class SkillManager {
         this.plugin = plugin;
         register(new SkillDef("dissolve", "Dissolve", SkillDef.Tier.INTRINSIC,
                 "Acid melts nearby foes.", 5, 10_000, "slime"));
+        register(new SkillDef("absorb", "Absorb", SkillDef.Tier.INTRINSIC,
+                "Absorb matter into your body (Slime intrinsic).", 3, 8_000, "slime"));
         register(new SkillDef("coercion", "Coercion", SkillDef.Tier.INTRINSIC,
                 "Fear nearby foes (slow + weaken).", 5, 10_000, "goblin"));
         register(new SkillDef("scale_armor", "Scale Armor", SkillDef.Tier.INTRINSIC,
@@ -89,7 +91,41 @@ public final class SkillManager {
         register(new SkillDef("uriel", "Uriel", SkillDef.Tier.ULTIMATE,
                 "Lord of Vows: trap and strip foes, then strike.", 20, 20_000, null));
         register(new SkillDef("azathoth", "Azathoth", SkillDef.Tier.ULTIMATE,
-                "Lord of Space: blink and cut through foes.", 20, 20_000, null));
+                "God of the Void: blink and cut through foes.", 20, 20_000, null));
+        register(new SkillDef("veldora", "Veldora", SkillDef.Tier.ULTIMATE,
+                "Lord of Storms: call the storm down on your foes.", 20, 20_000, null));
+        register(new SkillDef("faust", "Faust", SkillDef.Tier.ULTIMATE,
+                "Lord of Investigation: see everything, know everything.", 20, 20_000, null));
+        register(new SkillDef("mammon", "Mammon", SkillDef.Tier.ULTIMATE,
+                "Lord of Greed: take everything, want everything.", 20, 20_000, null));
+        register(new SkillDef("lucifer", "Lucifer", SkillDef.Tier.ULTIMATE,
+                "Lord of Pride: none stand above you.", 20, 20_000, null));
+        register(new SkillDef("satanael", "Satanael", SkillDef.Tier.ULTIMATE,
+                "Lord of Wrath: burn with righteous fury.", 20, 20_000, null));
+        register(new SkillDef("amaterasu", "Amaterasu", SkillDef.Tier.ULTIMATE,
+                "Lord of Shimmering Flame: set the world alight.", 20, 20_000, null));
+        register(new SkillDef("hastur", "Hastur", SkillDef.Tier.ULTIMATE,
+                "Lord of Starwind: ride the starwind.", 20, 20_000, null));
+        register(new SkillDef("mephisto", "Mephisto", SkillDef.Tier.ULTIMATE,
+                "Lord of Fantasy: weave illusion and dream.", 20, 20_000, null));
+        register(new SkillDef("michael", "Michael", SkillDef.Tier.ULTIMATE,
+                "Lord of Justice: judgment falls on the wicked.", 20, 20_000, null));
+        register(new SkillDef("samael", "Samael", SkillDef.Tier.ULTIMATE,
+                "Lord of Deathly Poison: poison that kills gods.", 20, 20_000, null));
+        register(new SkillDef("abaddon", "Abaddon", SkillDef.Tier.ULTIMATE,
+                "Lord of Destruction: unmake everything.", 20, 20_000, null));
+        register(new SkillDef("belial", "Belial", SkillDef.Tier.ULTIMATE,
+                "Lord of Underworld: the dead serve you.", 20, 20_000, null));
+        register(new SkillDef("asmodeus", "Asmodeus", SkillDef.Tier.ULTIMATE,
+                "Lord of Lust: desire made manifest.", 20, 20_000, null));
+        register(new SkillDef("sariel", "Sariel", SkillDef.Tier.ULTIMATE,
+                "Lord of Hope: light in the darkest hour.", 20, 20_000, null));
+        register(new SkillDef("yog_sothoth", "Yog-Sothoth", SkillDef.Tier.ULTIMATE,
+                "Lord of Space-Time: bend time and space.", 20, 20_000, null));
+        register(new SkillDef("azazel", "Azazel", SkillDef.Tier.ULTIMATE,
+                "Lord of Temptation: all kneel before you.", 20, 20_000, null));
+        register(new SkillDef("true_hero", "True Hero", SkillDef.Tier.ULTIMATE,
+                "Lord of Heroes: the hero's final form.", 20, 20_000, null));
     }
 
     private void register(SkillDef def) {
@@ -136,25 +172,21 @@ public final class SkillManager {
     }
 
     /**
-     * The Unique Skill granted on reincarnation: Slimes receive Predator;
-     * every other race receives a random Unique Skill from the pool.
+     * The Unique Skill granted on reincarnation. Canon: otherworlders receive
+     * one random Unique Skill born of their desires. Predator is Rimuru's
+     * personal Unique Skill — it is in the pool, not guaranteed to any race.
+     * (Slimes as a species have Intrinsic Skills: Absorb, Dissolve,
+     * Self-Regeneration — not Predator.)
      */
     public SkillDef grantUniqueSkill(RaceType race) {
-        if (race == RaceType.SLIME) {
-            return skills.get("predator");
-        }
-        List<SkillDef> pool = new ArrayList<>();
-        for (SkillDef def : byTier(SkillDef.Tier.UNIQUE)) {
-            if (!"predator".equals(def.getId())) {
-                pool.add(def);
-            }
-        }
+        List<SkillDef> pool = byTier(SkillDef.Tier.UNIQUE);
         return pool.get(ThreadLocalRandom.current().nextInt(pool.size()));
     }
 
     /**
      * The Ultimate Skill a Unique Skill evolves into at Demon Lord awakening.
-     * Returns null when the Unique Skill has no known Ultimate evolution.
+     * Only verified canon chains are mapped; other Uniques evolve into a
+     * random Ultimate (their final form is unknown).
      */
     public SkillDef ultimateEvolutionOf(SkillDef unique) {
         if (unique == null) {
@@ -164,9 +196,14 @@ public final class SkillManager {
             case "predator" -> skills.get("beelzebuth");
             case "great_sage" -> skills.get("raphael");
             case "infinity_prison" -> skills.get("uriel");
-            case "starved" -> skills.get("azathoth");
             default -> null;
         };
+    }
+
+    /** A random Ultimate Skill (for Uniques with no known evolution). */
+    public SkillDef randomUltimate() {
+        List<SkillDef> pool = byTier(SkillDef.Tier.ULTIMATE);
+        return pool.get(ThreadLocalRandom.current().nextInt(pool.size()));
     }
 
     /** Common Skills a devoured foe can teach (predation). */
@@ -363,6 +400,122 @@ public final class SkillManager {
                     }
                 }
                 player.getWorld().spawnParticle(Particle.SPLASH, dest, 40, 2, 2, 2, 0.3);
+            }
+            case "veldora" -> {
+                for (Entity e : player.getNearbyEntities(6, 6, 6)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(7.0, player);
+                        le.setVelocity(loc.getDirection().multiply(1.5).setY(0.8));
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "faust" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 600, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "mammon" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "lucifer" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 200, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "satanael" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "amaterasu" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.setFireTicks(200);
+                        le.damage(6.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "hastur" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 300, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 300, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "mephisto" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 600, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "michael" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 200, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "samael" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 1));
+                        le.damage(4.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "abaddon" -> {
+                for (Entity e : player.getNearbyEntities(6, 6, 6)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(10.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 60, 3, 3, 3, 0.4);
+            }
+            case "belial" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 100, 0));
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 1));
+                        le.damage(4.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "asmodeus" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "sariel" -> {
+                player.setHealth(Math.min(20.0, player.getHealth() + 8.0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 200, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "yog_sothoth" -> {
+                Location dest = loc.clone().add(loc.getDirection().multiply(10));
+                player.teleport(dest);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 2));
+                player.getWorld().spawnParticle(Particle.SPLASH, dest, 40, 2, 2, 2, 0.3);
+            }
+            case "azazel" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 1));
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 1));
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "true_hero" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "absorb" -> {
+                player.setHealth(Math.min(20.0, player.getHealth() + 2.0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
             }
             default -> {
                 player.getWorld().spawnParticle(Particle.SPLASH, loc, 10, 1, 1, 1, 0.1);
