@@ -16,6 +16,7 @@ import dev.rea.skill.SkillManager;
 import dev.rea.update.UpdateManager;
 import dev.rea.util.ItemFactory;
 import dev.rea.util.Keys;
+import dev.rea.trader.TraderManager;
 import dev.rea.weapon.WeaponManager;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,6 +42,7 @@ public final class ReaPlugin extends JavaPlugin {
     private WeaponManager weaponManager;
     private DungeonManager dungeonManager;
     private UpdateManager updateManager;
+    private TraderManager traderManager;
 
     @Override
     public void onEnable() {
@@ -58,6 +60,7 @@ public final class ReaPlugin extends JavaPlugin {
         weaponManager = new WeaponManager(this);
         dungeonManager = new DungeonManager(this);
         updateManager = new UpdateManager(this);
+        traderManager = new TraderManager(this);
 
         ReaCommand command = new ReaCommand(this);
         PluginCommand root = getCommand("rea");
@@ -145,5 +148,9 @@ public final class ReaPlugin extends JavaPlugin {
 
     public UpdateManager getUpdateManager() {
         return updateManager;
+    }
+
+    public TraderManager getTraderManager() {
+        return traderManager;
     }
 }

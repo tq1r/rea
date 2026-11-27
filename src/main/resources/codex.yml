@@ -179,6 +179,17 @@ codex:
     reward-runes: 10
     reward-xp: 10
     reward-ep: 10
+  kurobe:
+    title: "Kurobe the Forge"
+    subtitle: "Dwarven blacksmith of Tempest"
+    pages:
+      - "Kurobe forged Gorikimaru for Shion — an impractically large ōdachi the whole Federation knows by sight."
+      - "Rimuru bestowed a name upon him. A named soul sharpens; a Demon Lord's naming never dulls."
+      - "He later reforged it as True Gorikimaru, a Legend-grade blade."
+      - "Your own specialists can walk the same road. Name a villager, then train them: /rea trader specialize, /rea trader train."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15
   true_dragons:
     title: "True Dragons"
     subtitle: "The oldest beings in existence"

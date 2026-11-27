@@ -81,7 +81,7 @@ Auto-update only works if the latest GitHub **release has a `.jar` asset attache
 - `/rea ability` — cast your intrinsic skill.
 - `/rea profile` — level, rank, EP, magicules, runes, codex, stats.
 - `/rea quests` — the story so far.
-- `/rea codex [read <id>]` — the 25 entries of Tensura's world.
+- `/rea codex [read <id>]` — the 26 entries of Tensura's world.
 - `/rea daily` — daily rune gift.
 - `/rea buy cache [n]` — trade runes for XP.
 - `/rea runes` — your balance.
@@ -89,6 +89,10 @@ Auto-update only works if the latest GitHub **release has a `.jar` asset attache
 - `/rea dungeon enter <id>` — enter a ruin (15-minute cooldown).
 - `/rea dungeon leave` — abandon a run (no rewards).
 - `/rea weapons` — the cardinal weapons of legend.
+- `/rea trader specialize <role> <name>` — name a villager (NPC-style) as your specialist.
+- `/rea trader train` — train the targeted specialist a tier (Novice → Apprentice → Journeyman → Master).
+- `/rea trader rename <name>` — rename your specialist.
+- `/rea trader info` — inspect the targeted specialist.
 - `/rea update` — (admin) check GitHub for a new Rea release now.
 - `/ability`, `/runes` — shortcuts.
 
@@ -118,6 +122,23 @@ Fourteen named weapons, from Unique to Genesis grade:
 - **Genesis:** Asura (天魔) — Veldanava's scimitar, Milim's treasure.
 
 Cardinal weapons grant **+10% EP** while held. The dungeons guard them all.
+
+## Named villagers (Rimuru's Naming, for farmers and smiths alike)
+
+Name an ordinary villager as your specialist — like Rimuru named Kurobe — and mentor them
+to greatness. Specialists are persistent (works across restarts), cost runes, and unlock
+strictly better wares at each tier.
+
+- `/rea trader specialize <blacksmith|farmer|alchemist|scribe> <name...>` — claim a villager you're looking at (100 runes).
+- `/rea trader train` — Novice → Apprentice → Journeyman → Master (100 / 250 / 500 runes per step).
+- `/rea trader rename <name...>` and `/rea trader info`.
+
+What each master offers:
+
+- **Blacksmith** — irons and diamonds → rune caches and netherite → Master: **Dragon Slayer** (48 emeralds + netherite block) and **True Gorikimaru** (96 emeralds + 2 blocks).
+- **Farmer** — wheat and bread → golden carrots → golden apples → Master: **enchanted golden apple**.
+- **Alchemist** — brewing reagents → experience bottles → rune caches → Master: **the Nether Star** (64 emeralds + blaze rod).
+- **Scribe** — paper and books → rune caches → Master: codex tomes (*Jura Tempest Federation*, *True Dragons*, *Cardinal Weapons*).
 
 ## Skills
 

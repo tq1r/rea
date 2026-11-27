@@ -101,6 +101,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             }
             case "dungeon" -> dungeon(sender, args);
             case "weapons" -> weapons(sender);
+            case "trader" -> trader(sender, args);
             case "update" -> update(sender);
             case "give" -> give(sender, args);
             case "reset" -> reset(sender, args);
@@ -131,6 +132,11 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&e/rea dungeon leave &7- abandon the ruin (no rewards)");
         Msg.send(sender, "&e/rea weapons &7- the cardinal weapons of legend");
         Msg.send(sender, "&e/rea update &7- (admin) check GitHub for a new Rea release");
+        Msg.send(sender, "&dNamed villagers &7(Rimuru's naming):");
+        Msg.send(sender, "&e/rea trader specialize <role> <name> &7- name a villager (blacksmith|farmer|alchemist|scribe)");
+        Msg.send(sender, "&e/rea trader train &7- train the targeted specialist a tier");
+        Msg.send(sender, "&e/rea trader rename <name> &7- rename your specialist");
+        Msg.send(sender, "&e/rea trader info &7- inspect the targeted specialist");
         Msg.send(sender, Msg.bar());
     }
 
@@ -453,6 +459,40 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, Msg.bar());
     }
 
+    private void trader(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            Msg.send(sender, "&cOnly players can name specialists.");
+            return;
+        }
+        if (args.length < 2) {
+            Msg.send(player, "&dNamed villagers: &e/rea trader specialize <role> <name>|train|rename|info");
+            Msg.send(player, "&7Roles: &eblacksmith &7(arms & cardinal weapons), &efarmer &7(food & gilded apples), &ealchemist &7(brewing reagents), &escribe &7(codex tomes)");
+            return;
+        }
+        String action = args[1].toLowerCase();
+        switch (action) {
+            case "specialize" -> {
+                if (args.length < 4) {
+                    Msg.send(player, "&e/rea trader specialize <blacksmith|farmer|alchemist|scribe> <name...>");
+                    return;
+                }
+                String name = String.join(" ", java.util.Arrays.copyOfRange(args, 3, args.length));
+                plugin.getTraderManager().specialize(player, args[2], name);
+            }
+            case "rename" -> {
+                if (args.length < 3) {
+                    Msg.send(player, "&e/rea trader rename <name...>");
+                    return;
+                }
+                String name = String.join(" ", java.util.Arrays.copyOfRange(args, 2, args.length));
+                plugin.getTraderManager().rename(player, name);
+            }
+            case "train" -> plugin.getTraderManager().train(player);
+            case "info" -> plugin.getTraderManager().info(player);
+            default -> Msg.send(player, "&cUnknown trader subcommand. &e/rea trader");
+        }
+    }
+
     private void update(CommandSender sender) {
         if (!sender.hasPermission("rea.admin")) {
             Msg.send(sender, "&cNo permission.");
@@ -479,7 +519,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return out;
         }
         if (args.length == 1) {
-            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "dungeon", "weapons", "update", "give", "reset", "reload")) {
+            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "dungeon", "weapons", "trader", "update", "give", "reset", "reload")) {
                 if (sub.startsWith(args[0].toLowerCase())) {
                     out.add(sub);
                 }
@@ -507,6 +547,13 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                         }
                     }
                 }
+                case "trader" -> {
+                    for (String sub : List.of("specialize", "rename", "train", "info")) {
+                        if (sub.startsWith(args[1].toLowerCase())) {
+                            out.add(sub);
+                        }
+                    }
+                }
                 case "codex" -> {
                     if ("read".startsWith(args[1].toLowerCase())) {
                         out.add("read");
@@ -529,6 +576,12 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             for (DungeonDef def : plugin.getDungeonManager().all().values()) {
                 if (def.id().startsWith(args[2].toLowerCase())) {
                     out.add(def.id());
+                }
+            }
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("trader") && args[1].equalsIgnoreCase("specialize")) {
+            for (String role : List.of("blacksmith", "farmer", "alchemist", "scribe")) {
+                if (role.startsWith(args[2].toLowerCase())) {
+                    out.add(role);
                 }
             }
         }
