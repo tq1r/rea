@@ -13,6 +13,7 @@ import dev.rea.quest.QuestManager;
 import dev.rea.race.RaceManager;
 import dev.rea.scoreboard.ScoreboardManager;
 import dev.rea.skill.SkillManager;
+import dev.rea.update.UpdateManager;
 import dev.rea.util.ItemFactory;
 import dev.rea.util.Keys;
 import dev.rea.weapon.WeaponManager;
@@ -39,6 +40,7 @@ public final class ReaPlugin extends JavaPlugin {
     private EvolveGui evolveGui;
     private WeaponManager weaponManager;
     private DungeonManager dungeonManager;
+    private UpdateManager updateManager;
 
     @Override
     public void onEnable() {
@@ -55,6 +57,7 @@ public final class ReaPlugin extends JavaPlugin {
         evolveGui = new EvolveGui(this);
         weaponManager = new WeaponManager(this);
         dungeonManager = new DungeonManager(this);
+        updateManager = new UpdateManager(this);
 
         ReaCommand command = new ReaCommand(this);
         PluginCommand root = getCommand("rea");
@@ -78,6 +81,7 @@ public final class ReaPlugin extends JavaPlugin {
         raceManager.startPassiveTask();
         dataManager.startAutosave();
         dataManager.startMagiculeRegen();
+        updateManager.start();
         getLogger().info("Rea awakened. The magicules stir.");
     }
 
@@ -137,5 +141,9 @@ public final class ReaPlugin extends JavaPlugin {
 
     public DungeonManager getDungeonManager() {
         return dungeonManager;
+    }
+
+    public UpdateManager getUpdateManager() {
+        return updateManager;
     }
 }

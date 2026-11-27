@@ -14,6 +14,12 @@ settings:
   cache-xp: 40
   dungeon-cooldown-minutes: 15
   cardinal-ep-bonus: 1.10
+  # Auto-update: on boot (and every <hours> after), Rea checks GitHub Releases
+  # for a newer version. If found, the new jar is staged in plugins/update/
+  # and Paper swaps it in on the NEXT restart (the running jar is never
+  # replaced underneath you). Set false to disable.
+  auto-update: true
+  auto-update-hours: 6
 
 messages:
   welcome-no-race:

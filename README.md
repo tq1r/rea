@@ -52,6 +52,25 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 - **Cardinal weapons:** named, high-grade armaments of the Tensura world — won in
   the dungeons, never bought. Hold one for **+10% EP**.
 
+## Auto-update
+
+Rea checks GitHub Releases on boot and every 6 hours (configurable):
+
+- If a **newer** release exists, its jar is downloaded to `plugins/update/`.
+  **Paper applies it on the next restart** — the running jar is never replaced underneath you.
+- Ops are notified in-game once per session when an update has been staged.
+- Disable with `settings.auto-update: false` in `config.yml`; change the interval with `settings.auto-update-hours`.
+- Manual check any time: `/rea update` (requires `rea.admin`).
+
+Auto-update only works if the latest GitHub **release has a `.jar` asset attached**.
+
+### Publishing a release (maintainers)
+
+1. Push a tag: `git tag v1.1.0 && git push origin v1.1.0`
+2. The CI workflow builds `rea-1.1.0.jar` and uploads it as the `rea-jar` artifact.
+3. Create a GitHub Release for the tag and **attach that jar** to it.
+4. Every server running Rea will pick it up automatically on its next restart.
+
 ## Commands
 
 - `/rea start` — (admin) reincarnate everyone with random races and Unique Skills.
@@ -70,6 +89,7 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 - `/rea dungeon enter <id>` — enter a ruin (15-minute cooldown).
 - `/rea dungeon leave` — abandon a run (no rewards).
 - `/rea weapons` — the cardinal weapons of legend.
+- `/rea update` — (admin) check GitHub for a new Rea release now.
 - `/ability`, `/runes` — shortcuts.
 
 ## Dungeons

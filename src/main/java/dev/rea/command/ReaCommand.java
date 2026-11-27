@@ -101,6 +101,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             }
             case "dungeon" -> dungeon(sender, args);
             case "weapons" -> weapons(sender);
+            case "update" -> update(sender);
             case "give" -> give(sender, args);
             case "reset" -> reset(sender, args);
             case "reload" -> reload(sender);
@@ -129,6 +130,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, "&e/rea dungeon enter <id> &7- dive into a ruin");
         Msg.send(sender, "&e/rea dungeon leave &7- abandon the ruin (no rewards)");
         Msg.send(sender, "&e/rea weapons &7- the cardinal weapons of legend");
+        Msg.send(sender, "&e/rea update &7- (admin) check GitHub for a new Rea release");
         Msg.send(sender, Msg.bar());
     }
 
@@ -451,6 +453,14 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         Msg.send(sender, Msg.bar());
     }
 
+    private void update(CommandSender sender) {
+        if (!sender.hasPermission("rea.admin")) {
+            Msg.send(sender, "&cNo permission.");
+            return;
+        }
+        plugin.getUpdateManager().checkNow(sender);
+    }
+
     private void reload(CommandSender sender) {
         if (!sender.hasPermission("rea.admin")) {
             Msg.send(sender, "&cNo permission.");
@@ -469,7 +479,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return out;
         }
         if (args.length == 1) {
-            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "dungeon", "weapons", "give", "reset", "reload")) {
+            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "dungeon", "weapons", "update", "give", "reset", "reload")) {
                 if (sub.startsWith(args[0].toLowerCase())) {
                     out.add(sub);
                 }
