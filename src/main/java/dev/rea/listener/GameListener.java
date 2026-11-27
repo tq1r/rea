@@ -48,6 +48,7 @@ public final class GameListener implements Listener {
         PlayerData data = plugin.getDataManager().get(player);
         data.setName(player.getName());
         plugin.getRaceManager().applyPassives(player);
+        plugin.getArmorManager().applyWorn(player);
         plugin.getSkillManager().reissueOrbs(player);
         plugin.getHudManager().update(player);
         if (data.getRace() == null) {
@@ -220,7 +221,7 @@ public final class GameListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker) {
             PlayerData data = plugin.getDataManager().get(attacker);
-            double bonus = data.getForm() * 0.5 + plugin.getDataManager().rankIndex(data) * 0.3;
+            double bonus = data.getForm() * 0.5;
             if ("orc".equals(data.getRace())) {
                 bonus += 2.0;
             }

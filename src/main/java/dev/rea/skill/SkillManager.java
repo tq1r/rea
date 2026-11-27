@@ -209,7 +209,9 @@ public final class SkillManager {
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         grantOrb(player, def);
         if (def.getMagiculeCost() > 0 || def.getCooldownMillis() > 0) {
-            Msg.send(player, "&7Orb gained — hold it out and use it.");
+            Msg.send(player, "&7Active skill — orb gained. Hold it out and use it to cast.");
+        } else {
+            Msg.send(player, "&aPassive — always with you. No orb needed.");
         }
         plugin.getDataManager().save(data);
     }

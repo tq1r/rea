@@ -59,6 +59,7 @@ public final class AdminGuiListener implements Listener {
                 case "menu:select" -> gui.openSelect(admin);
                 case "menu:race" -> gui.openRace(admin);
                 case "menu:skills" -> gui.openSkills(admin);
+                case "menu:gear" -> gui.openGear(admin);
                 case "menu:resources" -> gui.openResources(admin);
                 case "menu:lore" -> gui.openLore(admin);
                 case "menu:gameplay" -> gui.openGameplay(admin);
@@ -136,6 +137,19 @@ public final class AdminGuiListener implements Listener {
                 }
                 gui.openRace(admin);
             }
+            case "gear" -> {
+                String piece = parts.length > 2 ? parts[2] : null;
+                java.util.List<ItemStack> items = plugin.getArmorManager().grant(piece);
+                if (items.isEmpty()) {
+                    Msg.send(admin, "&cUnknown gear: " + piece);
+                    return;
+                }
+                for (ItemStack item : items) {
+                    Util.giveItem(target, item);
+                }
+                Msg.send(admin, "&aGranted &d" + items.size() + " &7Tempest Sovereign piece(s) to &f" + target.getName() + "&7.");
+                gui.openGear(admin);
+            }
             case "skill" -> {
                 switch (parts[1]) {
                     case "grant_all" -> {
@@ -194,7 +208,7 @@ public final class AdminGuiListener implements Listener {
                         case "wipe_ep" -> {
                             data.setEp(0);
                             plugin.getDataManager().save(data);
-                            Msg.send(admin, "&aWiped EP for &f" + target.getName() + "&7. Rank is F again.");
+                            Msg.send(admin, "&aWiped EP for &f" + target.getName() + "&7.");
                         }
                         default -> Msg.send(admin, "&cUnknown resource.");
                     }

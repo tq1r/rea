@@ -165,6 +165,14 @@ public final class DungeonManager {
         plugin.getDataManager().addRunes(player, def.runeReward());
         plugin.getDataManager().addXp(player, def.xpReward());
         plugin.getDataManager().addEp(player, def.epReward());
+        ItemStack armor = plugin.getArmorManager().rollDrop(def.tier());
+        if (armor != null) {
+            String piece = plugin.getArmorManager().pieceOf(armor);
+            dev.rea.armor.ArmorManager.ArmorDef def2 = piece != null ? plugin.getArmorManager().get(piece) : null;
+            Msg.send(player, "&5&lMythic drop! &dYou claim the &l"
+                    + (def2 != null ? def2.name() : "Tempest Sovereign") + "&d.");
+            Util.giveItem(player, armor);
+        }
         ItemStack weapon = plugin.getWeaponManager().rollWeapon(def.tier(), def.weaponChance());
         if (weapon != null) {
             WeaponDef found = plugin.getWeaponManager().weaponOf(weapon);

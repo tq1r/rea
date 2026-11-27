@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.0 — Vanilla PvP first, plain language (2026-11-27)
+
+- **Removed the Tensura rank ladder (F → SSS)** everywhere — profile, skills menu, EP threshold announcements, PvP damage bonus. EP remains the evolution currency; nothing else changes about progression.
+- **PvP philosophy, enforced in numbers**: Rea augments vanilla PvP, never replaces it. Racial damage bonus = form (small) + Orc +2; the rank term is gone. Cardinal weapons keep +10% EP.
+- **Reincarnation now explains itself**: after the race intro you always get `Here's your quest: <name> — <description>` with a `/rea quests` pointer, so the first thing you see is a thing to do.
+- **Skills menu spells it out**: every skill is labelled `Active — hold your Skill Orb` or `Passive — always with you, no orb needed`. Passives never receive orbs (both the grant path and the lore say so).
+- **NEW — Mythic armor: the Tempest Sovereign set.** Crown (Night Vision), Aegis (Resistance I), Greaves (Speed I), Striders (Jump Boost I); all four → Strength I. Unbreakable netherite (Protection IV), won from dungeon victories (Ogre Hunt 5%, Orc Fortress 10%, Vál Velmyra 18%), admin-grantable via `/rea admin` → **Gear & Relics**.
+- README documents the design rule and the new set; ranks removed; quickstart updated.
+
 ## v1.0.2 — Revamp for readability (2026-11-27)
 
 - **In-game guide**: `/rea help` is now a 7-line tour (reincarnate → fight → cast orbs → evolve), with an admin appendix when you have `rea.admin`.

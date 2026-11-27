@@ -85,7 +85,7 @@ public final class SkillsGui {
             meta.setDisplayName(Msg.c(race.getColor() + "&l" + race.formName(data.getForm())));
             List<String> lore = new ArrayList<>();
             lore.add(Msg.c("&8" + race.getDisplayName()));
-            lore.add(Msg.c("&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp()));
+            lore.add(Msg.c("&7EP: &d" + data.getEp()));
             lore.add(Msg.c("&7Magicules: &b" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data)));
             lore.add(Msg.c("&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)"));
             lore.add(Msg.c("&7Runes: &d" + data.getRunes()));
@@ -116,11 +116,13 @@ public final class SkillsGui {
             List<String> lore = new ArrayList<>();
             lore.add(Msg.c("&8Tier: &7" + def.getTier()));
             lore.add(Msg.c("&7" + def.getDescription()));
-            if (def.getMagiculeCost() > 0) {
-                lore.add(Msg.c("&8Cost: &b" + (int) def.getMagiculeCost() + " magicules"));
-                lore.add(Msg.c("&eClick to cast"));
+            if (def.getMagiculeCost() > 0 || def.getCooldownMillis() > 0) {
+                if (def.getMagiculeCost() > 0) {
+                    lore.add(Msg.c("&8Cost: &b" + (int) def.getMagiculeCost() + " magicules"));
+                }
+                lore.add(Msg.c("&bActive &8— &7hold your Skill Orb and use it to cast."));
             } else {
-                lore.add(Msg.c("&7Passive — always with you."));
+                lore.add(Msg.c("&aPassive &8— &7always with you. No orb needed (or given)."));
             }
             meta.setLore(lore);
             item.setItemMeta(meta);

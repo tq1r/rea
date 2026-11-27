@@ -96,6 +96,9 @@ public final class AdminGui {
         inv.setItem(12, item(Material.BEACON, "&b&lSkills",
                 List.of("&7Grant or wipe every skill,", "&7refill magicules."),
                 "menu:skills"));
+        inv.setItem(13, item(Material.IRON_CHESTPLATE, "&5&lGear & Relics",
+                List.of("&7Grant the Tempest Sovereign", "&7mythic armor set."),
+                "menu:gear"));
         inv.setItem(14, item(Material.EMERALD, "&a&lResources",
                 List.of("&7Runes, XP, levels,", "&7Rune Caches and EP."),
                 "menu:resources"));
@@ -164,6 +167,25 @@ public final class AdminGui {
         admin.openInventory(inv);
     }
 
+    public void openGear(Player admin) {
+        clearPending(admin);
+        Inventory inv = Bukkit.createInventory(null, 27, Msg.c("&8Rea Admin · Gear & Relics"));
+        inv.setItem(10, item(Material.NETHERITE_HELMET, "&5&lSovereign's Crown",
+                List.of("&7Night Vision while worn."), "gear:armor:crown"));
+        inv.setItem(11, item(Material.NETHERITE_CHESTPLATE, "&5&lSovereign's Aegis",
+                List.of("&7Resistance I while worn."), "gear:armor:aegis"));
+        inv.setItem(12, item(Material.NETHERITE_LEGGINGS, "&5&lSovereign's Greaves",
+                List.of("&7Speed I while worn."), "gear:armor:greaves"));
+        inv.setItem(13, item(Material.NETHERITE_BOOTS, "&5&lSovereign's Striders",
+                List.of("&7Jump Boost I while worn."), "gear:armor:striders"));
+        inv.setItem(16, item(Material.NETHERITE_CHESTPLATE, "&d&lFULL SET — all four",
+                List.of("&7Crown, Aegis, Greaves, Striders.", "&7Wearing all four grants &fStrength I&7."),
+                "gear:armor:set"));
+        inv.setItem(18, back());
+        inv.setItem(22, targetEcho(admin));
+        admin.openInventory(inv);
+    }
+
     public void openSkills(Player admin) {
         clearPending(admin);
         Inventory inv = Bukkit.createInventory(null, 27, Msg.c("&8Rea Admin · Skills"));
@@ -191,7 +213,7 @@ public final class AdminGui {
         inv.setItem(11, item(Material.AMETHYST_SHARD, "&dRune Cache ×1", List.of("&7Give 1 Rune Cache."), "resources:cache:1"));
         inv.setItem(12, item(Material.AMETHYST_CLUSTER, "&dRune Cache ×16", List.of("&7Give 16 Rune Caches."), "resources:cache:16"));
         inv.setItem(13, item(Material.BUDDING_AMETHYST, "&dRune Cache ×64", List.of("&7Give 64 Rune Caches."), "resources:cache:64"));
-        inv.setItem(15, item(Material.BARRIER, "&4Wipe EP", List.of("&7Set Existence Points to 0.", "&cRank falls back to F."), "resources:wipe_ep"));
+        inv.setItem(15, item(Material.BARRIER, "&4Wipe EP", List.of("&7Set Existence Points to 0."), "resources:wipe_ep"));
         inv.setItem(18, back());
         inv.setItem(22, targetEcho(admin));
         admin.openInventory(inv);

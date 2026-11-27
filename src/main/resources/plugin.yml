@@ -1,5 +1,5 @@
 name: Rea
-version: '1.0.2'
+version: '1.1.0'
 main: dev.rea.ReaPlugin
 api-version: '26.3'
 load: POSTWORLD

@@ -9,7 +9,7 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and action bars only
 
 ## Quickstart (5 minutes)
 
-1. Download `rea-1.0.2.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) → drop it in `plugins/` → restart.
+1. Download `rea-1.1.0.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) → drop it in `plugins/` → restart.
 2. Console or in-game as an op: **`/rea start`** — every online (and future) wanderer reincarnates as a random Tensura race with a Unique Skill.
 3. Tell your players three things:
    - **`/ability`** opens the Skills menu — evolve there.
@@ -21,12 +21,12 @@ That is the whole install. No config editing is required for a normal server.
 ## How a life works (the 30-second loop)
 
 1. **Reincarnate** — `/rea start` (admin) deals a random race + one random Unique Skill.
-2. **Fight** — slaying monsters grants **EP** (raises your Tensura rank: F → SSS), **XP** (levels) and runes. Predator holders also devour foes to learn Common Skills.
+2. **Fight** — slaying monsters grants **EP**, **XP** (levels) and runes. Predator holders also devour foes to learn Common Skills.
 3. **Cast** — learned active skills materialize as **Skill Orbs** in your pack: prismarine crystals bound to your soul. Hold one out and use it; magicules are the fuel; cooldowns apply; orbs are never consumed and re-appear on join if lost.
 4. **Evolve** — `/ability` → the beacon slot. Meet the EP/level/rune cost and click Evolve. Each form is stronger; at Demon Lord your Unique Skill becomes an **Ultimate Skill** (Predator → Beelzebuth, Great Sage → Raphael, and so on).
 5. **Risk it** — three ruins (`/rea dungeon`) guard Tensura's named, cardinal weapons.
 
-Profile is always one `/rea` away: race, form, EP to next rank, magicules, runes, codex and quest progress.
+Profile is always one `/rea` away: race, form, EP, magicules, runes, codex and quest progress.
 
 ## Anti-lag
 
@@ -41,7 +41,7 @@ spam. For the server around it:
 
 ## Install
 
-1. Download `rea-1.0.2.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) or build it with `mvn -B package`.
+1. Download `rea-1.1.0.jar` from the [latest release](https://github.com/tq1r/rea/releases/latest) or build it with `mvn -B package`.
 2. Drop the jar into your server's `plugins/` folder.
 3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
 4. Optional: **Geyser** for Bedrock players — Rea runs on Bedrock/MCPE through Geyser (see below).
@@ -98,7 +98,6 @@ Out of the box, Bedrock players get the full game. Known limits, honestly:
 - **Evolution:** forms evolve with EP, level, and runes along canon chains
   (Goblin → Hobgoblin → Ogre → Demon Lord, Lizardman → Dragonewt → True Dragonewt,
   Orc → High Orc → Orc Lord, Demon → Arch Demon → Demon Peer).
-- **Ranks:** EP ranks F, E, D, C, B, A, S, SS, SSS.
 - **Naming (Rimuru-style):** a demon lord names a soul, granting humanization and a
   power spike. Rea's Demon Lord awakening does the same for your skills.
 - **Cardinal weapons:** named, high-grade armaments of the Tensura world — won in
@@ -130,7 +129,7 @@ commands.
 
 | Command | What it does |
 | --- | --- |
-| `/rea` | Your profile card: race, form, EP, rank, runes, codex, quests |
+| `/rea` | Your profile card: race, form, EP, magicules, runes, codex, quests |
 | `/rea quests` | Your current quest and progress |
 | `/rea codex [read <id>]` | The 26 entries of Tensura's world |
 | `/rea dungeon` | Menu of the ruins — click a ruin to dive |
@@ -170,6 +169,27 @@ Fourteen named weapons, from Unique to Genesis grade:
 - **Genesis:** Asura (天魔) — Veldanava's scimitar, Milim's treasure.
 
 Cardinal weapons grant **+10% EP** while held. The dungeons guard them all.
+
+## Mythic armor — the Tempest Sovereign set
+
+Four relic plates from the founding treasury of the Jura Tempest Federation,
+won **only** in the ruins (or granted by an admin):
+
+| Piece | Slot | While worn |
+| --- | --- | --- |
+| **Sovereign's Crown** | helmet | Night Vision |
+| **Sovereign's Aegis** | chestplate | Resistance I |
+| **Sovereign's Greaves** | leggings | Speed I |
+| **Sovereign's Striders** | boots | Jump Boost I |
+
+Wear all four and the set grants **Strength I** on top. Pieces are Unbreakable
+netherite with Protection IV, marked with persistent-data tags (ordinary armor
+never fakes them), and their buffs are refreshed as 11-second effects — same as
+racial passives — so they behave on both Java and Bedrock. Drop chances per
+dungeon victory: Ogre Hunt 5%, Orc Lord's Fortress 10%, Vál Velmyra 18%.
+
+They amplify vanilla PvP; they do not replace it. That is the design rule for
+the whole plugin: **Rea turns the dial, vanilla stays the game.**
 
 ## Named villagers (Rimuru's Naming, for farmers and smiths alike)
 

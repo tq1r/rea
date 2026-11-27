@@ -14,6 +14,7 @@ import dev.rea.listener.GuiListener;
 import dev.rea.quest.QuestManager;
 import dev.rea.race.RaceManager;
 import dev.rea.hud.HudManager;
+import dev.rea.armor.ArmorManager;
 import dev.rea.skill.SkillManager;
 import dev.rea.update.UpdateManager;
 import dev.rea.util.ItemFactory;
@@ -46,6 +47,7 @@ public final class ReaPlugin extends JavaPlugin {
     private DungeonManager dungeonManager;
     private UpdateManager updateManager;
     private TraderManager traderManager;
+    private ArmorManager armorManager;
 
     @Override
     public void onEnable() {
@@ -66,6 +68,7 @@ public final class ReaPlugin extends JavaPlugin {
         dungeonManager = new DungeonManager(this);
         updateManager = new UpdateManager(this);
         traderManager = new TraderManager(this);
+        armorManager = new ArmorManager(this);
 
         ReaCommand command = new ReaCommand(this);
         PluginCommand root = getCommand("rea");
@@ -160,5 +163,9 @@ public final class ReaPlugin extends JavaPlugin {
 
     public TraderManager getTraderManager() {
         return traderManager;
+    }
+
+    public ArmorManager getArmorManager() {
+        return armorManager;
     }
 }

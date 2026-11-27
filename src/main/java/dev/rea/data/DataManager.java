@@ -76,48 +76,7 @@ public final class DataManager {
         return (int) Math.min(1500, max);
     }
 
-    /** Tensura monster ranks from EP. */
-    public String rank(PlayerData data) {
-        long ep = data.getEp();
-        if (ep >= 100000) return "SSS";
-        if (ep >= 50000) return "SS";
-        if (ep >= 20000) return "S";
-        if (ep >= 10000) return "A";
-        if (ep >= 5000) return "B";
-        if (ep >= 2000) return "C";
-        if (ep >= 500) return "D";
-        if (ep >= 100) return "E";
-        return "F";
-    }
-
-    /** @return EP still needed to reach the next rank, or null when already SSS. */
-    public Long nextRankEp(PlayerData data) {
-        long ep = data.getEp();
-        long[] marks = {100, 500, 2000, 5000, 10000, 20000, 50000, 100000};
-        String[] next = {"E", "D", "C", "B", "A", "S", "SS", "SSS"};
-        for (int i = 0; i < marks.length; i++) {
-            if (ep < marks[i]) {
-                return marks[i] - ep;
-            }
-        }
-        return null;
-    }
-
-    public int rankIndex(PlayerData data) {
-        return switch (rank(data)) {
-            case "F" -> 0;
-            case "E" -> 1;
-            case "D" -> 2;
-            case "C" -> 3;
-            case "B" -> 4;
-            case "A" -> 5;
-            case "S" -> 6;
-            case "SS" -> 7;
-            default -> 8;
-        };
-    }
-
-    /** Gain Existential Points. Predator and Truth make them flow faster. */
+    /** Gain Existence Points. Predator and Truth make them flow faster. */
     public void addEp(Player player, long amount) {
         if (amount <= 0) {
             return;
@@ -135,13 +94,7 @@ public final class DataManager {
             multiplied *= plugin.getConfig().getDouble("settings.cardinal-ep-bonus", 1.10);
         }
         long gained = Math.max(1, Math.round(multiplied));
-        String before = rank(data);
         data.setEp(data.getEp() + gained);
-        String after = rank(data);
-        if (!before.equals(after)) {
-            Msg.send(player, "&d&lYour rank rises: &l" + before + " -> " + after + "!");
-            player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
-        }
         plugin.getQuestManager().checkCompletion(player);
     }
 

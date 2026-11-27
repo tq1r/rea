@@ -70,7 +70,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
     private void help(CommandSender sender) {
         Msg.send(sender, "&d&lRea &7- your journey from slime to Demon Lord");
         Msg.send(sender, "&71. &fReincarnate: &7an admin runs &e/rea start&7 — you get a random race and a Unique Skill.");
-        Msg.send(sender, "&72. &fFight: &7slaying monsters grants &dEP&7 (rank), &eXP&7 (level) and runes; devouring with Predator teaches new skills.");
+        Msg.send(sender, "&72. &fFight: &7slaying monsters grants &dEP&7, &eXP&7 and runes; devouring with Predator teaches new skills.");
         Msg.send(sender, "&73. &fCast: &fhold your Skill Orb out and use it &7(right-click Java · hold-and-press Bedrock). Your magicules fuel it.");
         Msg.send(sender, "&74. &fEvolve: &f/ability &7(or &e/talents&7) — meet the EP, level and rune costs, click Evolve, grow a form. Demon Lord = Ultimate Skill.");
         Msg.send(sender, "&7Check yourself: &e/rea&7 profile · &e/rea quests&7 story · &e/rea codex&7 lore");
@@ -95,10 +95,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         } else {
             Msg.send(sender, "&7Race: " + race.getColor() + race.formName(data.getForm()));
         }
-        Long toNext = plugin.getDataManager().nextRankEp(data);
-        String nextRank = toNext != null ? " &8(+" + toNext + " EP to next rank)" : " &8(max rank)";
-        Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp() + nextRank
-                + " &7Magicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
+        Msg.send(sender, "&7Growth: &dEP &f" + data.getEp() + " &8| &7Magicules: &b" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
         Msg.send(sender, "&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)");
         Msg.send(sender, "&7Runes: &d" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
         Msg.send(sender, "&7Codex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total()

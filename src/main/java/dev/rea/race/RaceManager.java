@@ -111,6 +111,11 @@ public final class RaceManager {
         Msg.send(player, "&7Intrinsic: &f" + type.getIntrinsicName() + "&8 - &7" + type.getIntrinsicDescription());
         Msg.send(player, "&bUnique: &f" + unique.getName() + "&8 - &7" + unique.getDescription());
         Msg.send(player, "&7Skill orb gained — hold it out and use it. &8(Race is permanent; forms evolve.)");
+        dev.rea.quest.QuestDef firstQuest = plugin.getQuestManager().currentQuest(data);
+        if (firstQuest != null) {
+            Msg.send(player, "&eHere's your quest: &f" + firstQuest.name() + " &8- &7" + firstQuest.description());
+            Msg.send(player, "&8(track progress with &e/rea quests&8)");
+        }
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
         player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 40, 0.6, 1.0, 0.6);
         plugin.getSkillManager().reissueOrbs(player);
@@ -246,6 +251,7 @@ public final class RaceManager {
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 applyPassives(player);
+                plugin.getArmorManager().applyWorn(player);
             }
         }, 200L, 200L);
     }

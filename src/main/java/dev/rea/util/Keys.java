@@ -12,12 +12,14 @@ public final class Keys {
     private final NamespacedKey cache;
     private final NamespacedKey cardinal;
     private final NamespacedKey skillOrb;
+    private final NamespacedKey mythicArmor;
 
     public Keys(Plugin plugin) {
         this.codex = new NamespacedKey(plugin, "codex");
         this.cache = new NamespacedKey(plugin, "cache");
         this.cardinal = new NamespacedKey(plugin, "cardinal");
         this.skillOrb = new NamespacedKey(plugin, "skill_orb");
+        this.mythicArmor = new NamespacedKey(plugin, "mythic_armor");
     }
 
     public NamespacedKey codex() {
@@ -34,5 +36,9 @@ public final class Keys {
 
     public NamespacedKey skillOrb() {
         return skillOrb;
+    }
+
+    public NamespacedKey mythicArmor() {
+        return mythicArmor;
     }
 }
