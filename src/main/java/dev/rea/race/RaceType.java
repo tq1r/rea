@@ -3,60 +3,62 @@ package dev.rea.race;
 import java.util.List;
 
 /**
- * The ten starting races of Rea (Tensura-style). Each race has an intrinsic
- * skill, a passive gift, and an evolution chain of four forms:
- * Base -> Evolved -> Apex -> Demon Lord. Races are dealt randomly by
- * /rea start and are permanent; forms evolve with EP, level, and runes.
+ * The ten starting races of Rea (Tensura canon). Each race has canon
+ * Intrinsic Skills where the source material gives them one; races without
+ * a canon intrinsic carry a modest balance gift instead (marked in lore).
+ * Races are dealt randomly by /rea start and are permanent; forms evolve
+ * with EP, level, and runes. Every otherworlder also receives a Unique
+ * Skill on reincarnation (Slimes receive Predator).
  */
 public enum RaceType {
     SLIME("slime", "Slime", "&b",
-            List.of("&7Keepers of the Flame's hunger.", "&7Soft, patient, unstoppable."),
-            "Regeneration.",
+            List.of("&7Intrinsic: Absorption, Dissolve, Self-Regeneration.", "&7Soft, patient, unstoppable."),
+            "Self-Regeneration.",
             "dissolve", "Dissolve", "Acid melts nearby foes.",
             new String[]{"Slime", "Evolved Slime", "Ogre", "Demon Lord"}),
     GOBLIN("goblin", "Goblin", "&a",
-            List.of("&7Keepers of the Flame's cunning.", "&7Small, quick, everywhere."),
+            List.of("&7No canon intrinsic. Cunning is its own gift.", "&7Small, quick, everywhere."),
             "Speed.",
-            "sneak", "Sneak", "Vanish for 6 seconds.",
+            "coercion", "Coercion", "Fear nearby foes (slow + weaken).",
             new String[]{"Goblin", "Hobgoblin", "Ogre", "Demon Lord"}),
     LIZARDMAN("lizardman", "Lizardman", "&2",
-            List.of("&7Keepers of the Flame's patience.", "&7Cold blood, warm heart."),
-            "Swim faster (Dolphin's Grace).",
-            "tail_slash", "Tail Slash", "Sweep nearby foes away.",
-            new String[]{"Lizardman", "Dragon Newt", "Wyvern", "Demon Lord"}),
+            List.of("&7Intrinsic: Scale Armor.", "&7Cold blood, warm heart."),
+            "Water Breathing.",
+            "scale_armor", "Scale Armor", "Harden: Resistance II for 8s.",
+            new String[]{"Lizardman", "Dragonewt", "True Dragonewt", "Demon Lord"}),
     ORC("orc", "Orc", "&c",
-            List.of("&7Keepers of the Flame's wrath.", "&7Fierce, proud, unbroken."),
+            List.of("&7Intrinsic: Strengthen.", "&7Fierce, proud, unbroken."),
             "+2 melee damage.",
-            "bloodrage", "Bloodrage", "Strength II for 10s.",
-            new String[]{"Orc", "High Orc", "Ogre", "Demon Lord"}),
+            "strengthen", "Strengthen", "Strength II for 10s.",
+            new String[]{"Orc", "High Orc", "Orc Lord", "Demon Lord"}),
     HUMAN("human", "Human", "&e",
-            List.of("&7Keepers of the Flame's heart.", "&7Adaptable, stubborn, everywhere."),
+            List.of("&7No canon intrinsic. Adaptability is its own gift.", "&7Stubborn, everywhere."),
             "+10% XP from everything.",
             "second_wind", "Second Wind", "Heal 4 HP and sprint (Speed II, 8s).",
             new String[]{"Human", "Enhanced Human", "Hero", "Demon Lord"}),
     ELF("elf", "Elf", "&a",
-            List.of("&7Keepers of the Flame's voice.", "&7Swift, keen, long-lived."),
+            List.of("&7No canon intrinsic. Keen senses are their own gift.", "&7Swift, keen, long-lived."),
             "Speed + Night Vision.",
             "elven_step", "Elven Step", "Blink forward 6 blocks.",
             new String[]{"Elf", "High Elf", "Fairy Queen", "Demon Lord"}),
     DWARF("dwarf", "Dwarf", "&6",
-            List.of("&7Keepers of the Flame's hands.", "&7Sturdy, tireless, loyal."),
+            List.of("&7No canon intrinsic. Sturdy hands are their own gift.", "&7Sturdy, tireless, loyal."),
             "Resistance + Haste.",
             "stonehide", "Stonehide", "Resistance II for 8s.",
             new String[]{"Dwarf", "Master Dwarf", "Rune Lord", "Demon Lord"}),
     DIRE_WOLF("dire_wolf", "Dire Wolf", "&8",
-            List.of("&7Keepers of the Flame's hunt.", "&7Loyal, swift, relentless."),
-            "Speed + Jump Boost.",
+            List.of("&7Intrinsic: Ultra Smell, Thought Communication, Coercion.", "&7Loyal, swift, relentless."),
+            "Ultra Smell (Night Vision + Speed).",
             "fang_rush", "Fang Rush", "Dash forward, biting nearby foes.",
             new String[]{"Dire Wolf", "Evolved Dire Wolf", "Alpha Wolf", "Demon Lord"}),
     SERPENT("serpent", "Serpent", "&5",
-            List.of("&7Keepers of the Flame's venom.", "&7Silent, patient, deadly."),
-            "Water Breathing.",
-            "venom_bite", "Venom Bite", "Poison nearby foes.",
+            List.of("&7Intrinsic: Poison Breath, Heat Source Perception.", "&7Silent, patient, deadly."),
+            "Heat Source Perception (Night Vision).",
+            "poison_breath", "Poison Breath", "Poison nearby foes.",
             new String[]{"Serpent", "Black Serpent", "Hydra", "Demon Lord"}),
     DEMON("demon", "Demon", "&4",
-            List.of("&7Keepers of the Flame's shadow.", "&7Warm, wry, fire-touched."),
-            "Fire resistance.",
+            List.of("&7Intrinsic: Magic Resistance.", "&7Warm, wry, fire-touched."),
+            "Magic Resistance.",
             "hellfire", "Hellfire", "Burn and scorch nearby foes.",
             new String[]{"Demon", "Arch Demon", "Demon Peer", "Demon Lord"});
 

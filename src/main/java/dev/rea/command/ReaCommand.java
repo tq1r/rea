@@ -1,442 +1,247 @@
 package dev.rea.command;
 
 import dev.rea.ReaPlugin;
-import dev.rea.codex.CodexEntry;
 import dev.rea.data.PlayerData;
-import dev.rea.quest.QuestDef;
+import dev.rea.race.RaceManager;
 import dev.rea.race.RaceType;
-import dev.rea.util.Msg;
-import dev.rea.util.Util;
+import dev.rea.skill.SkillDef;
+import dev.rea.skill.SkillManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Every Rea command in one place. Plain text throughout, so Bedrock
- * players (Geyser) get the full game with the same commands as Java players.
+ * /rea — main command. Subcommands: start, status, evolve, skill, skills, admin.
  */
 public final class ReaCommand implements CommandExecutor, TabCompleter {
-    private final ReaPlugin plugin;
 
-    public ReaCommand(ReaPlugin plugin) {
+    private final ReaPlugin plugin;
+    private final RaceManager races;
+    private final SkillManager skills;
+
+    public ReaCommand(ReaPlugin plugin, RaceManager races, SkillManager skills) {
         this.plugin = plugin;
+        this.races = races;
+        this.skills = skills;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String name = command.getName().toLowerCase();
-        if (name.equals("ability")) {
-            if (sender instanceof Player player) {
-                PlayerData data = plugin.getDataManager().get(player);
-                RaceType race = RaceType.fromId(data.getRace());
-                if (race == null) {
-                    Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
-                } else {
-                    plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
-                }
-            }
-            return true;
-        }
-        if (name.equals("runes")) {
-            if (sender instanceof Player player) {
-                PlayerData data = plugin.getDataManager().get(player);
-                Msg.send(player, "&dRunes: &l" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
-            }
-            return true;
-        }
         if (args.length == 0) {
-            help(sender);
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Commands: /rea start, /rea status, /rea evolve, /rea skill <id>, /rea skills"));
             return true;
         }
         String sub = args[0].toLowerCase();
         switch (sub) {
-            case "help" -> help(sender);
-            case "start" -> start(sender, args);
-            case "race" -> race(sender);
-            case "evolve" -> {
-                if (sender instanceof Player player) {
-                    plugin.getRaceManager().evolve(player);
+            case "start" -> start(sender);
+            case "status" -> status(sender);
+            case "evolve" -> evolve(sender);
+            case "skill" -> {
+                if (args.length < 2) {
+                    sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Usage: /rea skill <id>"));
+                    return true;
                 }
-            }
-            case "skill" -> skill(sender, args);
-            case "skills" -> {
-                if (sender instanceof Player player) {
-                    plugin.getSkillManager().list(player);
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage("Players only.");
+                    return true;
                 }
+                plugin.getGameListener().useSkill(player, args[1]);
             }
-            case "ability" -> {
-                if (sender instanceof Player player) {
-                    PlayerData data = plugin.getDataManager().get(player);
-                    RaceType race = RaceType.fromId(data.getRace());
-                    if (race == null) {
-                        Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
-                    } else {
-                        plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
-                    }
-                }
-            }
-            case "profile" -> profile(sender);
-            case "quests" -> quests(sender);
-            case "codex" -> codex(sender, args);
-            case "daily" -> daily(sender);
-            case "buy" -> buy(sender, args);
-            case "runes" -> {
-                if (sender instanceof Player player) {
-                    PlayerData data = plugin.getDataManager().get(player);
-                    Msg.send(player, "&dRunes: &l" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
-                }
-            }
-            case "give" -> give(sender, args);
-            case "reset" -> reset(sender, args);
-            case "reload" -> reload(sender);
-            default -> Msg.send(sender, "&cUnknown subcommand. &e/rea help");
+            case "skills" -> skills(sender);
+            case "admin" -> admin(sender, args);
+            default -> sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Unknown subcommand."));
         }
         return true;
     }
 
-    private void help(CommandSender sender) {
-        Msg.send(sender, Msg.bar());
-        Msg.send(sender, "&d&lRea &7- the bloodlines wake.");
-        Msg.send(sender, "&e/rea start &7- (admin) deal bloodlines to everyone");
-        Msg.send(sender, "&e/rea race &7- your bloodline, form, and chain");
-        Msg.send(sender, "&e/rea evolve &7- evolve to your next form");
-        Msg.send(sender, "&e/rea skill <id> &7- use a skill (costs magicules)");
-        Msg.send(sender, "&e/rea skills &7- skills you know (and how to learn the rest)");
-        Msg.send(sender, "&e/rea ability &7- use your intrinsic skill");
-        Msg.send(sender, "&e/rea profile &7- level, runes, Codex, stats");
-        Msg.send(sender, "&e/rea quests &7- the story so far");
-        Msg.send(sender, "&e/rea codex [read <id>] &7- lore you have collected");
-        Msg.send(sender, "&e/rea daily &7- daily rune gift");
-        Msg.send(sender, "&e/rea buy cache [n] &7- trade runes for XP");
-        Msg.send(sender, "&e/rea runes &7- your balance");
-        Msg.send(sender, Msg.bar());
-    }
-
-    private void start(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("rea.admin")) {
-            Msg.send(sender, "&cNo permission.");
-            return;
-        }
-        if (args.length >= 2) {
-            Player target = Bukkit.getPlayer(args[1]);
-            if (target == null) {
-                Msg.send(sender, "&cThat player is not online.");
-                return;
-            }
-            PlayerData data = plugin.getDataManager().get(target);
-            if (data.getRace() != null) {
-                Msg.send(sender, "&c" + target.getName() + " already has a bloodline (" + data.getRace() + "). Bloodlines are permanent.");
-                return;
-            }
-            RaceType[] races = RaceType.values();
-            plugin.getRaceManager().assign(target, races[(int) (Math.random() * races.length)]);
-            return;
-        }
-        plugin.getRaceManager().startSeason();
-    }
-
-    private void race(CommandSender sender) {
+    private void start(CommandSender sender) {
         if (!(sender instanceof Player player)) {
+            sender.sendMessage("Players only.");
             return;
         }
         PlayerData data = plugin.getDataManager().get(player);
-        RaceType type = RaceType.fromId(data.getRace());
-        Msg.send(sender, Msg.bar());
-        if (type == null) {
-            Msg.send(sender, "&7Your bloodline still sleeps. An admin must run &e/rea start&7.");
-            Msg.send(sender, Msg.bar());
+        if (data.getRaceId() != null) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You are already reincarnated as a "
+                    + RaceType.fromId(data.getRaceId()).getDisplayName() + "."));
             return;
         }
-        Msg.send(sender, type.getColor() + "&l" + type.formName(data.getForm()));
-        for (String line : type.getLore()) {
-            Msg.send(sender, "&7" + line);
-        }
-        Msg.send(sender, "&7Blood gift: &f" + type.getPassiveDescription());
-        Msg.send(sender, "&7Intrinsic skill: &f" + type.getIntrinsicName() + " &7- " + type.getIntrinsicDescription());
-        StringBuilder chain = new StringBuilder();
-        for (int i = 0; i < type.getForms().length; i++) {
-            if (i > 0) {
-                chain.append(" &7-> ");
-            }
-            chain.append(i <= data.getForm() ? type.getColor() + type.getForms()[i] : "&7" + type.getForms()[i]);
-        }
-        Msg.send(sender, "&7Evolution: " + chain);
-        Msg.send(sender, "&7Your race is permanent. Your form evolves with &e/rea evolve&7.");
-        Msg.send(sender, Msg.bar());
+        RaceType[] types = RaceType.values();
+        RaceType race = types[(int) (Math.random() * types.length)];
+        data.setRaceId(race.getId());
+        data.setForm(0);
+        data.setEp(0);
+        data.setLevel(1);
+        data.setRunes(0);
+        data.setMagicules(50);
+        data.setMaxMagicules(100);
+        data.addSkill(race.getIntrinsicId());
+        // Otherworlders receive a Unique Skill on reincarnation (Slimes: Predator).
+        SkillDef unique = skills.grantUniqueSkill(race);
+        data.addSkill(unique.getId());
+        data.setUniqueSkillId(unique.getId());
+        plugin.getDataManager().save(data);
+
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7The world turns. You are reincarnated as a "
+                + race.getColor() + race.getDisplayName() + "&7."));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Intrinsic Skill: &f" + race.getIntrinsicName()
+                + " &8- &7" + race.getIntrinsicDescription()));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Unique Skill: &b" + unique.getName()
+                + " &8- &7" + unique.getDescription()));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Gain EP by fighting. Evolve with /rea evolve."));
     }
 
-    private void skill(CommandSender sender, String[] args) {
+    private void status(CommandSender sender) {
         if (!(sender instanceof Player player)) {
-            return;
-        }
-        if (args.length < 2) {
-            Msg.send(player, "&e/rea skill <id> &7- see &e/rea skills &7for the list.");
-            return;
-        }
-        plugin.getSkillManager().useSkill(player, args[1].toLowerCase());
-    }
-
-    private void profile(CommandSender sender) {
-        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Players only.");
             return;
         }
         PlayerData data = plugin.getDataManager().get(player);
-        RaceType race = RaceType.fromId(data.getRace());
-        Msg.send(sender, Msg.bar());
-        Msg.send(sender, "&d&l" + player.getName());
-        Msg.send(sender, "&7Bloodline: " + (race == null ? "Sleeping" : race.getColor() + race.formName(data.getForm())));
-        Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp()
-                + " &7Magicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
-        Msg.send(sender, "&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)");
-        Msg.send(sender, "&7Runes: &d" + data.getRunes() + " &7(lifetime: " + data.getLifetimeEarned() + ")");
-        Msg.send(sender, "&7Codex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total()
-                + " &7Quests: &d" + data.getQuestsDone().size() + "/" + plugin.getQuestManager().allQuests().size());
-        Msg.send(sender, "&7Kills: &d" + data.getKills() + " &7Mined: &d" + data.getMines() + " &7Crafted: &d" + data.getCrafts()
-                + " &7Daily streak: &d" + data.getDailyStreak());
-        Msg.send(sender, Msg.bar());
+        if (data.getRaceId() == null) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You have not reincarnated yet. Use /rea start."));
+            return;
+        }
+        RaceType race = RaceType.fromId(data.getRaceId());
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Race: " + race.getColor() + race.formName(data.getForm())));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7EP: &f" + data.getEp() + " &8| &7Level: &f" + data.getLevel()
+                + " &8| &7Runes: &f" + data.getRunes()));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Magicules: &f" + (int) data.getMagicules() + "/" + (int) data.getMaxMagicules()));
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Skills: &f" + String.join(", ", data.getSkills())));
     }
 
-    private void quests(CommandSender sender) {
+    private void evolve(CommandSender sender) {
         if (!(sender instanceof Player player)) {
+            sender.sendMessage("Players only.");
             return;
         }
         PlayerData data = plugin.getDataManager().get(player);
-        Msg.send(sender, Msg.bar());
-        Msg.send(sender, "&d&lThe Story of Rea &7(" + data.getQuestsDone().size() + "/" + plugin.getQuestManager().allQuests().size() + " quests)");
-        QuestDef current = plugin.getQuestManager().currentQuest(data);
-        if (current == null) {
-            Msg.send(sender, "&7The eleventh spark still sleeps. More chapters are coming.");
-        } else {
-            int progress = plugin.getQuestManager().progress(data, current);
-            Msg.send(sender, "&dChapter " + current.chapter() + ": &l" + current.name());
-            Msg.send(sender, "&7" + current.description());
-            Msg.send(sender, "&7Progress: &e" + Math.min(progress, current.amount()) + "/" + current.amount());
-            Msg.send(sender, "&7Rewards: &d" + current.rewardRunes() + " runes"
-                    + (current.rewardXp() > 0 ? " &7+" + current.rewardXp() + " XP" : ""));
-        }
-        Msg.send(sender, Msg.bar());
-    }
-
-    private void codex(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if (data.getRaceId() == null) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You have not reincarnated yet. Use /rea start."));
             return;
         }
-        PlayerData data = plugin.getDataManager().get(player);
-        if (args.length >= 3 && args[1].equalsIgnoreCase("read")) {
-            CodexEntry entry = plugin.getCodexManager().getEntry(args[2]);
-            if (entry == null) {
-                Msg.send(player, "&cNo Codex entry '" + args[2] + "'.");
-                return;
-            }
-            if (!data.getCodex().contains(entry.id())) {
-                Msg.send(player, "&cYou have not recorded that entry yet. Find its page first.");
-                return;
-            }
-            plugin.getCodexManager().showEntry(player, entry);
+        if (!races.canEvolve(data)) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You cannot evolve yet. Need more EP, level, or runes."));
             return;
         }
-        Msg.send(player, Msg.bar());
-        Msg.send(player, "&d&lCodex of Rea &7(" + data.getCodex().size() + "/" + plugin.getCodexManager().total() + ")");
-        for (CodexEntry entry : plugin.getCodexManager().allEntries()) {
-            if (data.getCodex().contains(entry.id())) {
-                Msg.send(player, "&a[read] &f" + entry.title() + " &7- &e/rea codex read " + entry.id());
-            } else {
-                Msg.send(player, "&7[???] &7" + entry.subtitle());
-            }
-        }
-        Msg.send(player, Msg.bar());
-    }
-
-    private void daily(CommandSender sender) {
-        if (!(sender instanceof Player player)) {
-            return;
-        }
-        PlayerData data = plugin.getDataManager().get(player);
-        String today = LocalDate.now().toString();
-        String yesterday = LocalDate.now().minusDays(1).toString();
-        if (today.equals(data.getLastDaily())) {
-            Msg.send(player, "&cYou already claimed today's gift. The blood will sing again tomorrow.");
-            return;
-        }
-        int streak = yesterday.equals(data.getLastDaily()) ? data.getDailyStreak() + 1 : 1;
-        data.setDailyStreak(streak);
-        data.setLastDaily(today);
-        Msg.send(player, Msg.bar());
-        Msg.send(player, "&d&lDay " + streak + " &7- the blood hums a little louder today.");
-        switch ((streak - 1) % 7) {
-            case 0 -> plugin.getDataManager().addRunes(player, 20L);
-            case 1 -> {
-                plugin.getDataManager().addRunes(player, 30L);
-                Util.giveItem(player, new ItemStack(Material.BREAD, 4));
-            }
-            case 2 -> Util.giveItem(player, plugin.getItemFactory().runeCache(1));
-            case 3 -> plugin.getDataManager().addRunes(player, 50L);
-            case 4 -> {
-                plugin.getDataManager().addRunes(player, 60L);
-                Util.giveItem(player, new ItemStack(Material.GOLDEN_APPLE, 1));
-            }
-            case 5 -> Util.giveItem(player, plugin.getItemFactory().runeCache(2));
-            case 6 -> {
-                plugin.getDataManager().addRunes(player, 100L);
-                for (CodexEntry entry : plugin.getCodexManager().allEntries()) {
-                    if (!data.getCodex().contains(entry.id())) {
-                        plugin.getCodexManager().givePage(player, entry.id());
-                        break;
-                    }
+        RaceType race = RaceType.fromId(data.getRaceId());
+        int before = data.getForm();
+        if (races.evolve(player, data)) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You evolved into a "
+                    + race.getColor() + race.formName(before + 1) + "&7!"));
+            if (before + 1 >= races.maxStage()) {
+                SkillDef ultimate = skills.get(data.getUniqueSkillId());
+                if (ultimate != null && ultimate.getTier() == SkillDef.Tier.ULTIMATE) {
+                    sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Demon Lord awakening! Your Unique Skill evolved into the Ultimate Skill &b"
+                            + ultimate.getName() + "&7!"));
                 }
             }
-            default -> {
-            }
         }
-        Msg.send(player, "&7Come back tomorrow. Rea rewards those who return.");
-        Msg.send(player, Msg.bar());
-        plugin.getDataManager().save(data);
     }
 
-    private void buy(CommandSender sender, String[] args) {
+    private void skills(CommandSender sender) {
         if (!(sender instanceof Player player)) {
+            sender.sendMessage("Players only.");
             return;
         }
-        if (args.length < 2 || !args[1].equalsIgnoreCase("cache")) {
-            Msg.send(player, "&e/rea buy cache [count] &7- " + plugin.getConfig().getInt("settings.cache-cost", 25)
-                    + " runes each, +" + plugin.getConfig().getInt("settings.cache-xp", 40) + " XP each.");
+        PlayerData data = plugin.getDataManager().get(player);
+        if (data.getRaceId() == null) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7You have not reincarnated yet. Use /rea start."));
             return;
         }
-        int count = 1;
-        if (args.length >= 3) {
-            try {
-                count = Math.max(1, Math.min(64, Integer.parseInt(args[2])));
-            } catch (NumberFormatException e) {
-                Msg.send(player, "&cCount must be a number.");
-                return;
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Your skills:"));
+        for (String id : data.getSkills()) {
+            SkillDef def = skills.get(id);
+            if (def != null) {
+                sender.sendMessage(plugin.getConfigManager().color(" &8- &f" + def.getName() + " &8(&7" + def.getTier() + "&8) &7" + def.getDescription()));
             }
         }
-        long cost = (long) plugin.getConfig().getInt("settings.cache-cost", 25) * count;
-        if (!plugin.getDataManager().takeRunes(player, cost)) {
-            return;
-        }
-        Util.giveItem(player, plugin.getItemFactory().runeCache(count));
-        Msg.send(player, "&dBought " + count + " Rune Cache" + (count > 1 ? "s" : "") + " for " + cost + " runes.");
     }
 
-    private void give(CommandSender sender, String[] args) {
+    private void admin(CommandSender sender, String[] args) {
         if (!sender.hasPermission("rea.admin")) {
-            Msg.send(sender, "&cNo permission.");
-            return;
-        }
-        if (args.length < 4 || !args[1].equalsIgnoreCase("runes")) {
-            Msg.send(sender, "&e/rea give runes <player> <amount>");
-            return;
-        }
-        Player target = Bukkit.getPlayer(args[2]);
-        if (target == null) {
-            Msg.send(sender, "&cThat player is not online.");
-            return;
-        }
-        long amount;
-        try {
-            amount = Long.parseLong(args[3]);
-        } catch (NumberFormatException e) {
-            Msg.send(sender, "&cAmount must be a number.");
-            return;
-        }
-        plugin.getDataManager().addRunes(target, amount);
-        Msg.send(sender, "&aGave " + amount + " runes to " + target.getName());
-    }
-
-    private void reset(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("rea.admin")) {
-            Msg.send(sender, "&cNo permission.");
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7No permission."));
             return;
         }
         if (args.length < 2) {
-            Msg.send(sender, "&e/rea reset <player>");
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Usage: /rea admin <give|set|reset> ..."));
             return;
         }
-        Player target = Bukkit.getPlayer(args[1]);
+        String action = args[1].toLowerCase();
+        if ("reset".equals(action) && args.length >= 3) {
+            Player target = Bukkit.getPlayerExact(args[2]);
+            if (target == null) {
+                sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Player not found."));
+                return;
+            }
+            plugin.getDataManager().reset(target);
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Reset " + target.getName() + "."));
+            return;
+        }
+        if (args.length < 4) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Usage: /rea admin <give|set> <player> <ep|level|runes|magicules> <amount>"));
+            return;
+        }
+        Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            Msg.send(sender, "&cThat player is not online.");
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Player not found."));
             return;
         }
-        plugin.getDataManager().delete(target.getUniqueId());
-        Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Their bloodline sleeps again until /rea start.");
-    }
-
-    private void reload(CommandSender sender) {
-        if (!sender.hasPermission("rea.admin")) {
-            Msg.send(sender, "&cNo permission.");
+        PlayerData data = plugin.getDataManager().get(target);
+        int amount;
+        try {
+            amount = Integer.parseInt(args[4]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Amount must be a number."));
             return;
         }
-        plugin.reloadConfig();
-        plugin.getCodexManager().reload();
-        plugin.getQuestManager().reload();
-        Msg.send(sender, "&aRea reloaded. The blood barely noticed.");
+        switch (args[3].toLowerCase()) {
+            case "ep" -> {
+                if ("give".equals(action)) {
+                    data.addEp(amount);
+                } else {
+                    data.setEp(amount);
+                }
+            }
+            case "level" -> {
+                if ("give".equals(action)) {
+                    data.setLevel(data.getLevel() + amount);
+                } else {
+                    data.setLevel(amount);
+                }
+            }
+            case "runes" -> {
+                if ("give".equals(action)) {
+                    data.setRunes(data.getRunes() + amount);
+                } else {
+                    data.setRunes(amount);
+                }
+            }
+            case "magicules" -> {
+                if ("give".equals(action)) {
+                    data.setMagicules(data.getMagicules() + amount);
+                } else {
+                    data.setMagicules(amount);
+                }
+            }
+            default -> sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Unknown stat."));
+        }
+        plugin.getDataManager().save(data);
+        sender.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Done."));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> out = new ArrayList<>();
-        if (!command.getName().equalsIgnoreCase("rea")) {
-            return out;
-        }
         if (args.length == 1) {
-            for (String sub : List.of("help", "start", "race", "evolve", "skill", "skills", "ability", "profile", "quests", "codex", "daily", "buy", "runes", "give", "reset", "reload")) {
-                if (sub.startsWith(args[0].toLowerCase())) {
-                    out.add(sub);
-                }
-            }
-        } else if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("skill")) {
-                for (var def : plugin.getSkillManager().allSkills()) {
-                    if (def.id().startsWith(args[1].toLowerCase())) {
-                        out.add(def.id());
-                    }
-                }
-                PlayerData data = sender instanceof Player player ? plugin.getDataManager().get(player) : null;
-                if (data != null && data.getRace() != null) {
-                    RaceType race = RaceType.fromId(data.getRace());
-                    if (race != null && race.getIntrinsicId().startsWith(args[1].toLowerCase())) {
-                        out.add(race.getIntrinsicId());
-                    }
-                }
-            }
-            switch (args[0].toLowerCase()) {
-                case "codex" -> {
-                    if ("read".startsWith(args[1].toLowerCase())) {
-                        out.add("read");
-                    }
-                }
-                case "buy" -> {
-                    if ("cache".startsWith(args[1].toLowerCase())) {
-                        out.add("cache");
-                    }
-                }
-                case "give" -> {
-                    if ("runes".startsWith(args[1].toLowerCase())) {
-                        out.add("runes");
-                    }
-                }
-                default -> {
-                }
-            }
-        } else if (args.length == 3) {
-            if (args[0].equalsIgnoreCase("codex") && args[1].equalsIgnoreCase("read")) {
-                for (CodexEntry entry : plugin.getCodexManager().allEntries()) {
-                    if (entry.id().startsWith(args[2].toLowerCase())) {
-                        out.add(entry.id());
-                    }
-                }
-            }
+            return List.of("start", "status", "evolve", "skill", "skills", "admin");
         }
-        return out;
+        if (args.length == 2 && "skill".equalsIgnoreCase(args[0])) {
+            return new ArrayList<>(skills.all().keySet());
+        }
+        return List.of();
     }
 }

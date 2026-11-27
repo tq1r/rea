@@ -1,135 +1,80 @@
-# The Codex of Rea — collectible lore.
-# Right-click a Codex Page to record its entry. Pages can be copied and shared with friends.
-# Edit the words freely. Rea will adapt.
+# Rea codex entries (Tensura canon): world, reincarnation, skills, evolution.
+# Each entry grants EP when first read.
 
-codex:
+entries:
   world:
-    title: "The World of Rea"
-    subtitle: "Codex Entry I"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Rea is a world where souls do not leave. When a life ends, the spark returns to the First Flame, and the Flame sends it back — into a new body, a new bloodline, a new chance. You are one of the returned."
-      - "The Flame remembers everything. It remembers the ten bloodlines, the Sundering that scattered them, and the eleventh spark that never woke. It remembers you, too, though you do not remember it."
-      - "This Codex is the Flame's memory, written down. Read it. The world will make more sense, and then less sense, and then — if you are lucky — sense again."
+    title: "The World"
+    text: "A world of magicules and monsters. The strong grow; the weak are devoured."
+    ep: 5
   reincarnation:
     title: "Reincarnation"
-    subtitle: "Codex Entry II"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 15
-    pages:
-      - "You woke in a body that was not your first. That is reincarnation: the Flame's way of giving the world another try at you. Your race is permanent, because the Flame does not make mistakes."
-      - "But your form is not permanent. The Flame left room to grow. Predate, learn, gather EP, and evolve. Every wanderer in Rea is walking a road that ends, if they are lucky, at Demon Lord."
-      - "The Flame does not hurry. Neither should you. But it does not stop, either."
-  skills:
-    title: "Skills"
-    subtitle: "Codex Entry III"
-    reward-runes: 20
-    reward-xp: 15
-    reward-ep: 20
-    pages:
-      - "Every bloodline carries an Intrinsic Skill — a gift of the Flame, born with the body. Beyond that, skills are learned: Common skills by predating the monsters that carry them, Unique skills by deeds and evolution."
-      - "Skills cost magicules, the Flame's fuel, which flows back into you over time. The stronger your EP, the deeper the well. Use skills wisely. The Flame is watching the meter."
-      - "At the summit, Unique skills can evolve into Ultimate skills — powers the Flame itself barely remembers. Lord of Darkness. Truth. The old words. Earn them."
+    text: "Otherworlders cross over and receive a Unique Skill born of their desires."
+    ep: 10
+  unique_skill:
+    title: "Unique Skills"
+    text: "Born of the mind and heart. Only about one in ten has any use in combat."
+    ep: 10
+  predator:
+    title: "Predator"
+    text: "The Slime's Unique Skill. Devour foes to learn their Common Skills."
+    ep: 15
+  gluttony:
+    title: "Gluttony"
+    text: "Predator, mastered and fed on the Orc Lord, evolves into Gluttony."
+    ep: 15
+  beelzebuth:
+    title: "Beelzebuth"
+    text: "Lord of Gluttony. At the Demon Lord awakening, Gluttony becomes Beelzebuth."
+    ep: 20
+  great_sage:
+    title: "Great Sage"
+    text: "A Unique Skill that speeds learning. It evolves into Raphael, Lord of Wisdom."
+    ep: 15
   evolution:
     title: "Evolution"
-    subtitle: "Codex Entry IV"
-    reward-runes: 20
-    reward-xp: 15
-    reward-ep: 25
-    pages:
-      - "Evolution is the Flame's promise: nothing stays as it was. Gather Existential Points — EP — by predating monsters, and the Flame will reshape you. Evolved. Apex. And at the summit, Demon Lord."
-      - "EP also sets your Rank, from F to SSS, the world's measure of a monster's weight. Ranks open no doors by themselves. But the Flame respects weight."
-      - "Evolution needs EP, level, and runes — the Flame's three prices. Pay them, and become more of what you already are."
+    text: "Races evolve with EP: Goblin to Hobgoblin, Lizardman to Dragonewt, Orc to Orc Lord."
+    ep: 10
+  demon_lord:
+    title: "Demon Lord Awakening"
+    text: "At the Harvest Festival, a Unique Skill evolves into an Ultimate Skill."
+    ep: 20
   slime:
-    title: "Origin of the Slimes"
-    subtitle: "Codex Entry V"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Slimes are the Flame's first draft: soft, patient, and impossible to kill for long. They absorb the world one bite at a time, and the world, eventually, lets them."
-      - "Every Demon Lord in the old songs was something else first. Many were slimes. The Flame has a sense of humor."
+    title: "Slime"
+    text: "Absorption, Dissolve, Self-Regeneration. Soft, patient, unstoppable."
+    ep: 10
   goblin:
-    title: "Origin of the Goblins"
-    subtitle: "Codex Entry VI"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Goblins are the Flame's cunning: small, quick, and everywhere. They sneak, they scheme, they survive. The world underestimates them. The world is wrong."
-      - "A goblin with a plan is worth ten soldiers without one. The Flame knows this. It made them anyway."
+    title: "Goblin"
+    text: "Small, quick, everywhere. Hobgoblins serve as the vanguard of nations."
+    ep: 10
   lizardman:
-    title: "Origin of the Lizardmen"
-    subtitle: "Codex Entry VII"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Lizardmen are the Flame's patience: cold blood, warm heart. They wait in the rivers and the reeds, and when the moment comes, they do not miss."
-      - "Their road runs to dragons. The Flame does not hand out such roads lightly. It hands them out to those who wait."
+    title: "Lizardman"
+    text: "Scale Armor. Dragonewts carry the blood of dragons."
+    ep: 10
   orc:
-    title: "Origin of the Orcs"
-    subtitle: "Codex Entry VIII"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Orcs are the Flame's wrath: fierce, proud, unbroken. They hit harder than anything their size has any right to, and they hit first."
-      - "The world fears the wrath. It should fear the silence after. Orcs do not break. They bend, they burn, they return."
+    title: "Orc"
+    text: "Strengthen. Orc Lords devour the world with Starved."
+    ep: 10
   human:
-    title: "Origin of the Humans"
-    subtitle: "Codex Entry IX"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Humans are the Flame's heart: adaptable, stubborn, everywhere. They learn faster than any bloodline, which is their gift and their curse."
-      - "A human can be anything, which means a human must choose, every day, what to be. The Flame does not choose for them. That is the point."
+    title: "Human"
+    text: "Adaptable and stubborn. Heroes are born of their kind."
+    ep: 10
   elf:
-    title: "Origin of the Elves"
-    subtitle: "Codex Entry X"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Elves are the Flame's voice: swift, keen, long-lived. They remember the world whole, and they will remember it whole again."
-      - "Long lives make long memories. The Flame's voice is quiet now. The elves are still listening."
+    title: "Elf"
+    text: "Keen senses and long lives. Fairy Queens guard the forests."
+    ep: 10
   dwarf:
-    title: "Origin of the Dwarves"
-    subtitle: "Codex Entry XI"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Dwarves are the Flame's hands: sturdy, tireless, loyal. They built the Flame's house of stone and iron, and the house is still standing. Barely."
-      - "Stone remembers everything. So do dwarves. When the world is whole again, it will be built by hands that never stopped working."
+    title: "Dwarf"
+    text: "Sturdy hands and loyal hearts. Rune Lords command stone."
+    ep: 10
   dire_wolf:
-    title: "Origin of the Dire Wolves"
-    subtitle: "Codex Entry XII"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Dire wolves are the Flame's hunt: loyal, swift, relentless. They run in packs and they finish what they start."
-      - "A wolf's loyalty is not a metaphor. The Flame made them that way on purpose, and the world is safer for it."
+    title: "Dire Wolf"
+    text: "Ultra Smell, Thought Communication, Coercion. Loyal to the end."
+    ep: 10
   serpent:
-    title: "Origin of the Serpents"
-    subtitle: "Codex Entry XIII"
-    reward-runes: 15
-    reward-xp: 10
-    reward-ep: 10
-    pages:
-      - "Serpents are the Flame's venom: silent, patient, deadly. They strike once, and the strike is enough."
-      - "Their road runs to hydras, if the old songs are true. The Flame does not confirm. The Flame never confirms."
+    title: "Serpent"
+    text: "Poison Breath and Heat Source Perception. Silent and deadly."
+    ep: 10
   demon:
-    title: "Origin of the Demons"
-    subtitle: "Codex Entry XIV"
-    reward-runes: 20
-    reward-xp: 15
-    reward-ep: 15
-    pages:
-      - "Demons are the Flame's shadow: warm, wry, fire-touched. Every flame casts a shadow, and the shadow, eventually, walks."
-      - "Their road runs straight to Demon Lord, the summit of all bloodlines. The Flame is not worried. The Flame is curious."
+    title: "Demon"
+    text: "Magic Resistance. Arch Demons and Daemon Lords rule the night."
+    ep: 10

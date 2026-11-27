@@ -1,103 +1,58 @@
-# The story of Rea, told in quests. Chapters unlock in order.
-# Types: RACE, MINE, KILL, CRAFT, CODEX, REACH_LEVEL
-# Target: for MINE/KILL/CRAFT use a Material/EntityType name, or ANY.
-# Reward item: "codex:<id>" or "cache:<count>". Leave empty for none.
+# Rea quests (Tensura canon): the path from reincarnation to Demon Lord.
+# Rewards are EP.
 
-quests:
-  - id: "q1-1"
-    chapter: 1
-    name: "Reincarnation"
-    type: "RACE"
-    target: ""
-    amount: 1
-    reward-runes: 20
-    reward-xp: 0
-    reward-ep: 20
-    reward-item: ""
-    description: "Wake your bloodline. The Flame has chosen you."
-    complete: "The blood remembers. You are one of the ten now."
-  - id: "q1-2"
-    chapter: 1
-    name: "Gather the Runes"
-    type: "MINE"
-    target: "ANY"
-    amount: 16
-    reward-runes: 30
-    reward-xp: 20
-    reward-ep: 20
-    reward-item: ""
-    description: "Mine 16 ores. The Runes hide in the stone, humming."
-    complete: "The stone gives up its secrets. Good."
-  - id: "q1-3"
-    chapter: 1
-    name: "The Wilds Push Back"
-    type: "KILL"
-    target: "ANY"
-    amount: 5
-    reward-runes: 30
-    reward-xp: 20
-    reward-ep: 30
-    reward-item: ""
-    description: "Predate 5 monsters. Rea is not empty, and it is not kind."
-    complete: "The wilds step back. For now."
-  - id: "q1-4"
-    chapter: 1
-    name: "Read What Remains"
-    type: "CODEX"
-    target: ""
-    amount: 2
-    reward-runes: 40
-    reward-xp: 25
-    reward-ep: 30
-    reward-item: "cache:1"
-    description: "Unlock 2 Codex entries. The truth is written down — you only have to read it."
-    complete: "Two pages of the truth. Rea grows clearer. Magic Sense wakes in your blood."
-
-  - id: "q2-1"
-    chapter: 2
-    name: "Steel for the Quiet"
-    type: "KILL"
-    target: "ANY"
-    amount: 20
-    reward-runes: 80
-    reward-xp: 60
-    reward-ep: 80
-    reward-item: ""
-    description: "Predate 20 monsters. The quiet needs answering."
-    complete: "Steel answers. The quiet retreats a little."
-  - id: "q2-2"
-    chapter: 2
-    name: "The Forge Remembers"
-    type: "CRAFT"
-    target: "ANY"
-    amount: 8
-    reward-runes: 60
-    reward-xp: 30
-    reward-ep: 40
-    reward-item: ""
-    description: "Craft 8 items. Making things is also a kind of remembering."
-    complete: "The forge hums a low note. It remembers."
-  - id: "q2-3"
-    chapter: 2
-    name: "The Long Reading"
-    type: "CODEX"
-    target: ""
-    amount: 6
-    reward-runes: 80
-    reward-xp: 60
-    reward-ep: 80
-    reward-item: ""
-    description: "Unlock 6 Codex entries. Read like your life depends on it. It does."
-    complete: "The story is assembling itself. So are you."
-  - id: "q2-4"
-    chapter: 2
-    name: "Bearer of the Blood"
-    type: "REACH_LEVEL"
-    target: ""
-    amount: 5
-    reward-runes: 150
-    reward-xp: 50
-    reward-ep: 100
-    reward-item: "codex:evolution"
-    description: "Reach Level 5. The blood becomes a voice."
-    complete: "The blood becomes a voice. It says: almost. The eleventh spark still sleeps — more chapters are coming."
+chapters:
+  chapter1:
+    title: "Reincarnation"
+    quests:
+      - id: "first_blood"
+        title: "First Blood"
+        description: "Slay 5 monsters."
+        type: "KILL"
+        target: 5
+        reward: 50
+      - id: "first_ep"
+        title: "Existence"
+        description: "Reach 100 EP."
+        type: "EP"
+        target: 100
+        reward: 50
+      - id: "first_skill"
+        title: "Skill"
+        description: "Use a skill 3 times."
+        type: "SKILL_USE"
+        target: 3
+        reward: 50
+      - id: "first_evolve"
+        title: "Evolution"
+        description: "Evolve once."
+        type: "EVOLVE"
+        target: 1
+        reward: 100
+  chapter2:
+    title: "Demon Lord"
+    quests:
+      - id: "hunter"
+        title: "Hunter"
+        description: "Slay 50 monsters."
+        type: "KILL"
+        target: 50
+        reward: 500
+      - id: "power"
+        title: "Power"
+        description: "Reach 2,000 EP."
+        type: "EP"
+        target: 2000
+        reward: 500
+      - id: "devourer"
+        title: "Devourer"
+        description: "Learn 3 Common Skills by predation."
+        type: "SKILL_LEARN"
+        target: 3
+        reward: 500
+      - id: "awakening"
+        title: "Awakening"
+        description: "Reach the Demon Lord form."
+        type: "EVOLVE"
+        target: 3
+        reward: 1000
