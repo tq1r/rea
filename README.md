@@ -23,7 +23,7 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 
 ## What to expect at launch
 
-- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve, clear all three dungeons, check skills, scoreboard, quests, and codex on both Java and Bedrock.
+- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve via the Talents menu, clear all three dungeons, name and train a villager to Master, claim a daily gift by rejoining, and check skills, quests, codex, and the scoreboard on both Java and Bedrock.
 - Dungeon difficulty is fixed, not scaled to your EP — bring friends or bring potions.
 - Balance (EP/rune costs, loot rates) is tuned by feel, not by telemetry. Feedback welcome.
 
@@ -73,28 +73,23 @@ Auto-update only works if the latest GitHub **release has a `.jar` asset attache
 
 ## Commands
 
-- `/rea start` — (admin) reincarnate everyone with random races and Unique Skills.
-- `/rea race` — your race, form, EP, and evolution chain.
-- `/rea evolve` — evolve to your next form (Ultimate evolution at Demon Lord).
-- `/rea skill <id>` — cast a skill (costs magicules).
-- `/rea skills` — list your skills by tier.
-- `/rea ability` — cast your intrinsic skill.
-- `/rea profile` — level, rank, EP, magicules, runes, codex, stats.
-- `/rea quests` — the story so far.
-- `/rea codex [read <id>]` — the 26 entries of Tensura's world.
-- `/rea daily` — daily rune gift.
-- `/rea buy cache [n]` — trade runes for XP.
-- `/rea runes` — your balance.
-- `/rea dungeon` — the Tensura ruins: dive or claim prizes.
-- `/rea dungeon enter <id>` — enter a ruin (15-minute cooldown).
-- `/rea dungeon leave` — abandon a run (no rewards).
-- `/rea weapons` — the cardinal weapons of legend.
-- `/rea trader specialize <role> <name>` — name a villager (NPC-style) as your specialist.
-- `/rea trader train` — train the targeted specialist a tier (Novice → Apprentice → Journeyman → Master).
-- `/rea trader rename <name>` — rename your specialist.
-- `/rea trader info` — inspect the targeted specialist.
-- `/rea update` — (admin) check GitHub for a new Rea release now.
-- `/ability`, `/runes` — shortcuts.
+Rea keeps the command list deliberately tiny. Actions live in menus; checks are
+commands; daily gifts arrive automatically when you join.
+
+| Command | What it does |
+| --- | --- |
+| `/rea` | Your profile card: race, form, EP, rank, runes, codex, quests |
+| `/rea quests` | Your current quest and progress |
+| `/rea codex [read <id>]` | The 26 entries of Tensura's world |
+| `/rea dungeon` | Menu of the ruins — click a ruin to dive |
+| `/rea dungeon leave` | Abandon the ruin you are inside |
+| `/rea trader …` | Name and train villager specialists |
+| `/ability` | Your Talents menu: skills by tier, click to cast, evolve button |
+| `/rea start` | (admin) reincarnate everyone with random races |
+| `/rea give`, `/rea reset`, `/rea reload`, `/rea update` | (admin) tools |
+
+Everything else — casting skills, evolving, diving, the daily gift — happens
+in menus or on its own.
 
 ## Dungeons
 

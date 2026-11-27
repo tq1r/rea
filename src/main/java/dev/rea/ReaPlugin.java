@@ -1,9 +1,10 @@
 package dev.rea;
 
 import dev.rea.codex.CodexManager;
-import dev.rea.command.EvolveGui;
 import dev.rea.command.ReaCommand;
+import dev.rea.command.DungeonGui;
 import dev.rea.command.SkillsGui;
+import dev.rea.daily.DailyManager;
 import dev.rea.data.DataManager;
 import dev.rea.dungeon.DungeonManager;
 import dev.rea.listener.DungeonListener;
@@ -38,7 +39,8 @@ public final class ReaPlugin extends JavaPlugin {
     private SkillManager skillManager;
     private ScoreboardManager scoreboardManager;
     private SkillsGui skillsGui;
-    private EvolveGui evolveGui;
+    private DungeonGui dungeonGui;
+    private DailyManager dailyManager;
     private WeaponManager weaponManager;
     private DungeonManager dungeonManager;
     private UpdateManager updateManager;
@@ -56,7 +58,8 @@ public final class ReaPlugin extends JavaPlugin {
         skillManager = new SkillManager(this);
         scoreboardManager = new ScoreboardManager(this);
         skillsGui = new SkillsGui(this);
-        evolveGui = new EvolveGui(this);
+        dungeonGui = new DungeonGui(this);
+        dailyManager = new DailyManager(this);
         weaponManager = new WeaponManager(this);
         dungeonManager = new DungeonManager(this);
         updateManager = new UpdateManager(this);
@@ -78,7 +81,7 @@ public final class ReaPlugin extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
-        getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, evolveGui), this);
+        getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, dungeonGui), this);
         getServer().getPluginManager().registerEvents(new DungeonListener(this), this);
         scoreboardManager.start();
         raceManager.startPassiveTask();
@@ -134,8 +137,12 @@ public final class ReaPlugin extends JavaPlugin {
         return skillsGui;
     }
 
-    public EvolveGui getEvolveGui() {
-        return evolveGui;
+    public DungeonGui getDungeonGui() {
+        return dungeonGui;
+    }
+
+    public DailyManager getDailyManager() {
+        return dailyManager;
     }
 
     public WeaponManager getWeaponManager() {

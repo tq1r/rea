@@ -1,11 +1,11 @@
 package dev.rea.listener;
 
 import dev.rea.ReaPlugin;
-import dev.rea.command.EvolveGui;
 import dev.rea.command.SkillsGui;
+import dev.rea.command.DungeonGui;
 import dev.rea.data.PlayerData;
+import dev.rea.dungeon.DungeonDef;
 import dev.rea.util.Msg;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,18 +14,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Handles clicks in the skills and evolution GUIs.
+ * Handles clicks in the Talents and Ruins GUIs.
  */
 public final class GuiListener implements Listener {
 
     private final ReaPlugin plugin;
     private final SkillsGui skillsGui;
-    private final EvolveGui evolveGui;
+    private final DungeonGui dungeonGui;
 
-    public GuiListener(ReaPlugin plugin, SkillsGui skillsGui, EvolveGui evolveGui) {
+    public GuiListener(ReaPlugin plugin, SkillsGui skillsGui, DungeonGui dungeonGui) {
         this.plugin = plugin;
         this.skillsGui = skillsGui;
-        this.evolveGui = evolveGui;
+        this.dungeonGui = dungeonGui;
     }
 
     @EventHandler
@@ -36,26 +36,38 @@ public final class GuiListener implements Listener {
         String title = event.getView().getTitle();
         ItemStack item = event.getCurrentItem();
         if (item == null || item.getItemMeta() == null) {
+            if (title.contains("Talents") || title.contains("Ruins")) {
+                event.setCancelled(true);
+            }
             return;
         }
-        if (title.contains("Skills")) {
+        if (title.contains("Talents")) {
             event.setCancelled(true);
-            String skillId = item.getItemMeta().getPersistentDataContainer().get(
-                    new NamespacedKey(plugin, "skill"), PersistentDataType.STRING);
-            if (skillId != null) {
-                plugin.getSkillManager().useSkill(player, skillId);
-            }
-        } else if (title.contains("Evolution")) {
-            event.setCancelled(true);
-            Byte flag = item.getItemMeta().getPersistentDataContainer().get(
-                    new NamespacedKey(plugin, "evolve"), PersistentDataType.BYTE);
-            if (flag != null) {
+            Byte evolve = item.getItemMeta().getPersistentDataContainer().get(skillsGui.evolveKey(), PersistentDataType.BYTE);
+            if (evolve != null) {
                 PlayerData data = plugin.getDataManager().get(player);
                 if (plugin.getRaceManager().canEvolve(data)) {
                     plugin.getRaceManager().evolve(player);
-                    evolveGui.open(player);
+                    skillsGui.open(player); // refresh the menu
                 } else {
-                    Msg.send(player, "&cYou cannot evolve yet.");
+                    Msg.send(player, "&cRequirements not met yet.");
+                }
+                return;
+            }
+            String skillId = item.getItemMeta().getPersistentDataContainer().get(skillsGui.skillKey(), PersistentDataType.STRING);
+            if (skillId != null) {
+                plugin.getSkillManager().useSkill(player, skillId);
+            }
+            return;
+        }
+        if (title.contains("Ruins")) {
+            event.setCancelled(true);
+            String dungeonId = item.getItemMeta().getPersistentDataContainer().get(dungeonGui.dungeonKey(), PersistentDataType.STRING);
+            if (dungeonId != null) {
+                DungeonDef def = plugin.getDungeonManager().get(dungeonId);
+                if (def != null) {
+                    player.closeInventory();
+                    plugin.getDungeonManager().enter(player, def);
                 }
             }
         }

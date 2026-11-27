@@ -9,11 +9,8 @@ commands:
     description: Rea commands
     usage: /rea <subcommand>
   ability:
-    description: Use your intrinsic skill
+    description: Open your talent menu (skills and evolution)
     usage: /ability
-  runes:
-    description: Show your Rune balance
-    usage: /runes
 permissions:
   rea.use:
     description: Use Rea features
