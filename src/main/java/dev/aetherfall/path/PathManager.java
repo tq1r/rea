@@ -80,7 +80,7 @@ public final class PathManager {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, LONG, 0, false, false, false));
             }
             case VERDANT -> player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, LONG, 0, false, false, false));
-            case STONE -> player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, LONG, 0, false, false, false));
+            case STONE -> player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, LONG, 0, false, false, false));
         }
     }
 
@@ -132,7 +132,7 @@ public final class PathManager {
                         living.damage(1.0, player);
                     }
                 }
-                player.getWorld().spawnParticle(Particle.WATER_SPLASH, loc, 50, 0.8, 0.8, 0.8);
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 50, 0.8, 0.8, 0.8);
                 player.playSound(loc, Sound.ENTITY_PLAYER_SPLASH, 1f, 1f);
             }
             case VERDANT -> {
