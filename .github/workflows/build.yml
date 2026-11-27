@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +19,28 @@ jobs:
           java-version: '25'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package
+        run: |
+          set +e
+          mvn -B package > build.log 2>&1
+          code=$?
+          tail -n 60 build.log
+          if [ $code -ne 0 ]; then
+            grep -E "\[ERROR\]" build.log | head -n 40 | sed 's/^/::error::/' || true
+          fi
+          exit $code
+      - name: Post build log on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json
+          log = open('build.log').read()[-50000:]
+          open('payload.json', 'w').write(json.dumps({"body": "Build failed:\n```\n" + log + "\n```"}))
+          PY
+          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments --input payload.json
       - name: Upload jar
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: aetherfall-jar
