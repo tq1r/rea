@@ -2,106 +2,217 @@ package dev.rea.listener;
 
 import dev.rea.ReaPlugin;
 import dev.rea.data.PlayerData;
-import dev.rea.race.RaceType;
 import dev.rea.skill.SkillDef;
-import dev.rea.skill.SkillManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import dev.rea.util.Msg;
+import dev.rea.util.Util;
+import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Core gameplay loop (Tensura canon): combat grants EP; devouring foes
- * (Predator holders only) teaches Common Skills; skills cost magicules.
+ * The connective tissue: mining, killing, crafting, combat, and reading
+ * all feed quests, runes, and XP through here.
+ *
+ * Canon (Tensura): kills grant EP to everyone, but only Predator holders
+ * (the Slime path) devour foes to learn Common Skills.
  */
 public final class GameListener implements Listener {
-
     private final ReaPlugin plugin;
-    private final SkillManager skills;
 
-    public GameListener(ReaPlugin plugin, SkillManager skills) {
+    public GameListener(ReaPlugin plugin) {
         this.plugin = plugin;
-        this.skills = skills;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerData data = plugin.getDataManager().get(player);
-        if (data.getRaceId() == null) {
-            return;
-        }
-        RaceType race = RaceType.fromId(data.getRaceId());
-        if (race != null) {
-            event.joinMessage(null);
-            player.sendMessage(plugin.getConfigManager().color("&8[&bRea&8] &7Welcome back, "
-                    + race.getColor() + race.formName(data.getForm()) + "&7."));
+        data.setName(player.getName());
+        plugin.getRaceManager().applyPassives(player);
+        plugin.getScoreboardManager().update(player);
+        if (data.getRace() == null) {
+            for (String line : plugin.getConfig().getStringList("messages.welcome-no-race")) {
+                Msg.send(player, line);
+            }
+        } else {
+            for (String line : plugin.getConfig().getStringList("messages.welcome")) {
+                Msg.send(player, line);
+            }
         }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        plugin.getDataManager().save(plugin.getDataManager().get(event.getPlayer()));
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> plugin.getRaceManager().applyPassives(player), 20L);
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        Material type = event.getBlock().getType();
+        if (!Util.isOre(type)) {
+            return;
+        }
         Player player = event.getPlayer();
         PlayerData data = plugin.getDataManager().get(player);
-        plugin.getDataManager().save(data);
+        data.incrementCounter("mine:ANY", 1);
+        data.incrementCounter("mine:" + type.name(), 1);
+        data.setMines(data.getMines() + 1);
+        double chance = plugin.getConfig().getDouble("settings.rune-mine-chance", 0.15);
+        if (Math.random() < chance) {
+            int min = plugin.getConfig().getInt("settings.rune-mine-min", 1);
+            int max = plugin.getConfig().getInt("settings.rune-mine-max", 3);
+            int amount = min + (int) (Math.random() * Math.max(1, max - min + 1));
+            plugin.getDataManager().addRunes(player, amount);
+            player.getWorld().spawnParticle(Particle.END_ROD, event.getBlock().getLocation(), 8, 0.4, 0.4, 0.4);
+            if (Math.random() < 0.25) {
+                Msg.send(player, "&7The stone hums as it breaks. Something was hiding in it.");
+            }
+        }
+        plugin.getQuestManager().checkCompletion(player);
+    }
+
+    /** EP a monster is worth when slain (Tensura-style). */
+    private long predationEp(org.bukkit.entity.EntityType type) {
+        return switch (type) {
+            case SLIME -> 5L;
+            case ZOMBIE -> 8L;
+            case SKELETON -> 10L;
+            case SPIDER, CAVE_SPIDER -> 12L;
+            case CREEPER -> 15L;
+            case WITCH -> 20L;
+            case BLAZE -> 25L;
+            case ENDERMAN -> 30L;
+            default -> 10L;
+        };
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        Player killer = entity.getKiller();
+        if (killer == null || !(entity instanceof Monster)) {
+            return;
+        }
+        PlayerData data = plugin.getDataManager().get(killer);
+        data.incrementCounter("kill:ANY", 1);
+        data.incrementCounter("kill:" + entity.getType().name(), 1);
+        data.setKills(data.getKills() + 1);
+        plugin.getDataManager().addXp(killer, plugin.getConfig().getInt("settings.xp-per-kill", 3));
+        double chance = plugin.getConfig().getDouble("settings.kill-rune-chance", 0.10);
+        if (Math.random() < chance) {
+            int min = plugin.getConfig().getInt("settings.kill-rune-min", 1);
+            int max = plugin.getConfig().getInt("settings.kill-rune-max", 2);
+            int amount = min + (int) (Math.random() * Math.max(1, max - min + 1));
+            plugin.getDataManager().addRunes(killer, amount);
+        }
+        // Everyone gains EP from slaying monsters.
+        plugin.getDataManager().addEp(killer, predationEp(entity.getType()));
+        // Predation: only Predator holders devour foes to learn Common Skills.
+        if (data.hasSkill("predator")) {
+            data.setMagicules(Math.min(plugin.getDataManager().maxMagicules(data), data.getMagicules() + 10));
+            Msg.send(killer, "&7You devoured the " + entity.getType().name().toLowerCase().replace('_', ' ') + ".");
+            int learnChance = data.hasSkill("great_sage") ? 40 : 20;
+            if (ThreadLocalRandom.current().nextInt(100) < learnChance) {
+                for (SkillDef def : plugin.getSkillManager().commonSkills()) {
+                    if (!data.hasSkill(def.getId())) {
+                        plugin.getSkillManager().learn(killer, def.getId());
+                        break;
+                    }
+                }
+            }
+        }
+        plugin.getQuestManager().checkCompletion(killer);
+    }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        Material result = event.getRecipe().getResult().getType();
+        PlayerData data = plugin.getDataManager().get(player);
+        data.incrementCounter("craft:ANY", 1);
+        data.incrementCounter("craft:" + result.name(), 1);
+        data.setCrafts(data.getCrafts() + 1);
+        plugin.getQuestManager().checkCompletion(player);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        if (item == null || item.getType() == Material.AIR) {
+            return;
+        }
+        String codexId = plugin.getCodexManager().getCodexId(item);
+        if (codexId != null) {
+            boolean first = plugin.getCodexManager().readBook(player, codexId);
+            if (first) {
+                consumeOne(player, item);
+            }
+            event.setCancelled(true);
+            return;
+        }
+        if (plugin.getItemFactory().isRuneCache(item)) {
+            int amount = plugin.getConfig().getInt("settings.cache-xp", 40);
+            plugin.getDataManager().addXp(player, amount);
+            consumeOne(player, item);
+            player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+            player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 20, 0.5, 0.8, 0.5);
+            Msg.send(player, "&dThe runes attune. &7+" + amount + " XP");
+            event.setCancelled(true);
+        }
+    }
+
+    private void consumeOne(Player player, ItemStack item) {
+        if (item.getAmount() <= 1) {
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        } else {
+            item.setAmount(item.getAmount() - 1);
+        }
     }
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player attacker)) {
-            return;
-        }
-        PlayerData data = plugin.getDataManager().get(attacker);
-        if (data.getRaceId() == null) {
-            return;
-        }
-        if (data.hasSkill("starved")) {
-            event.setDamage(event.getDamage() + 1.0);
-        }
-    }
-
-    @EventHandler
-    public void onDeath(EntityDeathEvent event) {
-        LivingEntity victim = event.getEntity();
-        Player killer = victim.getKiller();
-        if (killer == null) {
-            return;
-        }
-        PlayerData data = plugin.getDataManager().get(killer);
-        if (data.getRaceId() == null) {
-            return;
-        }
-        data.addEp(10);
-        plugin.getDataManager().save(data);
-
-        // Predation: only Predator holders devour foes to learn Common Skills.
-        if (data.hasSkill("predator")) {
-            int chance = data.hasSkill("great_sage") ? 40 : 20;
-            if (ThreadLocalRandom.current().nextInt(100) < chance) {
-                for (SkillDef def : skills.commonSkills()) {
-                    if (!data.hasSkill(def.getId())) {
-                        data.addSkill(def.getId());
-                        killer.sendMessage(plugin.getConfigManager().color(
-                                "&b[Predation] &7You learned &f" + def.getName() + "&7."));
-                        plugin.getDataManager().save(data);
-                        break;
-                    }
-                }
+        if (event.getDamager() instanceof Player attacker) {
+            PlayerData data = plugin.getDataManager().get(attacker);
+            double bonus = data.getForm() * 0.5 + plugin.getDataManager().rankIndex(data) * 0.3;
+            if ("orc".equals(data.getRace())) {
+                bonus += 2.0;
+            }
+            if (data.hasSkill("starved")) {
+                bonus += 1.0;
+            }
+            if (bonus > 0) {
+                event.setDamage(event.getDamage() + bonus);
             }
         }
     }
@@ -112,192 +223,8 @@ public final class GameListener implements Listener {
             return;
         }
         PlayerData data = plugin.getDataManager().get(player);
-        if (data.getRaceId() == null) {
-            return;
-        }
         if (data.hasSkill("divine_blessing")) {
             event.setAmount(event.getAmount() * 2.0);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        PlayerData data = plugin.getDataManager().get(player);
-        plugin.getDataManager().save(data);
-    }
-
-    public void useSkill(Player player, String skillId) {
-        PlayerData data = plugin.getDataManager().get(player);
-        SkillDef def = skills.get(skillId);
-        if (def == null || !skills.tryUse(player, data, def)) {
-            return;
-        }
-        Location loc = player.getLocation();
-        switch (def.getId()) {
-            case "dissolve" -> {
-                for (Entity e : player.getNearbyEntities(3, 3, 3)) {
-                    if (e instanceof LivingEntity le) {
-                        le.damage(3.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "coercion" -> {
-                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
-                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 1));
-                        le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 0));
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "scale_armor", "stonehide" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 160, 1));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "strengthen" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 1));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "second_wind" -> {
-                player.setHealth(Math.min(20.0, player.getHealth() + 4.0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 160, 1));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "elven_step" -> {
-                Location dest = loc.clone().add(loc.getDirection().multiply(6));
-                player.teleport(dest);
-                player.getWorld().spawnParticle(Particle.SPLASH, dest, 20, 1, 1, 1, 0.2);
-            }
-            case "fang_rush" -> {
-                player.setVelocity(loc.getDirection().multiply(2.0));
-                for (Entity e : player.getNearbyEntities(2, 2, 2)) {
-                    if (e instanceof LivingEntity le) {
-                        le.damage(4.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "poison_breath" -> {
-                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
-                        le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 100, 0));
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "hellfire" -> {
-                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
-                        le.setFireTicks(100);
-                        le.damage(4.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "self_regeneration" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "water_blade" -> {
-                Location target = loc.clone().add(loc.getDirection().multiply(6));
-                for (Entity e : player.getNearbyEntities(8, 8, 8)) {
-                    if (e instanceof LivingEntity le && le.getLocation().distance(target) < 2.0) {
-                        le.damage(5.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, target, 20, 1, 1, 1, 0.2);
-            }
-            case "voice_cannon" -> {
-                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
-                        le.damage(4.0, player);
-                        le.setVelocity(loc.getDirection().multiply(1.5));
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "telepathy" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "farsight" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 400, 0));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "hydraulic_propulsion" -> {
-                player.setVelocity(player.getVelocity().setY(1.5));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "infinity_prison" -> {
-                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
-                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 2));
-                        le.getActivePotionEffects().forEach(pe -> {
-                            if (pe.getType() != PotionEffectType.SLOWNESS) {
-                                le.removePotionEffect(pe.getType());
-                            }
-                        });
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
-            }
-            case "beelzebuth" -> {
-                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
-                        le.damage(8.0, player);
-                    }
-                }
-                player.setHealth(Math.min(20.0, player.getHealth() + 6.0));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
-            }
-            case "raphael" -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 400, 0));
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
-            }
-            case "uriel" -> {
-                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
-                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 2));
-                        le.damage(6.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
-            }
-            case "azathoth" -> {
-                Location dest = loc.clone().add(loc.getDirection().multiply(8));
-                player.teleport(dest);
-                for (Entity e : player.getNearbyEntities(3, 3, 3)) {
-                    if (e instanceof LivingEntity le) {
-                        le.damage(6.0, player);
-                    }
-                }
-                player.getWorld().spawnParticle(Particle.SPLASH, dest, 40, 2, 2, 2, 0.3);
-            }
-            default -> {
-                player.getWorld().spawnParticle(Particle.SPLASH, loc, 10, 1, 1, 1, 0.1);
-            }
-        }
-        plugin.getDataManager().save(data);
-    }
-
-    /** Passive effects applied on a timer (magicules, regen, passive skills). */
-    public void tickPassives() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerData data = plugin.getDataManager().get(player);
-            if (data.getRaceId() == null) {
-                continue;
-            }
-            data.setMagicules(Math.min(data.getMaxMagicules(), data.getMagicules() + 1.0));
-            if (data.hasSkill("divine_blessing")) {
-                player.setHealth(Math.min(20.0, player.getHealth() + 0.5));
-            }
-            if (data.hasSkill("godly_craftsman")) {
-                // Crafting/smelt is handled by the skill's passive nature.
-            }
-            plugin.getDataManager().save(data);
         }
     }
 }

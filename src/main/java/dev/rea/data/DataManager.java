@@ -133,6 +133,10 @@ public final class DataManager {
         config.set("ep", data.getEp());
         config.set("magicules", data.getMagicules());
         config.set("skills", data.getSkills().stream().sorted().toList());
+        config.set("uniqueSkill", data.getUniqueSkillId());
+        for (Map.Entry<String, Long> entry : data.getSkillCooldowns().entrySet()) {
+            config.set("cooldowns." + entry.getKey(), entry.getValue());
+        }
         config.set("level", data.getLevel());
         config.set("xp", data.getXp());
         config.set("runes", data.getRunes());
@@ -167,6 +171,13 @@ public final class DataManager {
         data.setEp(config.getLong("ep", 0L));
         data.setMagicules(config.getInt("magicules", 100));
         data.getSkills().addAll(config.getStringList("skills"));
+        data.setUniqueSkillId(config.getString("uniqueSkill", null));
+        ConfigurationSection cooldowns = config.getConfigurationSection("cooldowns");
+        if (cooldowns != null) {
+            for (String key : cooldowns.getKeys(false)) {
+                data.getSkillCooldowns().put(key, cooldowns.getLong(key, 0L));
+            }
+        }
         data.setLevel(config.getInt("level", 1));
         data.setXp(config.getInt("xp", 0));
         data.setRunes(config.getLong("runes", 0L));

@@ -1,80 +1,165 @@
 # Rea codex entries (Tensura canon): world, reincarnation, skills, evolution.
-# Each entry grants EP when first read.
+# Each entry grants EP, XP, and runes when first read.
 
-entries:
+codex:
   world:
     title: "The World"
-    text: "A world of magicules and monsters. The strong grow; the weak are devoured."
-    ep: 5
+    subtitle: "Magicules and monsters"
+    pages:
+      - "A world of magicules and monsters. The strong grow; the weak are devoured."
+      - "Existence Points (EP) measure a monster's worth. Ranks run from F to SSS."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 5
   reincarnation:
     title: "Reincarnation"
-    text: "Otherworlders cross over and receive a Unique Skill born of their desires."
-    ep: 10
+    subtitle: "Otherworlders cross over"
+    pages:
+      - "Otherworlders cross over and receive a Unique Skill born of their desires."
+      - "Only about one in ten Unique Skills has any use in combat."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   unique_skill:
     title: "Unique Skills"
-    text: "Born of the mind and heart. Only about one in ten has any use in combat."
-    ep: 10
+    subtitle: "Born of the mind and heart"
+    pages:
+      - "Unique Skills are the shape of their user's mind, born of strong desire."
+      - "They grow as their user grows. At the summit, they evolve into Ultimate Skills."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   predator:
     title: "Predator"
-    text: "The Slime's Unique Skill. Devour foes to learn their Common Skills."
-    ep: 15
+    subtitle: "The Slime's Unique Skill"
+    pages:
+      - "Predator devours foes and learns their Common Skills."
+      - "It belongs to the Slime path. Other races fight and evolve without it."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15
   gluttony:
     title: "Gluttony"
-    text: "Predator, mastered and fed on the Orc Lord, evolves into Gluttony."
-    ep: 15
+    subtitle: "Predator, mastered"
+    pages:
+      - "Predator, mastered and fed on the Orc Lord, evolves into Gluttony."
+      - "Gluttony devours everything: skills, magicules, even souls."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15
   beelzebuth:
     title: "Beelzebuth"
-    text: "Lord of Gluttony. At the Demon Lord awakening, Gluttony becomes Beelzebuth."
-    ep: 20
+    subtitle: "Lord of Gluttony"
+    pages:
+      - "At the Demon Lord awakening, Gluttony becomes Beelzebuth, Lord of Gluttony."
+      - "Its sub-skills: Predation, Imaginary Space, Mimicry, Corrosion, Soul Consumption."
+    reward-runes: 20
+    reward-xp: 20
+    reward-ep: 20
   great_sage:
     title: "Great Sage"
-    text: "A Unique Skill that speeds learning. It evolves into Raphael, Lord of Wisdom."
-    ep: 15
+    subtitle: "Lord of Wisdom, in waiting"
+    pages:
+      - "Great Sage speeds learning and analysis. It evolves into Raphael, Lord of Wisdom."
+      - "Raphael's sub-skills: Thought Communication, Information Dominion, All of Creation."
+    reward-runes: 15
+    reward-xp: 15
+    reward-ep: 15
   evolution:
     title: "Evolution"
-    text: "Races evolve with EP: Goblin to Hobgoblin, Lizardman to Dragonewt, Orc to Orc Lord."
-    ep: 10
+    subtitle: "Races evolve with EP"
+    pages:
+      - "Goblin to Hobgoblin. Lizardman to Dragonewt. Orc to Orc Lord. Demon to Arch Demon."
+      - "Evolution needs EP, level, and runes. The final form is the Demon Lord awakening."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   demon_lord:
     title: "Demon Lord Awakening"
-    text: "At the Harvest Festival, a Unique Skill evolves into an Ultimate Skill."
-    ep: 20
+    subtitle: "The Harvest Festival"
+    pages:
+      - "At the Harvest Festival, a Unique Skill evolves into an Ultimate Skill."
+      - "Predator to Beelzebuth. Great Sage to Raphael. Infinity Prison to Uriel."
+    reward-runes: 20
+    reward-xp: 20
+    reward-ep: 20
   slime:
     title: "Slime"
-    text: "Absorption, Dissolve, Self-Regeneration. Soft, patient, unstoppable."
-    ep: 10
+    subtitle: "Absorption, Dissolve, Self-Regeneration"
+    pages:
+      - "Soft, patient, unstoppable. The Slime's path leads to the Demon Lord."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   goblin:
     title: "Goblin"
-    text: "Small, quick, everywhere. Hobgoblins serve as the vanguard of nations."
-    ep: 10
+    subtitle: "Small, quick, everywhere"
+    pages:
+      - "Hobgoblins serve as the vanguard of nations. Ogres walk the path of the Kijin."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   lizardman:
     title: "Lizardman"
-    text: "Scale Armor. Dragonewts carry the blood of dragons."
-    ep: 10
+    subtitle: "Scale Armor"
+    pages:
+      - "Dragonewts carry the blood of dragons. True Dragonewts are born of flame."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   orc:
     title: "Orc"
-    text: "Strengthen. Orc Lords devour the world with Starved."
-    ep: 10
+    subtitle: "Strengthen"
+    pages:
+      - "Orc Lords devour the world with Starved. High Orcs lead the horde."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   human:
     title: "Human"
-    text: "Adaptable and stubborn. Heroes are born of their kind."
-    ep: 10
+    subtitle: "Adaptable and stubborn"
+    pages:
+      - "Heroes are born of their kind. Enhanced Humans walk between worlds."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   elf:
     title: "Elf"
-    text: "Keen senses and long lives. Fairy Queens guard the forests."
-    ep: 10
+    subtitle: "Keen senses, long lives"
+    pages:
+      - "Fairy Queens guard the forests. High Elves command the spirit world."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   dwarf:
     title: "Dwarf"
-    text: "Sturdy hands and loyal hearts. Rune Lords command stone."
-    ep: 10
+    subtitle: "Sturdy hands, loyal hearts"
+    pages:
+      - "Rune Lords command stone and steel. Master Dwarves forge the world's wonders."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   dire_wolf:
     title: "Dire Wolf"
-    text: "Ultra Smell, Thought Communication, Coercion. Loyal to the end."
-    ep: 10
+    subtitle: "Ultra Smell, Thought Communication, Coercion"
+    pages:
+      - "Loyal to the end. Alpha Wolves lead the pack."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   serpent:
     title: "Serpent"
-    text: "Poison Breath and Heat Source Perception. Silent and deadly."
-    ep: 10
+    subtitle: "Poison Breath, Heat Source Perception"
+    pages:
+      - "Silent and deadly. Black Serpents and Hydras rule the deep."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10
   demon:
     title: "Demon"
-    text: "Magic Resistance. Arch Demons and Daemon Lords rule the night."
-    ep: 10
+    subtitle: "Magic Resistance"
+    pages:
+      - "Arch Demons and Daemon Lords rule the night. Greater Demons serve the Demon Lord."
+    reward-runes: 10
+    reward-xp: 10
+    reward-ep: 10

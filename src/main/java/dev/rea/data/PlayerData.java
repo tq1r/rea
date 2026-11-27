@@ -18,6 +18,8 @@ public final class PlayerData {
     private long ep = 0; // Existential Points (Tensura-style)
     private int magicules = 100; // mana, spent on skills
     private final Set<String> skills = new HashSet<>();
+    private String uniqueSkillId; // the Unique Skill granted on reincarnation (canon)
+    private final Map<String, Long> skillCooldowns = new HashMap<>();
     private int level = 1;
     private int xp = 0;
     private long runes = 0;
@@ -82,6 +84,26 @@ public final class PlayerData {
 
     public Set<String> getSkills() {
         return skills;
+    }
+
+    public boolean hasSkill(String id) {
+        return skills.contains(id);
+    }
+
+    public void addSkill(String id) {
+        skills.add(id);
+    }
+
+    public String getUniqueSkillId() {
+        return uniqueSkillId;
+    }
+
+    public void setUniqueSkillId(String uniqueSkillId) {
+        this.uniqueSkillId = uniqueSkillId;
+    }
+
+    public Map<String, Long> getSkillCooldowns() {
+        return skillCooldowns;
     }
 
     public int getLevel() {

@@ -3,7 +3,15 @@ package dev.rea.skill;
 import dev.rea.ReaPlugin;
 import dev.rea.data.PlayerData;
 import dev.rea.race.RaceType;
+import dev.rea.util.Msg;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Skill registry and learning (Tensura canon):
  * - INTRINSIC skills come with the race.
- * - COMMON skills are learned by devouring foes (predation).
+ * - COMMON skills are learned by devouring foes (predation, Predator holders).
  * - UNIQUE skills are granted on reincarnation (Slimes get Predator).
  * - ULTIMATE skills evolve from a Unique Skill at Demon Lord awakening.
  */
@@ -58,6 +66,8 @@ public final class SkillManager {
                 "Night Vision for 20s.", 4, 20_000, null));
         register(new SkillDef("hydraulic_propulsion", "Hydraulic Propulsion", SkillDef.Tier.COMMON,
                 "Launch yourself upward.", 6, 8_000, null));
+        register(new SkillDef("magic_sense", "Magic Sense", SkillDef.Tier.COMMON,
+                "Magicules flow faster; sense the world.", 0, 0, null));
         register(new SkillDef("predator", "Predator", SkillDef.Tier.UNIQUE,
                 "Devour foes to learn their Common Skills and gain EP.", 0, 0, "slime"));
         register(new SkillDef("great_sage", "Great Sage", SkillDef.Tier.UNIQUE,
@@ -70,6 +80,8 @@ public final class SkillManager {
                 "Hunger for power: +1 damage per foe slain (stacks).", 0, 0, null));
         register(new SkillDef("godly_craftsman", "Godly Craftsman", SkillDef.Tier.UNIQUE,
                 "Crafting and smelting are instant and free.", 0, 0, null));
+        register(new SkillDef("truth", "Truth", SkillDef.Tier.UNIQUE,
+                "See the world as it is. EP and XP flow faster.", 0, 0, null));
         register(new SkillDef("beelzebuth", "Beelzebuth", SkillDef.Tier.ULTIMATE,
                 "Lord of Gluttony: devour everything, heal, and strike hard.", 20, 20_000, null));
         register(new SkillDef("raphael", "Raphael", SkillDef.Tier.ULTIMATE,
@@ -84,11 +96,11 @@ public final class SkillManager {
         skills.put(def.getId(), def);
     }
 
-    public SkillDef get(String id) {
+    public SkillDef getSkill(String id) {
         return skills.get(id);
     }
 
-    public Map<String, SkillDef> all() {
+    public Map<String, SkillDef> allSkills() {
         return Collections.unmodifiableMap(skills);
     }
 
@@ -100,6 +112,27 @@ public final class SkillManager {
             }
         }
         return out;
+    }
+
+    public boolean hasSkill(Player player, String id) {
+        return plugin.getDataManager().get(player).hasSkill(id);
+    }
+
+    /** Learn a skill (quest/codex rewards, predation, evolution). */
+    public void learn(Player player, String id) {
+        SkillDef def = skills.get(id);
+        if (def == null) {
+            return;
+        }
+        PlayerData data = plugin.getDataManager().get(player);
+        if (data.hasSkill(id)) {
+            return;
+        }
+        data.addSkill(id);
+        Msg.send(player, "&b&lSkill learned! &f" + def.getName() + " &8(&7" + def.getTier() + "&8)");
+        Msg.send(player, "&7" + def.getDescription());
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 1f);
+        plugin.getDataManager().save(data);
     }
 
     /**
@@ -141,30 +174,199 @@ public final class SkillManager {
         return byTier(SkillDef.Tier.COMMON);
     }
 
-    public boolean canUse(Player player, PlayerData data, SkillDef def) {
-        if (def == null) {
-            return false;
+    public void list(Player player) {
+        PlayerData data = plugin.getDataManager().get(player);
+        Msg.send(player, Msg.bar());
+        Msg.send(player, "&b&lSkills &8(&7" + data.getSkills().size() + "&8)");
+        for (String id : data.getSkills()) {
+            SkillDef def = skills.get(id);
+            if (def != null) {
+                Msg.send(player, " &8- &f" + def.getName() + " &8(&7" + def.getTier() + "&8) &7" + def.getDescription());
+            }
         }
-        if (def.getRequiredRace() != null && !def.getRequiredRace().equals(data.getRaceId())) {
-            return false;
-        }
-        return data.hasSkill(def.getId());
+        Msg.send(player, Msg.bar());
     }
 
-    public boolean tryUse(Player player, PlayerData data, SkillDef def) {
-        if (def == null || !canUse(player, data, def)) {
-            return false;
+    /** Cast a skill: checks ownership, race, magicules, and cooldown, then applies its effect. */
+    public void useSkill(Player player, String skillId) {
+        SkillDef def = skills.get(skillId);
+        if (def == null) {
+            Msg.send(player, "&cUnknown skill: " + skillId);
+            return;
+        }
+        PlayerData data = plugin.getDataManager().get(player);
+        if (!data.hasSkill(skillId)) {
+            Msg.send(player, "&cYou do not know " + def.getName() + " yet.");
+            return;
+        }
+        if (def.getRequiredRace() != null && !def.getRequiredRace().equals(data.getRace())) {
+            Msg.send(player, "&c" + def.getName() + " belongs to another bloodline.");
+            return;
         }
         if (data.getMagicules() < def.getMagiculeCost()) {
-            return false;
+            Msg.send(player, "&cNot enough magicules (" + def.getMagiculeCost() + " needed).");
+            return;
         }
         long now = System.currentTimeMillis();
-        Long last = data.getSkillCooldowns().get(def.getId());
+        Long last = data.getSkillCooldowns().get(skillId);
         if (last != null && now - last < def.getCooldownMillis()) {
-            return false;
+            long left = (def.getCooldownMillis() - (now - last)) / 1000;
+            Msg.send(player, "&c" + def.getName() + " is cooling down (" + left + "s).");
+            return;
         }
         data.setMagicules(data.getMagicules() - def.getMagiculeCost());
-        data.getSkillCooldowns().put(def.getId(), now);
-        return true;
+        data.getSkillCooldowns().put(skillId, now);
+        applyEffect(player, def);
+        plugin.getDataManager().save(data);
+    }
+
+    private void applyEffect(Player player, SkillDef def) {
+        Location loc = player.getLocation();
+        switch (def.getId()) {
+            case "dissolve" -> {
+                for (Entity e : player.getNearbyEntities(3, 3, 3)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(3.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "coercion" -> {
+                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 1));
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 0));
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "scale_armor", "stonehide" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 160, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "strengthen" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "second_wind" -> {
+                player.setHealth(Math.min(20.0, player.getHealth() + 4.0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 160, 1));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "elven_step" -> {
+                Location dest = loc.clone().add(loc.getDirection().multiply(6));
+                player.teleport(dest);
+                player.getWorld().spawnParticle(Particle.SPLASH, dest, 20, 1, 1, 1, 0.2);
+            }
+            case "fang_rush" -> {
+                player.setVelocity(loc.getDirection().multiply(2.0));
+                for (Entity e : player.getNearbyEntities(2, 2, 2)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(4.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "poison_breath" -> {
+                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 100, 0));
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "hellfire" -> {
+                for (Entity e : player.getNearbyEntities(4, 4, 4)) {
+                    if (e instanceof LivingEntity le) {
+                        le.setFireTicks(100);
+                        le.damage(4.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "self_regeneration" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "water_blade" -> {
+                Location target = loc.clone().add(loc.getDirection().multiply(6));
+                for (Entity e : player.getNearbyEntities(8, 8, 8)) {
+                    if (e instanceof LivingEntity le && le.getLocation().distance(target) < 2.0) {
+                        le.damage(5.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, target, 20, 1, 1, 1, 0.2);
+            }
+            case "voice_cannon" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(4.0, player);
+                        le.setVelocity(loc.getDirection().multiply(1.5));
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "telepathy" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "farsight" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 400, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "hydraulic_propulsion" -> {
+                player.setVelocity(player.getVelocity().setY(1.5));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "infinity_prison" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 2));
+                        le.getActivePotionEffects().forEach(pe -> {
+                            if (pe.getType() != PotionEffectType.SLOWNESS) {
+                                le.removePotionEffect(pe.getType());
+                            }
+                        });
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 20, 1, 1, 1, 0.2);
+            }
+            case "beelzebuth" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(8.0, player);
+                    }
+                }
+                player.setHealth(Math.min(20.0, player.getHealth() + 6.0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "raphael" -> {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 400, 0));
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "uriel" -> {
+                for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof LivingEntity le) {
+                        le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 2));
+                        le.damage(6.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 40, 2, 2, 2, 0.3);
+            }
+            case "azathoth" -> {
+                Location dest = loc.clone().add(loc.getDirection().multiply(8));
+                player.teleport(dest);
+                for (Entity e : player.getNearbyEntities(3, 3, 3)) {
+                    if (e instanceof LivingEntity le) {
+                        le.damage(6.0, player);
+                    }
+                }
+                player.getWorld().spawnParticle(Particle.SPLASH, dest, 40, 2, 2, 2, 0.3);
+            }
+            default -> {
+                player.getWorld().spawnParticle(Particle.SPLASH, loc, 10, 1, 1, 1, 0.1);
+            }
+        }
     }
 }

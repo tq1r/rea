@@ -2,8 +2,8 @@ package dev.rea.command;
 
 import dev.rea.ReaPlugin;
 import dev.rea.data.PlayerData;
-import dev.rea.race.RaceManager;
 import dev.rea.race.RaceType;
+import dev.rea.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -23,41 +23,35 @@ import java.util.List;
 public final class EvolveGui {
 
     private final ReaPlugin plugin;
-    private final RaceManager races;
 
-    public EvolveGui(ReaPlugin plugin, RaceManager races) {
+    public EvolveGui(ReaPlugin plugin) {
         this.plugin = plugin;
-        this.races = races;
     }
 
     public void open(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
-        RaceType race = RaceType.fromId(data.getRaceId());
+        RaceType race = RaceType.fromId(data.getRace());
         if (race == null) {
             return;
         }
-        Inventory inv = Bukkit.createInventory(null, 27, plugin.getConfigManager().color("&8Evolution"));
+        Inventory inv = Bukkit.createInventory(null, 27, Msg.c("&8Evolution"));
         String[] forms = race.getForms();
         for (int i = 0; i < forms.length; i++) {
             ItemStack item = new ItemStack(i == data.getForm() ? Material.BEACON : Material.PAPER);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(plugin.getConfigManager().color(
-                    (i == data.getForm() ? "&b" : "&7") + forms[i]));
+            meta.setDisplayName(Msg.c((i == data.getForm() ? "&b" : "&7") + forms[i]));
             List<String> lore = new ArrayList<>();
             if (i == data.getForm()) {
-                lore.add(plugin.getConfigManager().color("&8Current form"));
+                lore.add(Msg.c("&8Current form"));
             } else if (i == data.getForm() + 1) {
-                lore.add(plugin.getConfigManager().color("&7Next form"));
-                lore.add(plugin.getConfigManager().color("&8Requirements:"));
-                switch (i - 1) {
-                    case 0 -> lore.add(plugin.getConfigManager().color("&7- 100 EP, level 5, 1 rune"));
-                    case 1 -> lore.add(plugin.getConfigManager().color("&7- 500 EP, level 10, 3 runes"));
-                    case 2 -> lore.add(plugin.getConfigManager().color("&7- 2,000 EP, level 20, 6 runes"));
-                    default -> { }
-                }
-                lore.add(plugin.getConfigManager().color("&eClick to evolve"));
+                lore.add(Msg.c("&7Next form"));
+                lore.add(Msg.c("&8Requirements:"));
+                lore.add(Msg.c("&7- " + plugin.getRaceManager().evolveEp(i) + " EP, level "
+                        + plugin.getRaceManager().evolveLevel(i) + ", "
+                        + plugin.getRaceManager().evolveRunes(i) + " runes"));
+                lore.add(Msg.c("&eClick to evolve"));
             } else {
-                lore.add(plugin.getConfigManager().color("&8Locked"));
+                lore.add(Msg.c("&8Locked"));
             }
             meta.setLore(lore);
             item.setItemMeta(meta);

@@ -1,58 +1,89 @@
 # Rea quests (Tensura canon): the path from reincarnation to Demon Lord.
-# Rewards are EP.
+# Quests are sequential. Types: RACE, MINE, KILL, CRAFT, CODEX, REACH_LEVEL.
+# Rewards: reward-runes, reward-xp, reward-ep, reward-item (MATERIAL:amount).
 
-chapters:
-  chapter1:
-    title: "Reincarnation"
-    quests:
-      - id: "first_blood"
-        title: "First Blood"
-        description: "Slay 5 monsters."
-        type: "KILL"
-        target: 5
-        reward: 50
-      - id: "first_ep"
-        title: "Existence"
-        description: "Reach 100 EP."
-        type: "EP"
-        target: 100
-        reward: 50
-      - id: "first_skill"
-        title: "Skill"
-        description: "Use a skill 3 times."
-        type: "SKILL_USE"
-        target: 3
-        reward: 50
-      - id: "first_evolve"
-        title: "Evolution"
-        description: "Evolve once."
-        type: "EVOLVE"
-        target: 1
-        reward: 100
-  chapter2:
-    title: "Demon Lord"
-    quests:
-      - id: "hunter"
-        title: "Hunter"
-        description: "Slay 50 monsters."
-        type: "KILL"
-        target: 50
-        reward: 500
-      - id: "power"
-        title: "Power"
-        description: "Reach 2,000 EP."
-        type: "EP"
-        target: 2000
-        reward: 500
-      - id: "devourer"
-        title: "Devourer"
-        description: "Learn 3 Common Skills by predation."
-        type: "SKILL_LEARN"
-        target: 3
-        reward: 500
-      - id: "awakening"
-        title: "Awakening"
-        description: "Reach the Demon Lord form."
-        type: "EVOLVE"
-        target: 3
-        reward: 1000
+quests:
+  - id: "q1-1"
+    chapter: 1
+    name: "Reincarnation"
+    type: "RACE"
+    target: ""
+    amount: 1
+    reward-runes: 20
+    reward-xp: 20
+    reward-ep: 10
+    reward-item: ""
+    description: "Be reincarnated as a random Tensura race and receive your Unique Skill."
+    complete: "The world turns. You are reborn."
+  - id: "q1-2"
+    chapter: 1
+    name: "First Blood"
+    type: "KILL"
+    target: "ANY"
+    amount: 5
+    reward-runes: 30
+    reward-xp: 30
+    reward-ep: 50
+    reward-item: ""
+    description: "Slay 5 monsters to gather EP."
+    complete: "Existence grows with every kill."
+  - id: "q1-3"
+    chapter: 1
+    name: "The Codex"
+    type: "CODEX"
+    target: ""
+    amount: 3
+    reward-runes: 30
+    reward-xp: 30
+    reward-ep: 50
+    reward-item: ""
+    description: "Record 3 Codex entries of the Tensura world."
+    complete: "Knowledge is power."
+  - id: "q1-4"
+    chapter: 1
+    name: "Magic Sense"
+    type: "REACH_LEVEL"
+    target: ""
+    amount: 3
+    reward-runes: 50
+    reward-xp: 50
+    reward-ep: 100
+    reward-item: ""
+    description: "Reach level 3. Magic Sense will awaken in you."
+    complete: "You can feel the magicules flow."
+  - id: "q2-1"
+    chapter: 2
+    name: "Hunter"
+    type: "KILL"
+    target: "ANY"
+    amount: 50
+    reward-runes: 100
+    reward-xp: 100
+    reward-ep: 500
+    reward-item: ""
+    description: "Slay 50 monsters. Predators devour to learn Common Skills."
+    complete: "The hunt makes the hunter."
+  - id: "q2-2"
+    chapter: 2
+    name: "Evolution"
+    type: "REACH_LEVEL"
+    target: ""
+    amount: 7
+    reward-runes: 150
+    reward-xp: 150
+    reward-ep: 1000
+    reward-item: ""
+    description: "Reach level 7 and evolve to your second form."
+    complete: "Your blood remembers more of itself."
+  - id: "q2-3"
+    chapter: 2
+    name: "Demon Lord"
+    type: "REACH_LEVEL"
+    target: ""
+    amount: 12
+    reward-runes: 300
+    reward-xp: 300
+    reward-ep: 2000
+    reward-item: ""
+    description: "Reach level 12 and evolve to the Demon Lord form. Your Unique Skill will become an Ultimate Skill."
+    complete: "The Harvest Festival begins. You are a Demon Lord."

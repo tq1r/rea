@@ -3,7 +3,7 @@ package dev.rea.command;
 import dev.rea.ReaPlugin;
 import dev.rea.data.PlayerData;
 import dev.rea.skill.SkillDef;
-import dev.rea.skill.SkillManager;
+import dev.rea.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -23,19 +23,17 @@ import java.util.List;
 public final class SkillsGui {
 
     private final ReaPlugin plugin;
-    private final SkillManager skills;
 
-    public SkillsGui(ReaPlugin plugin, SkillManager skills) {
+    public SkillsGui(ReaPlugin plugin) {
         this.plugin = plugin;
-        this.skills = skills;
     }
 
     public void open(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
-        Inventory inv = Bukkit.createInventory(null, 54, plugin.getConfigManager().color("&8Skills"));
+        Inventory inv = Bukkit.createInventory(null, 54, Msg.c("&8Skills"));
         int slot = 0;
         for (String id : data.getSkills()) {
-            SkillDef def = skills.get(id);
+            SkillDef def = plugin.getSkillManager().getSkill(id);
             if (def == null || slot >= 54) {
                 continue;
             }
@@ -47,14 +45,14 @@ public final class SkillsGui {
             };
             ItemStack item = new ItemStack(mat);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(plugin.getConfigManager().color("&f" + def.getName()));
+            meta.setDisplayName(Msg.c("&f" + def.getName()));
             List<String> lore = new ArrayList<>();
-            lore.add(plugin.getConfigManager().color("&8Tier: &7" + def.getTier()));
-            lore.add(plugin.getConfigManager().color("&7" + def.getDescription()));
+            lore.add(Msg.c("&8Tier: &7" + def.getTier()));
+            lore.add(Msg.c("&7" + def.getDescription()));
             if (def.getMagiculeCost() > 0) {
-                lore.add(plugin.getConfigManager().color("&8Cost: &b" + (int) def.getMagiculeCost() + " magicules"));
+                lore.add(Msg.c("&8Cost: &b" + (int) def.getMagiculeCost() + " magicules"));
             }
-            lore.add(plugin.getConfigManager().color("&eClick to cast"));
+            lore.add(Msg.c("&eClick to cast"));
             meta.setLore(lore);
             item.setItemMeta(meta);
             item.editMeta(m -> m.getPersistentDataContainer().set(

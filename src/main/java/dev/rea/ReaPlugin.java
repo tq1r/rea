@@ -1,12 +1,9 @@
 package dev.rea;
 
 import dev.rea.codex.CodexManager;
-import dev.rea.command.AbilityCommand;
 import dev.rea.command.EvolveGui;
 import dev.rea.command.ReaCommand;
-import dev.rea.command.RunesCommand;
 import dev.rea.command.SkillsGui;
-import dev.rea.config.ConfigManager;
 import dev.rea.data.DataManager;
 import dev.rea.listener.GameListener;
 import dev.rea.listener.GuiListener;
@@ -14,6 +11,9 @@ import dev.rea.quest.QuestManager;
 import dev.rea.race.RaceManager;
 import dev.rea.scoreboard.ScoreboardManager;
 import dev.rea.skill.SkillManager;
+import dev.rea.util.ItemFactory;
+import dev.rea.util.Keys;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -24,52 +24,53 @@ import org.bukkit.plugin.java.JavaPlugin;
  * their Unique Skill evolves into an Ultimate Skill.
  */
 public final class ReaPlugin extends JavaPlugin {
-
-    private ConfigManager configManager;
+    private Keys keys;
+    private ItemFactory itemFactory;
     private DataManager dataManager;
-    private SkillManager skillManager;
     private RaceManager raceManager;
     private QuestManager questManager;
     private CodexManager codexManager;
+    private SkillManager skillManager;
     private ScoreboardManager scoreboardManager;
-    private GameListener gameListener;
+    private SkillsGui skillsGui;
+    private EvolveGui evolveGui;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        configManager = new ConfigManager(this);
+        keys = new Keys(this);
+        itemFactory = new ItemFactory(this);
         dataManager = new DataManager(this);
-        skillManager = new SkillManager(this);
-        raceManager = new RaceManager(this, skillManager);
+        raceManager = new RaceManager(this);
         questManager = new QuestManager(this);
         codexManager = new CodexManager(this);
+        skillManager = new SkillManager(this);
         scoreboardManager = new ScoreboardManager(this);
-        gameListener = new GameListener(this, skillManager);
+        skillsGui = new SkillsGui(this);
+        evolveGui = new EvolveGui(this);
 
-        ReaCommand reaCommand = new ReaCommand(this, raceManager, skillManager);
-        if (getCommand("rea") != null) {
-            getCommand("rea").setExecutor(reaCommand);
-            getCommand("rea").setTabCompleter(reaCommand);
+        ReaCommand command = new ReaCommand(this);
+        PluginCommand root = getCommand("rea");
+        if (root != null) {
+            root.setExecutor(command);
+            root.setTabCompleter(command);
         }
-        AbilityCommand abilityCommand = new AbilityCommand(this, skillManager);
-        if (getCommand("ability") != null) {
-            getCommand("ability").setExecutor(abilityCommand);
+        PluginCommand ability = getCommand("ability");
+        if (ability != null) {
+            ability.setExecutor(command);
         }
-        RunesCommand runesCommand = new RunesCommand(this);
-        if (getCommand("runes") != null) {
-            getCommand("runes").setExecutor(runesCommand);
+        PluginCommand runes = getCommand("runes");
+        if (runes != null) {
+            runes.setExecutor(command);
         }
 
-        SkillsGui skillsGui = new SkillsGui(this, skillManager);
-        EvolveGui evolveGui = new EvolveGui(this, raceManager);
-        getServer().getPluginManager().registerEvents(gameListener, this);
-        getServer().getPluginManager().registerEvents(new GuiListener(this, raceManager, skillsGui, evolveGui), this);
-        getServer().getScheduler().runTaskTimer(this, () -> {
-            scoreboardManager.updateAll();
-            gameListener.tickPassives();
-        }, 20L, 20L);
-
-        getLogger().info("Rea enabled. The world turns.");
+        getServer().getPluginManager().registerEvents(new GameListener(this), this);
+        getServer().getPluginManager().registerEvents(new GuiListener(this, skillsGui, evolveGui), this);
+        scoreboardManager.start();
+        raceManager.startPassiveTask();
+        dataManager.startAutosave();
+        dataManager.startMagiculeRegen();
+        getLogger().info("Rea awakened. The bloodlines wake.");
     }
 
     @Override
@@ -77,19 +78,21 @@ public final class ReaPlugin extends JavaPlugin {
         if (dataManager != null) {
             dataManager.saveAll();
         }
-        getLogger().info("Rea disabled.");
+        if (scoreboardManager != null) {
+            scoreboardManager.stop();
+        }
     }
 
-    public ConfigManager getConfigManager() {
-        return configManager;
+    public Keys getKeys() {
+        return keys;
+    }
+
+    public ItemFactory getItemFactory() {
+        return itemFactory;
     }
 
     public DataManager getDataManager() {
         return dataManager;
-    }
-
-    public SkillManager getSkillManager() {
-        return skillManager;
     }
 
     public RaceManager getRaceManager() {
@@ -104,11 +107,19 @@ public final class ReaPlugin extends JavaPlugin {
         return codexManager;
     }
 
+    public SkillManager getSkillManager() {
+        return skillManager;
+    }
+
     public ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
     }
 
-    public GameListener getGameListener() {
-        return gameListener;
+    public SkillsGui getSkillsGui() {
+        return skillsGui;
+    }
+
+    public EvolveGui getEvolveGui() {
+        return evolveGui;
     }
 }

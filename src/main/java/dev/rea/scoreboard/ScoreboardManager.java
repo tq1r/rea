@@ -2,78 +2,76 @@ package dev.rea.scoreboard;
 
 import dev.rea.ReaPlugin;
 import dev.rea.data.PlayerData;
+import dev.rea.quest.QuestDef;
 import dev.rea.race.RaceType;
+import dev.rea.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Scoreboard display (Geyser-safe): race, form, EP, rank, magicules, runes.
+ * The sidebar every wanderer sees: bloodline, level, runes, Codex, quest.
+ * Scoreboards render on Bedrock too.
  */
 public final class ScoreboardManager {
-
     private final ReaPlugin plugin;
+    private final Map<UUID, Scoreboard> boards = new ConcurrentHashMap<>();
 
     public ScoreboardManager(ReaPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void updateAll() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerData data = plugin.getDataManager().get(player);
-            if (data.getRaceId() == null) {
-                continue;
+    public void start() {
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                update(player);
             }
-            RaceType race = RaceType.fromId(data.getRaceId());
-            Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-            Objective objective = board.registerNewObjective("rea", Criteria.DUMMY, "Rea");
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            List<String> lines = new ArrayList<>();
-            lines.add(plugin.getConfigManager().color("&b&lRea"));
-            lines.add(plugin.getConfigManager().color("&7Race: " + race.getColor() + race.formName(data.getForm())));
-            lines.add(plugin.getConfigManager().color("&7EP: &f" + data.getEp()));
-            lines.add(plugin.getConfigManager().color("&7Rank: &f" + rank(data.getEp())));
-            lines.add(plugin.getConfigManager().color("&7Magicules: &f" + (int) data.getMagicules() + "/" + (int) data.getMaxMagicules()));
-            lines.add(plugin.getConfigManager().color("&7Runes: &f" + data.getRunes()));
-            for (int i = 0; i < lines.size(); i++) {
-                objective.getScore(lines.get(i)).setScore(lines.size() - i);
-            }
-            player.setScoreboard(board);
-        }
+        }, 40L, 40L);
     }
 
-    /** Canon EP rank thresholds (F, E, D, C, B, A, S, SS, SSS). */
-    public String rank(int ep) {
-        if (ep >= 100_000) {
-            return "SSS";
+    public void stop() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
-        if (ep >= 50_000) {
-            return "SS";
+        boards.clear();
+    }
+
+    public void update(Player player) {
+        PlayerData data = plugin.getDataManager().get(player);
+        Scoreboard board = boards.computeIfAbsent(player.getUniqueId(),
+                uuid -> Bukkit.getScoreboardManager().getNewScoreboard());
+        Objective objective = board.getObjective("rea");
+        if (objective == null) {
+            objective = board.registerNewObjective("rea", "dummy", Msg.c("&d&lRea"));
+            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         }
-        if (ep >= 10_000) {
-            return "S";
+        for (String entry : board.getEntries()) {
+            board.resetScores(entry);
         }
-        if (ep >= 5_000) {
-            return "A";
+        RaceType race = RaceType.fromId(data.getRace());
+        String raceLine = race == null ? "&7Sleeping" : race.getColor() + race.formName(data.getForm());
+        int score = 10;
+        setLine(objective, "&fBloodline: " + raceLine, score--);
+        setLine(objective, "&fRank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp(), score--);
+        setLine(objective, "&fMagicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data), score--);
+        setLine(objective, "&fLevel: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)", score--);
+        setLine(objective, "&fRunes: &d" + data.getRunes(), score--);
+        setLine(objective, "&fCodex: &d" + data.getCodex().size() + "/" + plugin.getCodexManager().total(), score--);
+        QuestDef current = plugin.getQuestManager().currentQuest(data);
+        if (current != null) {
+            int progress = plugin.getQuestManager().progress(data, current);
+            setLine(objective, "&fQuest: &d" + current.name() + " &7(" + Math.min(progress, current.amount()) + "/" + current.amount() + ")", score--);
         }
-        if (ep >= 2_000) {
-            return "B";
-        }
-        if (ep >= 1_000) {
-            return "C";
-        }
-        if (ep >= 500) {
-            return "D";
-        }
-        if (ep >= 100) {
-            return "E";
-        }
-        return "F";
+        player.setScoreboard(board);
+    }
+
+    private void setLine(Objective objective, String text, int score) {
+        objective.getScore(Msg.c(text)).setScore(score);
     }
 }
