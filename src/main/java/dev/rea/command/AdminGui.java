@@ -183,7 +183,7 @@ public final class AdminGui {
         Inventory inv = Bukkit.createInventory(null, 27, Msg.c("&8Rea Admin · Resources"));
         inv.setItem(2, item(Material.EMERALD, "&a+1,000 Runes", List.of("&7Add 1,000 runes."), "resources:runes:1000"));
         inv.setItem(3, item(Material.EMERALD_BLOCK, "&a+10,000 Runes", List.of("&7Add 10,000 runes."), "resources:runes:10000"));
-        inv.setItem(4, item(Material.RAW_EMERALD_BLOCK, "&a+100,000 Runes", List.of("&7Add 100,000 runes."), "resources:runes:100000"));
+        inv.setItem(4, item(Material.DIAMOND_BLOCK, "&a+100,000 Runes", List.of("&7Add 100,000 runes."), "resources:runes:100000"));
         inv.setItem(6, item(Material.EXPERIENCE_BOTTLE, "&b+500 XP", List.of("&7Add 500 XP."), "resources:xp:500"));
         inv.setItem(7, item(Material.EXPERIENCE_BOTTLE, "&b+2,000 XP", List.of("&7Add 2,000 XP."), "resources:xp:2000"));
         inv.setItem(8, item(Material.BLAZE_POWDER, "&e+1 Level", List.of("&7Add 1 level."), "resources:level:1"));
