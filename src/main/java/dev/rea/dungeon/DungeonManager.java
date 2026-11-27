@@ -230,48 +230,85 @@ public final class DungeonManager {
         int cz = center.getBlockZ();
         // Clear the skybox first (in case a previous run left debris).
         for (int x = cx - r - 2; x <= cx + r + 2; x++) {
-            for (int y = cy - 1; y <= cy + 8; y++) {
+            for (int y = cy - 5; y <= cy + 10; y++) {
                 for (int z = cz - r - 2; z <= cz + r + 2; z++) {
                     world.getBlockAt(x, y, z).setType(Material.AIR, false);
                 }
             }
         }
-        // Floor.
-        for (int x = cx - r; x <= cx + r; x++) {
-            for (int z = cz - r; z <= cz + r; z++) {
-                if (x * x + z * z <= r * r) {
-                    world.getBlockAt(x, cy - 1, z).setType(Material.STONE_BRICKS, false);
-                }
-            }
-        }
-        // Walls and corner pillars.
-        for (int x = cx - r; x <= cx + r; x++) {
-            for (int z = cz - r; z <= cz + r; z++) {
-                int dx = x - cx;
-                int dz = z - cz;
-                if (dx * dx + dz * dz > r * r) {
-                    continue;
-                }
-                boolean onWall = Math.abs(dx) >= r - 1 || Math.abs(dz) >= r - 1;
-                if (onWall) {
-                    for (int y = cy; y <= cy + 6; y++) {
-                        world.getBlockAt(x, y, z).setType(Material.DEEPSLATE_BRICKS, false);
+        // Floating ruin chunk: a tapering base of deepslate.
+        int[] baseLayers = {r, r - 2, r - 4, r - 7};
+        for (int i = 0; i < baseLayers.length; i++) {
+            int y = cy - 1 - i;
+            int rr = baseLayers[i];
+            for (int x = cx - rr; x <= cx + rr; x++) {
+                for (int z = cz - rr; z <= cz + rr; z++) {
+                    int dx = x - cx;
+                    int dz = z - cz;
+                    if (dx * dx + dz * dz <= rr * rr) {
+                        world.getBlockAt(x, y, z).setType(Material.DEEPSLATE, false);
                     }
                 }
             }
         }
-        // Glowing pillars at the corners.
+        // Floor: cracked bricks outside, stone bricks inside, polished deepslate dais.
+        for (int x = cx - r; x <= cx + r; x++) {
+            for (int z = cz - r; z <= cz + r; z++) {
+                int dx = x - cx;
+                int dz = z - cz;
+                int distSq = dx * dx + dz * dz;
+                if (distSq > r * r) {
+                    continue;
+                }
+                Material floor;
+                if (distSq <= 4) {
+                    floor = Material.CHISELED_DEEPSLATE;
+                } else if (distSq <= 16) {
+                    floor = Material.POLISHED_DEEPSLATE;
+                } else if (distSq > (r - 4) * (r - 4)) {
+                    floor = Material.CRACKED_STONE_BRICKS;
+                } else {
+                    floor = Material.STONE_BRICKS;
+                }
+                world.getBlockAt(x, cy - 1, z).setType(floor, false);
+            }
+        }
+        // Walls: deepslate brick ring, with crenellations on top.
+        for (int x = cx - r; x <= cx + r; x++) {
+            for (int z = cz - r; z <= cz + r; z++) {
+                int dx = x - cx;
+                int dz = z - cz;
+                int distSq = dx * dx + dz * dz;
+                if (distSq > r * r) {
+                    continue;
+                }
+                int dist = (int) Math.sqrt(distSq);
+                if (dist >= r - 1) {
+                    for (int y = cy; y <= cy + 5; y++) {
+                        world.getBlockAt(x, y, z).setType(Material.DEEPSLATE_BRICKS, false);
+                    }
+                    if ((x + z) % 4 == 0) {
+                        world.getBlockAt(x, cy + 6, z).setType(Material.DEEPSLATE_TILE_WALL, false);
+                    }
+                }
+            }
+        }
+        // Corner bastions: taller pillars capped with sea lanterns.
         for (int signX : new int[]{-1, 1}) {
             for (int signZ : new int[]{-1, 1}) {
                 int px = cx + signX * (r - 1);
                 int pz = cz + signZ * (r - 1);
-                for (int y = cy; y <= cy + 6; y++) {
-                    world.getBlockAt(px, y, pz).setType(Material.SEA_LANTERN, false);
+                for (int y = cy; y <= cy + 7; y++) {
+                    world.getBlockAt(px, y, pz).setType(Material.DEEPSLATE_BRICKS, false);
                 }
+                world.getBlockAt(px, cy + 8, pz).setType(Material.SEA_LANTERN, false);
             }
         }
-        // A gate-side brazier pair.
-        world.getBlockAt(cx - 2, cy, cz).setType(Material.CAMPFIRE, false);
-        world.getBlockAt(cx + 2, cy, cz).setType(Material.CAMPFIRE, false);
+        // Cardinal braziers on chiseled deepslate plinths.
+        int b = r - 3;
+        for (int[] off : new int[][]{{b, 0}, {-b, 0}, {0, b}, {0, -b}}) {
+            world.getBlockAt(cx + off[0], cy, cz + off[1]).setType(Material.CHISELED_DEEPSLATE, false);
+            world.getBlockAt(cx + off[0], cy + 1, cz + off[1]).setType(Material.CAMPFIRE, false);
+        }
     }
 }

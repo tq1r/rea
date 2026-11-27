@@ -43,7 +43,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                 PlayerData data = plugin.getDataManager().get(player);
                 RaceType race = RaceType.fromId(data.getRace());
                 if (race == null) {
-                    Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
+                    Msg.send(player, "&cYour reincarnation awaits. An admin must run &e/rea start&c.");
                 } else {
                     plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
                 }
@@ -82,7 +82,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
                     PlayerData data = plugin.getDataManager().get(player);
                     RaceType race = RaceType.fromId(data.getRace());
                     if (race == null) {
-                        Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
+                        Msg.send(player, "&cYour reincarnation awaits. An admin must run &e/rea start&c.");
                     } else {
                         plugin.getSkillManager().useSkill(player, race.getIntrinsicId());
                     }
@@ -111,9 +111,9 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
 
     private void help(CommandSender sender) {
         Msg.send(sender, Msg.bar());
-        Msg.send(sender, "&d&lRea &7- the bloodlines wake.");
-        Msg.send(sender, "&e/rea start &7- (admin) deal bloodlines to everyone");
-        Msg.send(sender, "&e/rea race &7- your bloodline, form, and chain");
+        Msg.send(sender, "&d&lRea &7- from Slime to Demon Lord.");
+        Msg.send(sender, "&e/rea start &7- (admin) reincarnate every wanderer");
+        Msg.send(sender, "&e/rea race &7- your race, form, and chain");
         Msg.send(sender, "&e/rea evolve &7- evolve to your next form");
         Msg.send(sender, "&e/rea skill <id> &7- use a skill (costs magicules)");
         Msg.send(sender, "&e/rea skills &7- skills you know (and how to learn the rest)");
@@ -145,7 +145,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             }
             PlayerData data = plugin.getDataManager().get(target);
             if (data.getRace() != null) {
-                Msg.send(sender, "&c" + target.getName() + " already has a bloodline (" + data.getRace() + "). Bloodlines are permanent.");
+                Msg.send(sender, "&c" + target.getName() + " has already reincarnated (" + data.getRace() + "). Races are permanent.");
                 return;
             }
             RaceType[] races = RaceType.values();
@@ -163,7 +163,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         RaceType type = RaceType.fromId(data.getRace());
         Msg.send(sender, Msg.bar());
         if (type == null) {
-            Msg.send(sender, "&7Your bloodline still sleeps. An admin must run &e/rea start&7.");
+            Msg.send(sender, "&7Your reincarnation awaits. An admin must run &e/rea start&7.");
             Msg.send(sender, Msg.bar());
             return;
         }
@@ -210,7 +210,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
         RaceType race = RaceType.fromId(data.getRace());
         Msg.send(sender, Msg.bar());
         Msg.send(sender, "&d&l" + player.getName());
-        Msg.send(sender, "&7Bloodline: " + (race == null ? "Sleeping" : race.getColor() + race.formName(data.getForm())));
+        Msg.send(sender, "&7Race: " + (race == null ? "Sleeping" : race.getColor() + race.formName(data.getForm())));
         Msg.send(sender, "&7Rank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp()
                 + " &7Magicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data));
         Msg.send(sender, "&7Level: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)");
@@ -385,7 +385,7 @@ public final class ReaCommand implements CommandExecutor, TabCompleter {
             return;
         }
         plugin.getDataManager().delete(target.getUniqueId());
-        Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Their bloodline sleeps again until /rea start.");
+        Msg.send(sender, "&aReset Rea data for " + target.getName() + ". Their reincarnation awaits again until /rea start.");
     }
 
     private void dungeon(CommandSender sender, String[] args) {

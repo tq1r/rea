@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The sidebar every wanderer sees: bloodline, level, runes, Codex, quest.
+ * The sidebar every wanderer sees: race, form, runes, Codex, quest.
  * Scoreboards render on Bedrock too.
  */
 public final class ScoreboardManager {
@@ -57,7 +57,7 @@ public final class ScoreboardManager {
         RaceType race = RaceType.fromId(data.getRace());
         String raceLine = race == null ? "&7Sleeping" : race.getColor() + race.formName(data.getForm());
         int score = 10;
-        setLine(objective, "&fBloodline: " + raceLine, score--);
+        setLine(objective, "&fRace: " + raceLine, score--);
         setLine(objective, "&fRank: &d" + plugin.getDataManager().rank(data) + " &7EP: &d" + data.getEp(), score--);
         setLine(objective, "&fMagicules: &d" + data.getMagicules() + "/" + plugin.getDataManager().maxMagicules(data), score--);
         setLine(objective, "&fLevel: &d" + data.getLevel() + " &7(" + data.getXp() + "/" + plugin.getDataManager().xpForLevel(data.getLevel()) + " XP)", score--);

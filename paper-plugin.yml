@@ -2,13 +2,14 @@ name: Rea
 version: '1.0.0'
 main: dev.rea.ReaPlugin
 author: 'tq1r'
-description: 'A fantasy bloodline SMP plugin for Paper 26.3 + Geyser. The bloodlines wake.'
+description: 'A That Time I Got Reincarnated as a Slime plugin for Paper 26.3 + Geyser. Devour, evolve, awaken as a Demon Lord.'
+website: 'https://github.com/tq1r/rea'
 commands:
   rea:
     description: Rea commands
     usage: /rea <subcommand>
   ability:
-    description: Use your bloodline ability
+    description: Use your intrinsic skill
     usage: /ability
   runes:
     description: Show your Rune balance

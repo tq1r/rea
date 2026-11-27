@@ -7,6 +7,26 @@ Ultimate Skill — while you delve Tensura's sealed ruins for its named, cardina
 
 Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only.
 
+## Install
+
+1. Download `rea-1.0.0.jar` from the GitHub Actions build (`rea-jar` artifact) or build it with `mvn -B package`.
+2. Drop the jar into your server's `plugins/` folder.
+3. Requires **Paper 26.3+** (or a compatible Paper build) and **Java 25**.
+4. Optional: **Geyser** for Bedrock players — Rea is fully Bedrock-safe (chat, standard GUIs, boss bars, scoreboards).
+
+## Permissions
+
+| Permission | Default | Grants |
+| --- | --- | --- |
+| `rea.use` | true | All player features (skills, races, dungeons, quests, codex) |
+| `rea.admin` | op | `/rea start`, `/rea give`, `/rea reset`, `/rea reload` |
+
+## What to expect at launch
+
+- The jar compiles cleanly on Paper 26.3 via CI on every push — but **this plugin has not been load-tested on a live server**. Smoke-test on your own server before opening it to your followers: reincarnate, evolve, clear all three dungeons, check skills, scoreboard, quests, and codex on both Java and Bedrock.
+- Dungeon difficulty is fixed, not scaled to your EP — bring friends or bring potions.
+- Balance (EP/rune costs, loot rates) is tuned by feel, not by telemetry. Feedback welcome.
+
 ## Canon rules
 
 - **Reincarnation:** `/rea start` deals a random race (Slime, Goblin, Lizardman, Orc,
@@ -35,7 +55,7 @@ Everything is Bedrock-safe: chat, standard GUIs, boss bars, and scoreboards only
 ## Commands
 
 - `/rea start` — (admin) reincarnate everyone with random races and Unique Skills.
-- `/rea race` — your bloodline, form, EP, and evolution chain.
+- `/rea race` — your race, form, EP, and evolution chain.
 - `/rea evolve` — evolve to your next form (Ultimate evolution at Demon Lord).
 - `/rea skill <id>` — cast a skill (costs magicules).
 - `/rea skills` — list your skills by tier.

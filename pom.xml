@@ -9,7 +9,15 @@
     <packaging>jar</packaging>
 
     <name>Rea</name>
-    <description>A fantasy bloodline SMP plugin for Paper 26.3 + Geyser. The bloodlines wake.</description>
+    <description>A That Time I Got Reincarnated as a Slime plugin for Paper 26.3 + Geyser. Devour, evolve, awaken as a Demon Lord.</description>
+    <url>https://github.com/tq1r/rea</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

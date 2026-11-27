@@ -13,7 +13,7 @@ import java.util.UUID;
 public final class PlayerData {
     private final UUID uuid;
     private String name;
-    private String race; // null until /rea start deals a bloodline
+    private String race; // null until /rea start deals a race
     private int form = 0; // evolution stage: 0 Base, 1 Evolved, 2 Apex, 3 Demon Lord
     private long ep = 0; // Existential Points (Tensura-style)
     private int magicules = 100; // mana, spent on skills

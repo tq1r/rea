@@ -1,5 +1,5 @@
 # Rea configuration
-# The bloodlines wake. Edit freely — Rea will adapt.
+# A world of magicules. Edit freely — Rea will adapt.
 
 settings:
   rune-mine-chance: 0.15
@@ -8,7 +8,6 @@ settings:
   kill-rune-chance: 0.10
   kill-rune-min: 1
   kill-rune-max: 2
-  ability-cooldown-seconds: 30
   level-cap: 20
   xp-per-kill: 3
   cache-cost: 25

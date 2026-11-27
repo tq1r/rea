@@ -4,7 +4,7 @@ package dev.rea.skill;
  * A skill definition (Tensura canon tiers):
  * INTRINSIC — born with the race (canon intrinsic or balance gift);
  * COMMON — learned by predation from devoured foes;
- * UNIQUE — one granted on reincarnation to otherworlders (Slimes: Predator);
+ * UNIQUE — one granted on reincarnation to otherworlders (Predator is one of them);
  * ULTIMATE — evolved from a Unique Skill at Demon Lord awakening.
  */
 public final class SkillDef {

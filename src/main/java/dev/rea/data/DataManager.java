@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Loads, saves, and mutates PlayerData. Runes and XP live here so every
  * system (quests, codex, daily...) grants them the same way.
- * Humans gain +10% XP from everything (their bloodline gift).
+ * Humans gain +10% XP from everything (their racial gift).
  */
 public final class DataManager {
     private final ReaPlugin plugin;

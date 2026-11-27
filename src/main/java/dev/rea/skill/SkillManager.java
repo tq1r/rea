@@ -9,6 +9,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -24,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Skill registry and learning (Tensura canon):
  * - INTRINSIC skills come with the race.
  * - COMMON skills are learned by devouring foes (predation, Predator holders).
- * - UNIQUE skills are granted on reincarnation (Slimes get Predator).
+ * - UNIQUE skills are granted on reincarnation, born of desire.
  * - ULTIMATE skills evolve from a Unique Skill at Demon Lord awakening.
  */
 public final class SkillManager {
@@ -71,7 +72,7 @@ public final class SkillManager {
         register(new SkillDef("magic_sense", "Magic Sense", SkillDef.Tier.COMMON,
                 "Magicules flow faster; sense the world.", 0, 0, null));
         register(new SkillDef("predator", "Predator", SkillDef.Tier.UNIQUE,
-                "Devour foes to learn their Common Skills and gain EP.", 0, 0, "slime"));
+                "Devour foes to learn their Common Skills and gain EP.", 0, 0, null));
         register(new SkillDef("great_sage", "Great Sage", SkillDef.Tier.UNIQUE,
                 "Learn skills faster; devouring teaches twice as often.", 0, 0, null));
         register(new SkillDef("divine_blessing", "Divine Blessing", SkillDef.Tier.UNIQUE,
@@ -224,6 +225,14 @@ public final class SkillManager {
         Msg.send(player, Msg.bar());
     }
 
+    /** Area skills only hit hostile targets: monsters and (in PvP) players — never pets, villagers, or the caster. */
+    private boolean isHostileTarget(Entity target, Player caster) {
+        if (target == caster) {
+            return false;
+        }
+        return target instanceof Monster || target instanceof Player;
+    }
+
     /** Cast a skill: checks ownership, race, magicules, and cooldown, then applies its effect. */
     public void useSkill(Player player, String skillId) {
         SkillDef def = skills.get(skillId);
@@ -237,7 +246,11 @@ public final class SkillManager {
             return;
         }
         if (def.getRequiredRace() != null && !def.getRequiredRace().equals(data.getRace())) {
-            Msg.send(player, "&c" + def.getName() + " belongs to another bloodline.");
+            Msg.send(player, "&c" + def.getName() + " belongs to another race.");
+            return;
+        }
+        if (def.getMagiculeCost() == 0 && def.getCooldownMillis() == 0) {
+            Msg.send(player, "&7" + def.getName() + " is a passive skill. It is always with you.");
             return;
         }
         if (data.getMagicules() < def.getMagiculeCost()) {
@@ -262,7 +275,7 @@ public final class SkillManager {
         switch (def.getId()) {
             case "dissolve" -> {
                 for (Entity e : player.getNearbyEntities(3, 3, 3)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(3.0, player);
                     }
                 }
@@ -270,7 +283,7 @@ public final class SkillManager {
             }
             case "coercion" -> {
                 for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 1));
                         le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 0));
                     }
@@ -298,7 +311,7 @@ public final class SkillManager {
             case "fang_rush" -> {
                 player.setVelocity(loc.getDirection().multiply(2.0));
                 for (Entity e : player.getNearbyEntities(2, 2, 2)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(4.0, player);
                     }
                 }
@@ -306,7 +319,7 @@ public final class SkillManager {
             }
             case "poison_breath" -> {
                 for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 100, 0));
                     }
                 }
@@ -314,7 +327,7 @@ public final class SkillManager {
             }
             case "hellfire" -> {
                 for (Entity e : player.getNearbyEntities(4, 4, 4)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.setFireTicks(100);
                         le.damage(4.0, player);
                     }
@@ -328,7 +341,7 @@ public final class SkillManager {
             case "water_blade" -> {
                 Location target = loc.clone().add(loc.getDirection().multiply(6));
                 for (Entity e : player.getNearbyEntities(8, 8, 8)) {
-                    if (e instanceof LivingEntity le && le.getLocation().distance(target) < 2.0) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player) && le.getLocation().distance(target) < 2.0) {
                         le.damage(5.0, player);
                     }
                 }
@@ -336,7 +349,7 @@ public final class SkillManager {
             }
             case "voice_cannon" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(4.0, player);
                         le.setVelocity(loc.getDirection().multiply(1.5));
                     }
@@ -357,7 +370,7 @@ public final class SkillManager {
             }
             case "infinity_prison" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 2));
                         le.getActivePotionEffects().forEach(pe -> {
                             if (pe.getType() != PotionEffectType.SLOWNESS) {
@@ -370,7 +383,7 @@ public final class SkillManager {
             }
             case "beelzebuth" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(8.0, player);
                     }
                 }
@@ -384,7 +397,7 @@ public final class SkillManager {
             }
             case "uriel" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 2));
                         le.damage(6.0, player);
                     }
@@ -395,7 +408,7 @@ public final class SkillManager {
                 Location dest = loc.clone().add(loc.getDirection().multiply(8));
                 player.teleport(dest);
                 for (Entity e : player.getNearbyEntities(3, 3, 3)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(6.0, player);
                     }
                 }
@@ -403,7 +416,7 @@ public final class SkillManager {
             }
             case "veldora" -> {
                 for (Entity e : player.getNearbyEntities(6, 6, 6)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(7.0, player);
                         le.setVelocity(loc.getDirection().multiply(1.5).setY(0.8));
                     }
@@ -432,7 +445,7 @@ public final class SkillManager {
             }
             case "amaterasu" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.setFireTicks(200);
                         le.damage(6.0, player);
                     }
@@ -457,7 +470,7 @@ public final class SkillManager {
             }
             case "samael" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 1));
                         le.damage(4.0, player);
                     }
@@ -466,7 +479,7 @@ public final class SkillManager {
             }
             case "abaddon" -> {
                 for (Entity e : player.getNearbyEntities(6, 6, 6)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.damage(10.0, player);
                     }
                 }
@@ -474,7 +487,7 @@ public final class SkillManager {
             }
             case "belial" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 100, 0));
                         le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 1));
                         le.damage(4.0, player);
@@ -500,7 +513,7 @@ public final class SkillManager {
             }
             case "azazel" -> {
                 for (Entity e : player.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof LivingEntity le) {
+                    if (e instanceof LivingEntity le && isHostileTarget(le, player)) {
                         le.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 1));
                         le.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 100, 1));
                     }

@@ -11,16 +11,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
 import java.util.Random;
 
 /**
- * Deals bloodlines (/rea start), applies passive gifts, and evolves forms.
+ * Reincarnates wanderers (/rea start), applies racials, and evolves forms.
  * Passives are potion effects (re-applied on join/respawn and every minute),
  * so they work identically for Java and Bedrock players.
  * Active skills live in SkillManager.
  *
  * Canon (Tensura): otherworlders receive a Unique Skill on reincarnation
- * (Slimes receive Predator). At the Demon Lord awakening, the Unique Skill
+ * randomly, born of desire. At the Demon Lord awakening, the Unique Skill
  * evolves into an Ultimate Skill (Predator -> Beelzebuth, etc.).
  */
 public final class RaceManager {
@@ -64,7 +65,7 @@ public final class RaceManager {
                 && data.getRunes() >= EVOLVE_RUNES[next];
     }
 
-    /** Deal a random bloodline to every online player who does not have one. */
+    /** Reincarnate every online wanderer who has not yet arrived. */
     public void startSeason() {
         for (String line : plugin.getConfig().getStringList("messages.start-broadcast")) {
             Bukkit.broadcastMessage(Msg.c(line));
@@ -77,8 +78,8 @@ public final class RaceManager {
                 dealt++;
             }
         }
-        Bukkit.broadcastMessage(Msg.c("&7The bloodlines have woken for &d" + dealt + " &7wanderers."));
-        plugin.getLogger().info("Dealt bloodlines to " + dealt + " players.");
+        Bukkit.broadcastMessage(Msg.c("&7The otherworlders have arrived: &d" + dealt + " &7wanderers reincarnated."));
+        plugin.getLogger().info("Reincarnation dealt to " + dealt + " players.");
     }
 
     /** Reincarnate a player as the given race: intrinsic skill + Unique Skill. */
@@ -123,7 +124,7 @@ public final class RaceManager {
         PlayerData data = plugin.getDataManager().get(player);
         RaceType type = RaceType.fromId(data.getRace());
         if (type == null) {
-            Msg.send(player, "&cYour bloodline still sleeps. An admin must run &e/rea start&c.");
+            Msg.send(player, "&cYour reincarnation awaits. An admin must run &e/rea start&c.");
             return;
         }
         int next = data.getForm() + 1;
@@ -179,17 +180,19 @@ public final class RaceManager {
 
     public void applyPassives(Player player) {
         PlayerData data = plugin.getDataManager().get(player);
-        // Clear all bloodline effects first so re-applying never stacks.
-        player.removePotionEffect(PotionEffectType.REGENERATION);
-        player.removePotionEffect(PotionEffectType.SPEED);
-        player.removePotionEffect(PotionEffectType.RESISTANCE);
-        player.removePotionEffect(PotionEffectType.HASTE);
-        player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-        player.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
-        player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-        player.removePotionEffect(PotionEffectType.JUMP_BOOST);
-        player.removePotionEffect(PotionEffectType.WATER_BREATHING);
-        player.removePotionEffect(PotionEffectType.STRENGTH);
+        // Clear only Rea's own passive effects (duration == Integer.MAX_VALUE),
+        // so vanilla gifts like golden apples are never stripped.
+        List<PotionEffectType> reaPassives = List.of(
+                PotionEffectType.REGENERATION, PotionEffectType.SPEED,
+                PotionEffectType.RESISTANCE, PotionEffectType.HASTE,
+                PotionEffectType.FIRE_RESISTANCE, PotionEffectType.DOLPHINS_GRACE,
+                PotionEffectType.NIGHT_VISION, PotionEffectType.JUMP_BOOST,
+                PotionEffectType.WATER_BREATHING, PotionEffectType.STRENGTH);
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            if (effect.getDuration() == LONG && reaPassives.contains(effect.getType())) {
+                player.removePotionEffect(effect.getType());
+            }
+        }
         RaceType type = RaceType.fromId(data.getRace());
         if (type == null) {
             return;
